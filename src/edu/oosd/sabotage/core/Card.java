@@ -2,57 +2,37 @@ package edu.oosd.sabotage.core;
 
 public abstract class Card {
 	
-	/* DECLARATIONS */
-	private int x = 0;
-	private int y = 0;
-	
+	/* DECLARATIONS */	
 	private boolean active = false;
 	
+	private Tile parentTile = null;
 	private Player parentPlayer = null;
 	
 	/* CONSTRUCTORS */
 	/**
-	 * Card class constructor specifying starting x and y tile positions
+	 * Card class constructor specifying starting tile position
 	 *
-	 * @param	x	The starting x tile position
-	 * @param	y	The starting y tile position
+	 * @param	tile	The tile containing this card
 	 */
-	public Card(int x, int y) {
-		this.x = x;
-		this.y = y;
+	public Card(Tile tile) {
+		this.parentTile = tile;
 	}
 
 	/* GETTERS & SETTERS */
 	/**
-	 * Gets this card's x tile position
+	 * Gets this card's tile
 	 *
-	 * @return      The x position
+	 * @return      The tile
 	 */
-	public int getX() {
-		return x;
+	public Tile getTile() {
+		return this.parentTile;
 	}
 
 	/**
-	 * Sets this card's x tile position
+	 * Sets this card's tile
 	 */
-	public void setX(int x) {
-		this.x = x;
-	}
-
-	/**
-	 * Gets this card's y tile position
-	 *
-	 * @return      The y position
-	 */
-	public int getY() {
-		return y;
-	}
-
-	/**
-	 * Sets this card's y tile position
-	 */
-	public void setY(int y) {
-		this.y = y;
+	public void setTile(Tile tile) {
+		this.parentTile = tile;
 	}
 
 	/**

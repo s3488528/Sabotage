@@ -7,13 +7,12 @@ public class PathCard extends Card implements IRotatable {
 
 	/* CONSTRUCTORS */
 	/**
-	 * Card class constructor specifying starting x and y tile positions
+	 * Card class constructor specifying starting tile position
 	 *
-	 * @param	x	The starting x tile position
-	 * @param	y	The starting y tile position
+	 * @param	tile	The tile holding this card
 	 */
-	public PathCard(int x, int y) {
-		super(x, y);		
+	public PathCard(Tile tile) {
+		super(tile);		
 	}
 
 	/* GETTERS & SETTERS */
