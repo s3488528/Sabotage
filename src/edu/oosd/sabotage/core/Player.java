@@ -1,11 +1,15 @@
 package edu.oosd.sabotage.core;
 
+import java.util.List;
+
 public class Player {
 
 	/* DECLARATIONS */
 	private String name;
 	
 	private boolean isSaboteur;
+	
+	private List<Card> hand;
 	
 	/* CONSTRUCTORS */
 	/**
@@ -36,6 +40,15 @@ public class Player {
 		return isSaboteur;
 	}
 
+	/**
+	 * Gets this player's hand of cards
+	 *
+	 * @return      A List of Card objects as the player's hand
+	 */
+	public List<Card> getHand() {
+		return hand;
+	}
+
 	/* METHODS */
 	/**
 	 * Set this player to be a saboteur
@@ -43,6 +56,4 @@ public class Player {
 	public void setAsSaboteur() {
 		this.isSaboteur = true;
 	}
-	
-	
 }
