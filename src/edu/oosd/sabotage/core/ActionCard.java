@@ -2,6 +2,7 @@ package edu.oosd.sabotage.core;
 
 public class ActionCard extends Card {
 
+	/* CONSTRUCTORS */
 	/**
 	 * Card class constructor specifying starting x and y tile positions
 	 *

@@ -1,9 +1,11 @@
 package edu.oosd.sabotage.core;
 
 public class PathCard extends Card implements IRotatable {
-	
+
+	/* DECLARATIONS */
 	private double angle;
 
+	/* CONSTRUCTORS */
 	/**
 	 * Card class constructor specifying starting x and y tile positions
 	 *
@@ -14,6 +16,7 @@ public class PathCard extends Card implements IRotatable {
 		super(x, y);		
 	}
 
+	/* GETTERS & SETTERS */
 	@Override
 	public double getRotation() {
 		return angle;
