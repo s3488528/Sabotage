@@ -1,6 +1,6 @@
 package edu.oosd.sabotage.core;
 
-public class PathCard extends Card implements IRotatable {
+public class PathCard extends Card implements Rotatable {
 
 	/* DECLARATIONS */
 	private double angle;

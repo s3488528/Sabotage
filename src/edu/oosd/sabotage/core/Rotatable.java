@@ -1,6 +1,6 @@
 package edu.oosd.sabotage.core;
 
-public interface IRotatable {
+public interface Rotatable {
 	
 	 /**
 	 * Gets this object's angle in degrees.
