@@ -1,12 +1,11 @@
 package edu.oosd.sabotage.core;
 
-import java.util.Deque;
+import java.util.Stack;
 
 public class Board {
 	
-	private Tile[][] tiles;	
-
-	private Deque deck;
+	private Tile[][] tiles;
+	private Stack<Card> deck;
 
 	/* CONSTRUCTORS */
 	/**
@@ -17,7 +16,14 @@ public class Board {
 	 * @param	deckCount	The number of starting cards in the deck
 	 */
 	public Board(int boardWidth, int boardHeight, int deckCount) {
-		tiles = new Tile[boardHeight][boardWidth];		
+		tiles = new Tile[boardHeight][boardWidth];
+
+		deck = new Stack<Card>();
+				
+		for (int i = 0; i < deckCount; i++) {			
+			Card tempCard = CardFactory.createRandomCard();
+			deck.add(tempCard);
+		}
 	}
 
 	/**
@@ -42,6 +48,10 @@ public class Board {
 				str += "[0]";
 			}
 			str += System.getProperty("line.separator");
+		}
+		
+		for (int i = 0; i < deck.size(); i++) { 
+			str += i + ". " + deck.get(i).toString() + System.getProperty("line.separator");
 		}
 		
 		return str;

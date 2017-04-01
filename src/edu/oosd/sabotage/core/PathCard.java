@@ -3,26 +3,24 @@ package edu.oosd.sabotage.core;
 public class PathCard extends Card implements Rotatable {
 
 	/* DECLARATIONS */
-	private double angle;
+	private Angle angle;
 
 	/* CONSTRUCTORS */
 	/**
-	 * Card class constructor specifying starting tile position
-	 *
-	 * @param	tile	The tile holding this card
+	 * Card class constructor
 	 */
-	public PathCard(Tile tile) {
-		super(tile);		
+	public PathCard() {
+		super();
 	}
-
+	
 	/* GETTERS & SETTERS */
 	@Override
-	public double getRotation() {
+	public Angle getRotation() {
 		return angle;
 	}
 
 	@Override
-	public void setRotation(double angle) {
+	public void setRotation(Angle angle) {
 		this.angle = angle;		
 	}
 }

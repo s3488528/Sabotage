@@ -1,5 +1,12 @@
 package edu.oosd.sabotage.core;
 
+enum Angle {
+	N,
+	S,
+	E,
+	W
+}
+
 public interface Rotatable {
 	
 	 /**
@@ -7,11 +14,11 @@ public interface Rotatable {
 	 *
 	 * @return      The angle in degrees
 	 */
-	double getRotation();
+	Angle getRotation();
 
 	/**
 	 * Sets this object's angle in degrees.
 	 */
-	void setRotation(double angle);
+	void setRotation(Angle angle);
  
 }

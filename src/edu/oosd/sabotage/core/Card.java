@@ -3,19 +3,19 @@ package edu.oosd.sabotage.core;
 public abstract class Card {
 	
 	/* DECLARATIONS */	
-	private boolean active = false;
+	private boolean active;
 	
-	private Tile parentTile = null;
-	private Player parentPlayer = null;
+	private Tile parentTile;
+	private Player parentPlayer;
 	
 	/* CONSTRUCTORS */
 	/**
-	 * Card class constructor specifying starting tile position
-	 *
-	 * @param	tile	The tile containing this card
+	 * Card class constructor
 	 */
-	public Card(Tile tile) {
-		this.parentTile = tile;
+	public Card() {
+		this.active = false;
+		this.parentTile = null;
+		this.parentPlayer = null;
 	}
 
 	/* GETTERS & SETTERS */
