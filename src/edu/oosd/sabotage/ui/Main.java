@@ -7,15 +7,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
-import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import edu.oosd.sabotage.assets.*;
 import edu.oosd.sabotage.controllers.GameController;
 
 public class Main extends Application {
@@ -31,8 +30,7 @@ public class Main extends Application {
 	Stage _window;
 	Scene _menu, _game;
 	GameController gameController;
-	
-	
+		
 	public static void main(String[] args) {
 		launch(args); 		/* start JavaFX window */
 	}
@@ -41,6 +39,7 @@ public class Main extends Application {
 	public void start(Stage stage) throws Exception {
 		/* window */
 		_window = stage;
+		//_window.setResizable(false);
 		_window.setTitle(GAME_TITLE);
 
 		initialiseMenuScene();
@@ -94,19 +93,46 @@ public class Main extends Application {
 	
 	private void showGameScene(int boardWidth, int boardHeight, int playerCount) {
 		gameController = new GameController(boardWidth, boardHeight, 20);
-		gameController.initializePlayers(playerCount);
 		
 		initialiseGameScene();
 		
-		_window.setScene(_game);
-		
 		gameController.startGame(playerCount);
+		
+		_window.setScene(_game);		
 	}
 
-	private void initialiseGameScene() {				
-		Label lbl = new Label(gameController.getDetails());
-		StackPane main2 = new StackPane(lbl);
+	private void initialiseGameScene() {
+		Label topLabel = new Label("TOP LABEL");
+		topLabel.setPrefSize(100, 20);
+		topLabel.setMinHeight(80);
+		BorderPane.setAlignment(topLabel, Pos.CENTER);
+
+		TextArea log = new TextArea("LOG OUTPUT:\n");
+		log.setMaxSize(250, WINDOW_HEIGHT - 100);
+		log.setWrapText(true);
+		log.setEditable(false);
+		gameController.setLogControl(log);
 		
-		_game = new Scene(main2, WINDOW_WIDTH, WINDOW_HEIGHT);
+		GridPane board = new GridPane();
+		board.setHgap(5);
+		board.setVgap(5);
+		board.setAlignment(Pos.CENTER);
+		BorderPane.setAlignment(board, Pos.CENTER);
+		gameController.setBoardControl(board);
+
+		HBox hand = new HBox();
+		hand.getChildren().add(new Label("PLAYER HAND"));
+		hand.setMinHeight(80);
+		hand.setAlignment(Pos.CENTER);
+		BorderPane.setAlignment(hand, Pos.CENTER);
+		
+		BorderPane main = new BorderPane();
+		main.setMaxSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		main.setTop(topLabel);
+		main.setRight(log);
+		main.setCenter(board);
+		main.setBottom(hand);
+		
+		_game = new Scene(main, WINDOW_WIDTH + 200, WINDOW_HEIGHT);
 	}
 }

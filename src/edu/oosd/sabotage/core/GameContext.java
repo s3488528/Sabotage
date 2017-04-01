@@ -23,12 +23,12 @@ public class GameContext {
 	}
 
 	public String getPlayersAsString() {
-		String string = "";
+		String[] string = new String[players.length];
 
 		for (int i = 0; i < players.length; i++) {
-			string += players[i].getName() + " ";
+			string[i] = players[i].getName();
 		}
-
-		return string;
+		
+		return String.join(", ", string);
 	}
 }

@@ -4,6 +4,7 @@ public class Tile {
 
 	/* DECLARATIONS */
 	private Board parentBoard;
+	private PathCard pathCard = null;
 
 	/* CONSTRUCTORS */
 	/**
