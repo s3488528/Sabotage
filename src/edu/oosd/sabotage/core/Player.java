@@ -1,6 +1,6 @@
 package edu.oosd.sabotage.core;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class Player {
 
@@ -9,7 +9,7 @@ public class Player {
 	
 	private boolean isSaboteur;
 	
-	private List<Card> hand;
+	private ArrayList<Card> hand;
 	
 	/* CONSTRUCTORS */
 	/**
@@ -45,10 +45,14 @@ public class Player {
 	 *
 	 * @return      A List of Card objects as the player's hand
 	 */
-	public List<Card> getHand() {
+	public ArrayList<Card> getHand() {
 		return hand;
 	}
-
+	
+	public void addCardToHand(Card card) {
+		hand.add(card);
+	}
+	
 	/* METHODS */
 	/**
 	 * Set this player to be a saboteur

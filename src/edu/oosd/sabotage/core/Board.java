@@ -1,10 +1,12 @@
 package edu.oosd.sabotage.core;
 
+import java.util.Deque;
+
 public class Board {
 	
 	private Tile[][] tiles;	
 
-	private Card[] deck;
+	private Deque deck;
 
 	/* CONSTRUCTORS */
 	/**
@@ -15,7 +17,7 @@ public class Board {
 	 * @param	deckCount	The number of starting cards in the deck
 	 */
 	public Board(int boardWidth, int boardHeight, int deckCount) {
-		tiles = new Tile[boardWidth][boardHeight];		
+		tiles = new Tile[boardHeight][boardWidth];		
 	}
 
 	/**
@@ -25,5 +27,23 @@ public class Board {
 	 */
 	public Tile[][] getTiles() {
 		return tiles;
+	}
+
+	/**
+	 * Gets all tiles as string
+	 *
+	 * @return      All tiles as String
+	 */
+	public String getTilesAsString() {
+		String str = "";
+		
+		for (Tile[] i : tiles) { 
+			for (Tile j : i) { 
+				str += "[0]";
+			}
+			str += System.getProperty("line.separator");
+		}
+		
+		return str;
 	}
 }
