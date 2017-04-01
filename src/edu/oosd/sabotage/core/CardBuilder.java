@@ -5,12 +5,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import edu.oosd.sabotage.core.cards.*;
+
 enum cardType {
-	path,
-	action
+	deadend,
+	straight,
+	corner,
+	tintersection,
+	xintersection
 }
 
-public class CardFactory {
+public class CardBuilder {
 
 	private static List<cardType> VALUES = Collections.unmodifiableList(Arrays.asList(cardType.values()));
 	private static int SIZE = VALUES.size();
@@ -20,12 +25,21 @@ public class CardFactory {
 		Card tempCard = null;
 
 		switch(getRandomCardType()) {
-			case path:
-				tempCard = new PathCard();
+			case deadend:
+				tempCard = new DeadEndCard();
 				break;
-			case action:
-				tempCard = new ActionCard();
+			case straight:
+				tempCard = new StraightCard();
 				break;			
+			case corner:
+				tempCard = new CornerCard();
+				break;
+			case tintersection:
+				tempCard = new TIntersectionCard();
+				break;			
+			case xintersection:
+				tempCard = new XIntersectionCard();
+				break;
 		}
 				
 		return tempCard;

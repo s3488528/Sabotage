@@ -1,10 +1,10 @@
 package edu.oosd.sabotage.core;
 
 enum Angle {
-	N,
-	S,
-	E,
-	W
+	_0,
+	_90,
+	_180,
+	_270
 }
 
 public interface Rotatable {

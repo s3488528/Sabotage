@@ -21,7 +21,7 @@ public class Board {
 		deck = new Stack<Card>();
 				
 		for (int i = 0; i < deckCount; i++) {			
-			Card tempCard = CardFactory.createRandomCard();
+			Card tempCard = CardBuilder.createRandomCard();
 			deck.add(tempCard);
 		}
 	}
