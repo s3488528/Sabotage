@@ -5,10 +5,6 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Stack;
 
-import javafx.scene.Cursor;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-
 public class Board {
 	
 	private Tile[][] tiles;
