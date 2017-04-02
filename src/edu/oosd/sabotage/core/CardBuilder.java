@@ -49,4 +49,15 @@ public class CardBuilder {
 	    return VALUES.get(RANDOM.nextInt(SIZE));
 	}
 	
+	public static PathCard createStartingCard(Tile parentTile) {
+		PathCard tempCard = new XIntersectionCard();
+		tempCard.setTile(parentTile);
+		return tempCard;
+	}
+
+	public static PathCard createGoalCard(Tile parentTile, boolean isGoal) {
+		PathCard tempCard = new GoalCard(isGoal);
+		tempCard.setTile(parentTile);
+		return tempCard;
+	}
 }

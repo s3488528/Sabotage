@@ -13,6 +13,14 @@ public class Tile {
 	 * @param	parentBoard	The board that contains this tile
 	 */
 	public Tile(Board parentBoard) {
-		this.parentBoard = parentBoard;		
+		this.parentBoard = parentBoard;	
+	}
+
+	public PathCard getPathCard() {
+		return pathCard;
+	}
+
+	public void setPathCard(PathCard pathCard) {
+		this.pathCard = pathCard;
 	}
 }

@@ -33,6 +33,7 @@ public abstract class Card {
 	 */
 	public void setTile(Tile tile) {
 		this.parentTile = tile;
+		this.active = true;
 	}
 
 	/**

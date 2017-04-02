@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
 import edu.oosd.sabotage.core.GameContext;
 import edu.oosd.sabotage.core.Tile;
+import edu.oosd.sabotage.core.cards.*;
 
 public class GameController {
 	
@@ -26,21 +27,34 @@ public class GameController {
 		
 	public void startGame(int playerCount) {
 		Tile[][] tiles = gc.getBoard().getTiles();
+
+		log.appendText("> Generating board with " + tiles.length + " vertical tiles and " + tiles[0].length + " horizontal tiles.\n");
 		
 		for (int y = 0; y < tiles.length; y++) { 
 			for (int x = 0; x < tiles[y].length; x++) { 
-				if (tiles[y][x] == null) {
-					ImageView temp = new ImageView(new Image("/edu/oosd/sabotage/assets/images/empty.png"));
-					temp.setFitHeight(64);
-					temp.setFitWidth(64);
-					temp.setOnMouseEntered(e ->	temp.getScene().setCursor(Cursor.HAND));
-					temp.setOnMouseExited(e ->	temp.getScene().setCursor(Cursor.DEFAULT));
-					board.add(temp, x, y);
+				ImageView temp;
+				
+				if (tiles[y][x].getPathCard() == null) {
+					temp = new ImageView(new Image("/edu/oosd/sabotage/assets/images/empty.png"));
+				} else if (tiles[y][x].getPathCard() instanceof XIntersectionCard) {
+					temp = new ImageView(new Image("/edu/oosd/sabotage/assets/images/xintersection.png"));
+					log.appendText("> Starting position set at: " + x + ", " + y + "\n");
+				} else if (tiles[y][x].getPathCard() instanceof GoalCard) {
+					temp = new ImageView(new Image("/edu/oosd/sabotage/assets/images/back.png"));
+					log.appendText("> Goal card set at: " + x + ", " + y + "\n");
+				} else {
+					/* Should never reach here */
+					temp = null;
 				}
+				
+				temp.setFitHeight(64);
+				temp.setFitWidth(64);
+				temp.setOnMouseEntered(e ->	temp.getScene().setCursor(Cursor.HAND));
+				temp.setOnMouseExited(e ->	temp.getScene().setCursor(Cursor.DEFAULT));
+				board.add(temp, x, y);
 			}
 		}
 		
-		log.appendText("> A new board has been created with " + tiles.length + " vertical tiles and " + tiles[0].length + " horizontal tiles.\n");
 
 		gc.initializePlayers(playerCount);
 		
