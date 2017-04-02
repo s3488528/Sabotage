@@ -1,23 +1,23 @@
 package edu.oosd.sabotage.controllers;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
-import com.sun.jmx.snmp.tasks.Task;
-
+import javafx.application.Platform;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 import edu.oosd.sabotage.core.Card;
 import edu.oosd.sabotage.core.GameContext;
 import edu.oosd.sabotage.core.Player;
 import edu.oosd.sabotage.core.Tile;
-import edu.oosd.sabotage.core.cards.*;
+import edu.oosd.sabotage.core.cards.CornerCard;
+import edu.oosd.sabotage.core.cards.DeadEndCard;
+import edu.oosd.sabotage.core.cards.GoalCard;
+import edu.oosd.sabotage.core.cards.StraightCard;
+import edu.oosd.sabotage.core.cards.TIntersectionCard;
+import edu.oosd.sabotage.core.cards.XIntersectionCard;
 
 public class GameController {
 	
@@ -28,7 +28,7 @@ public class GameController {
 		gc = new GameContext(boardWidth, boardHeight, deckCount);
 	}
 	
-	public void initializeGame(int playerCount) {
+	public void initialiseGame(int playerCount) {
 		Tile[][] tiles = gc.getBoard().getTiles();
 		listener.onLogUpdate("> Generated board with " + tiles.length + " vertical tiles and " + tiles[0].length + " horizontal tiles.\n");
 		
@@ -76,15 +76,13 @@ public class GameController {
 		temp.setVisible(false);
 	}
 	
-	private boolean turnStarted = false;	
-	private boolean turnCompleted = false;
-	
-	public boolean update() {
-		if (!turnStarted) {
+	boolean turnUpdated = false;
+
+	public void update() {
+		if (!turnUpdated) {
 			updateTurn();
-			turnStarted = true;
+			turnUpdated = true;
 		}
-		return false;
 	}
 
 	public void updateTurn() {
@@ -103,6 +101,7 @@ public class GameController {
 		/* DISPLAY PLAYER'S HAND */
 		displayHand(player);
 	}
+	
 	public void displayHand(Player player) {	
 		ArrayList<ImageView> handImages = new ArrayList<ImageView>();
 		
@@ -134,6 +133,28 @@ public class GameController {
 		}
 
 		listener.onHandUpdate(handImages);
+	}
+
+	public void startGame() {
+		/* START THE GAME LOOP ON A BG THREAD: */
+		ExecutorService service = Executors.newCachedThreadPool();
+
+		service.submit(new Runnable() {
+			@Override
+			public void run() {
+				while (true) {
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					Platform.runLater(() -> update());
+				}
+			}
+		});
+		
+		service.shutdown();
 	}
 	
 }
