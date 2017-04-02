@@ -3,8 +3,6 @@ package edu.oosd.sabotage.ui;
 import java.util.ArrayList;
 
 import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -23,8 +20,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import edu.oosd.sabotage.controllers.GameController;
 import edu.oosd.sabotage.controllers.GameListener;
-import edu.oosd.sabotage.core.cards.GoalCard;
-import edu.oosd.sabotage.core.cards.XIntersectionCard;
 
 public class Main extends Application {
 
@@ -144,11 +139,10 @@ public class Main extends Application {
 
 		});
 
-
-		gameController.initializeGame(playerCount);
+		gameController.initialiseGame(playerCount);
 
 		/* START THE GAME LOOP ON A BG THREAD: */
-		gameController.update();
+		gameController.startGame();
 	}
 	
 	Text topText;

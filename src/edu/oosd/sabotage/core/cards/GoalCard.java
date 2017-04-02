@@ -1,6 +1,6 @@
 package edu.oosd.sabotage.core.cards;
 
-import edu.oosd.sabotage.core.*;
+import edu.oosd.sabotage.core.PathCard;
 
 public class GoalCard extends PathCard {
 	

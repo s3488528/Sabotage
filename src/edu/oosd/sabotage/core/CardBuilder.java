@@ -5,7 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import edu.oosd.sabotage.core.cards.*;
+import edu.oosd.sabotage.core.cards.CornerCard;
+import edu.oosd.sabotage.core.cards.DeadEndCard;
+import edu.oosd.sabotage.core.cards.GoalCard;
+import edu.oosd.sabotage.core.cards.StraightCard;
+import edu.oosd.sabotage.core.cards.TIntersectionCard;
+import edu.oosd.sabotage.core.cards.XIntersectionCard;
 
 enum cardType {
 	deadend,
