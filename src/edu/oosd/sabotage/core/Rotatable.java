@@ -17,8 +17,15 @@ public interface Rotatable {
 	Angle getRotation();
 
 	/**
+	 * Gets this object's angle in degrees.
+	 *
+	 * @return      The angle in degrees
+	 */
+	double getRotationAsDouble();
+
+	/**
 	 * Sets this object's angle in degrees.
 	 */
 	void setRotation(Angle angle);
- 
+	 
 }

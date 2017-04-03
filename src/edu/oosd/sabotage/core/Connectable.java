@@ -1,12 +1,5 @@
 package edu.oosd.sabotage.core;
 
-enum Direction {
-	N,
-	E,
-	S,
-	W
-}
-
 public interface Connectable {
 	
 	 /**

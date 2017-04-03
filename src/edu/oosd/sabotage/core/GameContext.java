@@ -9,6 +9,7 @@ public class GameContext {
 	private Board board;
 	private ArrayList<Player> players;
 	private Player currentPlayer;
+	private Card currentCard;
 	
 	private Random random = new Random();
 	
@@ -40,7 +41,15 @@ public class GameContext {
 		Collections.shuffle(players);
 		currentPlayer = players.get(0);
 	}
-	
+
+	public Card getCurrentCard() {
+		return currentCard;
+	}
+		
+	public void setCurrentCard(Card currentCard) {
+		this.currentCard = currentCard;
+	}
+
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -53,5 +62,32 @@ public class GameContext {
 		}
 		
 		return String.join(", ", string);
+	}
+
+	public void rotateCurrentCard() {
+		PathCard card = (PathCard) currentCard;
+		
+		switch (card.getRotation()) {
+			case _0:
+				card.setRotation(Angle._90);
+				break;
+			case _90:
+				card.setRotation(Angle._180);
+				break;
+			case _180:
+				card.setRotation(Angle._270);
+				break;
+			case _270:
+				card.setRotation(Angle._0);
+				break;
+		}
+	}
+
+	public boolean validateCurrentCard(int x, int y) {
+		return board.validateCard(currentCard, x, y);
+	}
+
+	public void placeCurrentCard(int x, int y) {
+		board.placeCard(currentCard, x, y);
 	}
 }

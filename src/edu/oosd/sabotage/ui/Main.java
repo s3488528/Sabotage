@@ -3,18 +3,26 @@ package edu.oosd.sabotage.ui;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -34,8 +42,6 @@ public class Main extends Application {
 	Stage _window;
 	Scene _menu, _game;
 	GameController gameController;
-
-	boolean gameCompleted = false;
 
 	public static void main(String[] args) {
 		launch(args); /* start JavaFX window */
@@ -98,6 +104,15 @@ public class Main extends Application {
 		_menu = new Scene(main, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
+	/* Game Scene controls */
+	Text topText;
+	TextArea log;
+	GridPane board;
+	HBox hand;
+	ImageView inspector;
+	Button rotate;
+	Text deckText;
+	
 	private void showGameScene(int boardWidth, int boardHeight, int playerCount) {
 		gameController = new GameController(boardWidth, boardHeight, 20);
 
@@ -127,13 +142,43 @@ public class Main extends Application {
 			}
 
 			@Override
-			public void onBoardUpdate(ImageView[][] boardImages) {
+			public void onBoardUpdate(ArrayList<TileImageView> boardImages) {
 				board.getChildren().clear();
 
-				for (int y = 0; y < boardImages.length; y++) {
-					for (int x = 0; x < boardImages[y].length; x++) {
-						board.add(boardImages[y][x], x, y);
-					}
+				for (TileImageView image : boardImages) {
+					image.setOnMouseEntered(e -> _game.setCursor(Cursor.HAND));
+					image.setOnMouseExited(e -> _game.setCursor(Cursor.DEFAULT));
+					image.setOnMouseClicked(new EventHandler<MouseEvent>() {
+						@Override
+						public void handle(MouseEvent e) {
+							TileImageView image = (TileImageView) e.getSource();
+							placeCurrentCard(image.getxPos(), image.getyPos());
+						}
+					});
+					board.add(image, image.getxPos(), image.getyPos());
+				}
+			}
+
+			@Override
+			public void onDeckTextUpdate(String text) {
+				deckText.setText(text);
+			}
+
+			@Override
+			public void onCardSelected(Image card) {		
+				hand.setDisable(true);
+				rotate.setDisable(false);
+				board.setDisable(false);
+				inspector.setImage(card);
+			}
+
+			@Override
+			public void onCardPlaced(ImageView cardImage, int x, int y) {
+				for (Node node : board.getChildren()) {
+				    if (board.getColumnIndex(node) == x	&& board.getRowIndex(node) == y) {
+				        ((TileImageView)node).setImage(cardImage.getImage());
+				        ((TileImageView)node).setRotate(cardImage.getRotate());
+				    }
 				}
 			}
 
@@ -144,11 +189,6 @@ public class Main extends Application {
 		/* START THE GAME LOOP ON A BG THREAD: */
 		gameController.startGame();
 	}
-	
-	Text topText;
-	TextArea log;
-	GridPane board;
-	HBox hand;
 	
 	private void initialiseGameScene() {
 		topText = new Text("TOP LABEL");
@@ -164,20 +204,51 @@ public class Main extends Application {
 		board.setHgap(5);
 		board.setVgap(5);
 		board.setAlignment(Pos.CENTER);
+		board.setDisable(true);
 		BorderPane.setAlignment(board, Pos.CENTER);
 
 		hand = new HBox(5);
 		hand.setMinHeight(80);
 		hand.setAlignment(Pos.CENTER);
 		BorderPane.setAlignment(hand, Pos.CENTER);
-
+		
+		inspector = new ImageView();
+		
+		rotate = new Button("Rotate Card");
+		rotate.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				rotateCurrentCard();
+			}
+        });
+		rotate.setDisable(true);
+		
+		Button skip = new Button("Skip Turn");
+		
+		deckText = new Text("");
+		
+		VBox detailsPane = new VBox(5);
+		detailsPane.getChildren().addAll(inspector, rotate, skip, deckText);
+		detailsPane.setAlignment(Pos.CENTER);
+		BorderPane.setAlignment(detailsPane, Pos.CENTER);
+		
 		BorderPane main = new BorderPane();
 		main.setMaxSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		main.setTop(topText);
 		main.setRight(log);
 		main.setCenter(board);
 		main.setBottom(hand);
+		main.setLeft(detailsPane);
 
 		_game = new Scene(main, WINDOW_WIDTH + 200, WINDOW_HEIGHT);
+	}
+	
+	private void rotateCurrentCard() {
+		inspector.setRotate(inspector.getRotate() + 90);
+		gameController.rotateCurrentCard();
+	}
+	
+	private void placeCurrentCard(int x, int y) {
+		gameController.placeCurrentCard(x, y);
 	}
 }

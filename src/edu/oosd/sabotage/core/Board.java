@@ -53,6 +53,10 @@ public class Board {
 		}
 	}
 
+	public Stack<Card> getDeck() {
+		return deck;
+	}
+
 	/**
 	 * Gets all tiles contained in this board
 	 *
@@ -82,5 +86,80 @@ public class Board {
 		}
 		
 		return str;
+	}
+
+	/**
+	 * Checks if a card is able to be placed
+	 * @param validationCard The card to be validated
+	 * @param x	The x position of the card
+	 * @param y The y position of the card
+	 * @return True if card can be placed, false otherwise
+	 */
+	public boolean validateCard(Card validationCard, int x, int y) {
+		if (PathCard.class.isAssignableFrom(validationCard.getClass())) {
+			if (getTiles()[y][x].getPathCard() != null) {
+				return false;	
+			}
+			
+			boolean checkN = true;
+			boolean checkE = true;
+			boolean checkS = true;
+			boolean checkW = true;
+			
+			PathCard card = (PathCard) validationCard;
+			
+			if (y == 0) 					{ checkN = false; }
+			if (y == tiles.length - 1) 		{ checkS = false; }
+			if (x == 0) 					{ checkW = false; }
+			if (x == tiles[0].length - 1) 	{ checkE = false; }
+			
+			if (checkN) {			
+				Tile northTile = getTiles()[y - 1][x];
+				
+				if (!card.isConnectable(northTile.getPathCard(), Direction.N)) {
+					return false;
+				}
+			}
+			
+			if (checkE) {			
+				Tile eastTile = getTiles()[y][x + 1];
+					
+				if (!card.isConnectable(eastTile.getPathCard(), Direction.E)) {
+					return false;
+				}
+			}
+			
+			if (checkS) {			
+				Tile southTile = getTiles()[y + 1][x];
+				
+				if (!card.isConnectable(southTile.getPathCard(), Direction.S)) {
+					return false;
+				}
+			}
+			
+			if (checkW) {			
+				Tile westTile = getTiles()[y][x - 1];
+				
+				if (!card.isConnectable(westTile.getPathCard(), Direction.W)) {
+					return false;
+				}
+			}
+			
+			return true;			
+		} else if (ActionCard.class.isAssignableFrom(validationCard.getClass())) {
+			
+		}
+		
+		return false;
+	}
+
+	public void placeCard(Card currentCard, int x, int y) {
+		Tile newTile = new Tile(this);
+		
+		if (currentCard.getClass() == PathCard.class) {
+			newTile.setPathCard((PathCard) currentCard);				
+		}
+		
+		tiles[y][x] = newTile;
 	}
 }
