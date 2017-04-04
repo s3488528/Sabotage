@@ -8,4 +8,8 @@ public class RescueCard extends ActionCard {
 		super();
 	}
 
+	@Override
+	public String getPlacedText(String playerName, int x, int y) {
+		return playerName + " has rescued the hostage at position: " + x + ", " + y;
+	}	
 }

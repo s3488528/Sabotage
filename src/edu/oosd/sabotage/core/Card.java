@@ -63,4 +63,8 @@ public abstract class Card {
 	public boolean isActive() {
 		return active;
 	}
+
+	public String getPlacedText(String playerName, int x, int y) {
+		return "";
+	}
 }

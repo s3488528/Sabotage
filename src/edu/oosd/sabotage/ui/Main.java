@@ -137,7 +137,7 @@ public class Main extends Application {
 
 			@Override
 			public void onLogUpdate(String logAppendText) {
-				log.appendText(logAppendText);
+				log.appendText(logAppendText + "\n");
 			}
 
 			@Override

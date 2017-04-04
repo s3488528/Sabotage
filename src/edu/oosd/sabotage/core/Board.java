@@ -188,6 +188,10 @@ public class Board {
 				if (tiles[y][x].hasHostage()) {
 					return true;
 				}
+			} else if (validationCard instanceof HostageCard) {
+				if (tiles[y][x].getPathCard() != null && !tiles[y][x].hasHostage()) {
+					return true;
+				}
 			} else {
 				if (tiles[y][x].getPathCard() != null) {
 					return true;

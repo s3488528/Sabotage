@@ -8,4 +8,8 @@ public class HostageCard extends ActionCard {
 		super();
 	}
 
+	@Override
+	public String getPlacedText(String playerName, int x, int y) {
+		return playerName + " has placed a hostage at position: " + x + ", " + y;
+	}	
 }

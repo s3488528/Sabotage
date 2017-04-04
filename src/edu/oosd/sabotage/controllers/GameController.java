@@ -50,7 +50,7 @@ public class GameController {
 		Tile[][] tiles = gc.getBoard().getTiles();
 		listener.onLogUpdate("> Generated board with " + tiles.length
 				+ " vertical tiles and " + tiles[0].length
-				+ " horizontal tiles.\n");
+				+ " horizontal tiles.");
 
 		/* DISPLAY BOARD */
 		ArrayList<TileImageView> boardImages = new ArrayList<TileImageView>();
@@ -64,10 +64,10 @@ public class GameController {
 					temp = new TileImageView(EMPTYIMAGE, x, y);
 				} else if (card instanceof XIntersectionCard) {
 					temp = new TileImageView(XINTIMAGE, x, y);
-					listener.onLogUpdate("> Starting position set at: " + x + ", " + y + "\n");
+					listener.onLogUpdate("> Starting position set at: " + x + ", " + y);
 				} else if (card instanceof GoalCard) {
 					temp = new TileImageView(BACKIMAGE, x, y);
-					listener.onLogUpdate("> Goal card set at: " + x + ", " + y + "\n");
+					listener.onLogUpdate("> Goal card set at: " + x + ", " + y);
 				} else {
 					/* Should never reach here */
 					temp = null;
@@ -87,11 +87,11 @@ public class GameController {
 				+ playerCount
 				+ " players ("
 				+ gc.getPlayersAsString()
-				+ ") have joined the game. Someone has been chosen as the saboteur!\n");
+				+ ") have joined the game. Someone has been chosen as the saboteur!");
 
 		gc.shufflePlayers();
 		listener.onLogUpdate("> Players have been shuffled. "
-				+ gc.getCurrentPlayer().getName() + " goes first!\n");
+				+ gc.getCurrentPlayer().getName() + " goes first!");
 
 		displayTurn();
 	}
@@ -165,8 +165,8 @@ public class GameController {
 	public void displayTurn() {
 		Player player = gc.getCurrentPlayer();
 
-		listener.onLogUpdate("==========\n");
-		listener.onLogUpdate("> It's " + player.getName() + "'s turn.\n");
+		listener.onLogUpdate("==========");
+		listener.onLogUpdate("> It's " + player.getName() + "'s turn.");
 
 		if (player.isSaboteur()) {
 			listener.onTurnUpdate(player.getName()
@@ -225,20 +225,24 @@ public class GameController {
 	}
 
 	public void placeCurrentCard(int x, int y) {
-		// VALIDATE CARD PLACEMENT
+		Card currentCard = gc.getCurrentCard();
+		
 		if (gc.validateCurrentCard(x, y)) {
+			
+			listener.onLogUpdate(currentCard.getPlacedText(gc.getCurrentPlayer().getName(), x, y));
 			
 			gc.placeCurrentCard(x, y);
 			gc.setCurrentCard(null);
 
 			turnCompleted();
 		} else {
-			listener.onLogUpdate("That card cannot be placed at " + x + ", "
-					+ y + "\n");
+			listener.onLogUpdate("That card cannot be placed at " + x + ", " + y);
 		}
 	}
 
 	public void discardCurrentCard() {
+		listener.onLogUpdate(gc.getCurrentPlayer().getName() + " discarded a card.");
+		
 		gc.discardCurrentCard();
 		turnCompleted();
 	}
@@ -269,5 +273,4 @@ public class GameController {
 
 		return temp;
 	}
-
 }
