@@ -43,7 +43,6 @@ public class GameController {
 	private GameListener listener;
 
 	/* Flags */
-	boolean turnCompleted = false;
 	boolean gameCompleted = false;
 
 	public GameController(int boardWidth, int boardHeight, int deckCount) {
@@ -113,15 +112,11 @@ public class GameController {
 	}
 
 	/**
-	 * Checks if the turn has completed. If the turn is completed, cycle player
-	 * and update the UI.
+	 * Cycle to the next player and update the UI
 	 */
-	public void update() {
-		if (turnCompleted) {
-			gc.cyclePlayer();
-			turnCompleted = false;
-			displayTurn();
-		}
+	public void turnCompleted() {
+		gc.cyclePlayer();
+		displayTurn();
 	}
 
 	/**
@@ -185,6 +180,37 @@ public class GameController {
 	public void displayInspector() {
 		Card card = gc.getCurrentCard();
 
+		ImageView temp = getImageViewOfCard(card);		
+		temp.setRotate(((PathCard) card).getRotationAsDouble());
+
+		listener.onInspectorRefresh(temp);
+	}
+
+	public void rotateCurrentCard() {
+		gc.rotateCurrentCard();
+		displayInspector();
+	}
+
+	public void placeCurrentCard(int x, int y) {
+		// VALIDATE CARD PLACEMENT
+		if (gc.validateCurrentCard(x, y)) {
+			Card card = gc.getCurrentCard();
+			ImageView temp = getImageViewOfCard(card);
+			temp.setRotate(((PathCard) card).getRotationAsDouble());
+
+			listener.onCardPlaced(temp, x, y);
+
+			gc.placeCurrentCard(x, y);
+			gc.setCurrentCard(null);
+
+			turnCompleted();
+		} else {
+			listener.onLogUpdate("That card cannot be placed at " + x + ", "
+					+ y + "\n");
+		}
+	}
+
+	public ImageView getImageViewOfCard(Card card) {
 		ImageView temp;
 
 		if (card instanceof DeadEndCard) {
@@ -202,71 +228,6 @@ public class GameController {
 			temp = new ImageView(BACKIMAGE);
 		}
 
-		temp.setRotate(((PathCard) card).getRotationAsDouble());
-
-		listener.onInspectorRefresh(temp);
-	}
-
-	public void startGame() {
-		/* Start the game on a background thread: */
-		ExecutorService service = Executors.newCachedThreadPool();
-
-		service.submit(new Runnable() {
-
-			@Override
-			public void run() {
-				while (gameCompleted == false) {
-					/* Poll update() every 3 milliseconds */
-					try {
-						Thread.sleep(3);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					Platform.runLater(() -> update());
-				}
-			}
-		});
-
-		service.shutdown();
-	}
-
-	public void rotateCurrentCard() {
-		gc.rotateCurrentCard();
-		displayInspector();
-	}
-
-	public void placeCurrentCard(int x, int y) {
-		// VALIDATE CARD PLACEMENT
-		if (gc.validateCurrentCard(x, y)) {
-			Card card = gc.getCurrentCard();
-			ImageView temp;
-
-			if (card instanceof DeadEndCard) {
-				temp = new ImageView(DEADENDIMAGE);
-			} else if (card instanceof CornerCard) {
-				temp = new ImageView(CORNERIMAGE);
-			} else if (card instanceof StraightCard) {
-				temp = new ImageView(STRAIGHTIMAGE);;
-			} else if (card instanceof TIntersectionCard) {
-				temp = new ImageView(TINTIMAGE);
-			} else if (card instanceof XIntersectionCard) {
-				temp = new ImageView(XINTIMAGE);
-			} else {
-				/* Should never reach here */
-				temp = new ImageView(BACKIMAGE);
-			}
-			
-			temp.setRotate(((PathCard) card).getRotationAsDouble());
-
-			listener.onCardPlaced(temp, x, y);
-
-			gc.placeCurrentCard(x, y);
-			gc.setCurrentCard(null);
-
-			turnCompleted = true;
-		} else {
-			listener.onLogUpdate("That card cannot be placed at " + x + ", "
-					+ y + "\n");
-		}
+		return temp;
 	}
 }

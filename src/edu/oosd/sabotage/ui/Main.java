@@ -32,7 +32,7 @@ import edu.oosd.sabotage.controllers.GameListener;
 public class Main extends Application {
 
 	/* Constants */
-	public static final double WINDOW_WIDTH = 800;
+	public static final double WINDOW_WIDTH = 1200;
 	public static final double WINDOW_HEIGHT = 600;
 
 	/* String Constants */
@@ -63,7 +63,7 @@ public class Main extends Application {
 
 	private void initialiseMenuScene() {
 		/* Spinners */
-		Spinner<Integer> boardWidthSpinner = new Spinner<Integer>(5, 8, 8);
+		Spinner<Integer> boardWidthSpinner = new Spinner<Integer>(6, 9, 8);
 		Spinner<Integer> boardHeightSpinner = new Spinner<Integer>(4, 6, 5);
 		Spinner<Integer> playerCountSpinner = new Spinner<Integer>(3, 6, 4);
 
@@ -81,9 +81,9 @@ public class Main extends Application {
 		GridPane optionsPane = new GridPane();
 		optionsPane.setHgap(10);
 		optionsPane.setVgap(10);
-		optionsPane.add(new Label("Board Width (5 - 12):"), 0, 0);
+		optionsPane.add(new Label("Board Width (6 - 9):"), 0, 0);
 		optionsPane.add(boardWidthSpinner, 1, 0);
-		optionsPane.add(new Label("Board Height (5 - 10):"), 0, 1);
+		optionsPane.add(new Label("Board Height (4 - 6):"), 0, 1);
 		optionsPane.add(boardHeightSpinner, 1, 1);
 		optionsPane.add(new Label("Number of Players (3 - 6):"), 0, 2);
 		optionsPane.add(playerCountSpinner, 1, 2);
@@ -196,9 +196,6 @@ public class Main extends Application {
 		});
 
 		gameController.initialiseGame(playerCount);
-
-		/* START THE GAME LOOP ON A BG THREAD: */
-		gameController.startGame();
 	}
 	
 	private void initialiseGameScene() {
@@ -234,13 +231,15 @@ public class Main extends Application {
         });
 		rotate.setDisable(true);
 		
-		Button skip = new Button("Skip Turn");
+		Button discard = new Button("Discard Card");
+		discard.setDisable(true);
 		
 		deckText = new Text("");
 		
 		VBox detailsPane = new VBox(5);
-		detailsPane.getChildren().addAll(inspector, rotate, skip, deckText);
+		detailsPane.getChildren().addAll(inspector, rotate, discard, deckText);
 		detailsPane.setAlignment(Pos.CENTER);
+		detailsPane.setMinWidth(150);
 		BorderPane.setAlignment(detailsPane, Pos.CENTER);
 		
 		BorderPane main = new BorderPane();
@@ -251,7 +250,7 @@ public class Main extends Application {
 		main.setBottom(hand);
 		main.setLeft(detailsPane);
 
-		_game = new Scene(main, WINDOW_WIDTH + 200, WINDOW_HEIGHT);
+		_game = new Scene(main, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 	
 	private void rotateCurrentCard() {
