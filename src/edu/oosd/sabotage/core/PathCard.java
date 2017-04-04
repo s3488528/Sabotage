@@ -19,11 +19,6 @@ public abstract class PathCard extends Card implements Rotatable, Connectable {
 	/* ROUTINES */
 	@Override
 	public boolean isConnectable(Connectable other, Direction direction) {
-		if (other == null) {
-			/* If 'other' is empty */
-			return true;
-		}
-		
 		boolean[] otherConnections = other.getConnections();
 		
 		switch(direction) {

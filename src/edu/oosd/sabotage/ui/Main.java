@@ -165,8 +165,7 @@ public class Main extends Application {
 			}
 
 			@Override
-			public void onCardSelected(Image card) {		
-				hand.setDisable(true);
+			public void onCardSelected(Image card) {
 				rotate.setDisable(false);
 				board.setDisable(false);
 				inspector.setImage(card);
@@ -180,6 +179,11 @@ public class Main extends Application {
 				        ((TileImageView)node).setRotate(cardImage.getRotate());
 				    }
 				}
+				
+				rotate.setDisable(true);
+				inspector.setImage(null);
+				board.setDisable(true);
+				log.appendText("The card has been placed at: " + x + ", " + y);
 			}
 
 		});

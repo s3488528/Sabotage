@@ -106,6 +106,8 @@ public class Board {
 			boolean checkS = true;
 			boolean checkW = true;
 			
+			boolean connected = false;
+			
 			PathCard card = (PathCard) validationCard;
 			
 			if (y == 0) 					{ checkN = false; }
@@ -115,37 +117,60 @@ public class Board {
 			
 			if (checkN) {			
 				Tile northTile = getTiles()[y - 1][x];
-				
-				if (!card.isConnectable(northTile.getPathCard(), Direction.N)) {
-					return false;
+
+				if (northTile.getPathCard() != null) {
+					if (!card.isConnectable(northTile.getPathCard(), Direction.N)) {
+						return false;
+					} else {
+						connected = true;
+					}
 				}
 			}
 			
 			if (checkE) {			
 				Tile eastTile = getTiles()[y][x + 1];
-					
-				if (!card.isConnectable(eastTile.getPathCard(), Direction.E)) {
-					return false;
+
+				if (eastTile.getPathCard() != null) {
+					if (!card.isConnectable(eastTile.getPathCard(), Direction.E)) {
+						return false;
+					} else {
+						connected = true;
+					}
 				}
 			}
 			
 			if (checkS) {			
 				Tile southTile = getTiles()[y + 1][x];
-				
-				if (!card.isConnectable(southTile.getPathCard(), Direction.S)) {
-					return false;
+
+				if (southTile.getPathCard() != null) {
+					if (!card.isConnectable(southTile.getPathCard(), Direction.S)) {
+						return false;
+					} else {
+						connected = true;	
+					}
 				}
 			}
 			
 			if (checkW) {			
 				Tile westTile = getTiles()[y][x - 1];
 				
-				if (!card.isConnectable(westTile.getPathCard(), Direction.W)) {
-					return false;
+				if (westTile.getPathCard() != null) {
+						if (!card.isConnectable(westTile.getPathCard(), Direction.W)) {
+							return false;
+						} else {
+							connected = true;
+						}
 				}
 			}
 			
-			return true;			
+			if (connected) {
+				// If there is at least one connection:
+				return true;				
+			} else {
+				// If there are no connections:
+				return false;
+			}
+			
 		} else if (ActionCard.class.isAssignableFrom(validationCard.getClass())) {
 			
 		}

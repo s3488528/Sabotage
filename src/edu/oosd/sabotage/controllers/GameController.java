@@ -183,8 +183,6 @@ public class GameController {
 	public void placeCurrentCard(int x, int y) {
 		//VALIDATE CARD PLACEMENT
 		if (gc.validateCurrentCard(x, y)) {
-			gc.placeCurrentCard(x, y);	
-
 			Card card = gc.getCurrentCard();
 			ImageView temp;
 			
@@ -207,10 +205,13 @@ public class GameController {
 				/* Should never reach here */
 				temp = new ImageView(BACKIMAGE);
 			}
-			
+	
 			listener.onCardPlaced(temp, x, y);
+
+			gc.placeCurrentCard(x, y);
+			gc.setCurrentCard(null);
 		} else {
-			listener.onLogUpdate("That card cannot be placed at " + x + ", " + y);
+			listener.onLogUpdate("That card cannot be placed at " + x + ", " + y + "\n");
 		}
 	}	
 }
