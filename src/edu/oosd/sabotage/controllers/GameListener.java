@@ -3,7 +3,6 @@ package edu.oosd.sabotage.controllers;
 import java.util.ArrayList;
 
 import edu.oosd.sabotage.ui.TileImageView;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public interface GameListener {
@@ -14,5 +13,5 @@ public interface GameListener {
 	void onDeckTextUpdate(String deckText);
 	void onCardSelected();
 	void onInspectorRefresh(ImageView card);
-	void onCardPlaced(ImageView cardImage, int x, int y);
+	void onCardPlaced();
 }

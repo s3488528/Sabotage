@@ -5,6 +5,7 @@ public class Tile {
 	/* DECLARATIONS */
 	private Board parentBoard;
 	private PathCard pathCard = null;
+	private ActionCard actionCard = null;
 
 	/* CONSTRUCTORS */
 	/**
@@ -22,5 +23,13 @@ public class Tile {
 
 	public void setPathCard(PathCard pathCard) {
 		this.pathCard = pathCard;
+	}
+
+	public ActionCard getActionCard() {
+		return actionCard;
+	}
+
+	public void setActionCard(ActionCard actionCard) {
+		this.actionCard = actionCard;
 	}
 }

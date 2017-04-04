@@ -5,19 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import edu.oosd.sabotage.core.cards.CornerCard;
-import edu.oosd.sabotage.core.cards.DeadEndCard;
-import edu.oosd.sabotage.core.cards.GoalCard;
-import edu.oosd.sabotage.core.cards.StraightCard;
-import edu.oosd.sabotage.core.cards.TIntersectionCard;
-import edu.oosd.sabotage.core.cards.XIntersectionCard;
+import edu.oosd.sabotage.core.cards.*;
 
 enum cardType {
 	deadend,
 	straight,
 	corner,
 	tintersection,
-	xintersection
+	xintersection,
+	demolish
 }
 
 public class CardBuilder {
@@ -44,6 +40,9 @@ public class CardBuilder {
 				break;			
 			case xintersection:
 				tempCard = new XIntersectionCard();
+				break;		
+			case demolish:
+				tempCard = new DemolishCard();
 				break;
 		}
 				

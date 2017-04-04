@@ -13,7 +13,7 @@ public class TileImageView extends ImageView {
 		this.xPos = xPos;
 		this.yPos = yPos;
 	}
-
+	
 	public int getxPos() {
 		return xPos;
 	}

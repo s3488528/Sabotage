@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Stack;
 
+import edu.oosd.sabotage.core.cards.DemolishCard;
+
 public class Board {
 	
 	private Tile[][] tiles;
@@ -96,7 +98,7 @@ public class Board {
 	 * @return True if card can be placed, false otherwise
 	 */
 	public boolean validateCard(Card validationCard, int x, int y) {
-		if (PathCard.class.isAssignableFrom(validationCard.getClass())) {
+		if (validationCard instanceof PathCard) {
 			if (getTiles()[y][x].getPathCard() != null) {
 				return false;	
 			}
@@ -122,7 +124,9 @@ public class Board {
 					if (!card.isConnectable(northTile.getPathCard(), Direction.N)) {
 						return false;
 					} else {
-						connected = true;
+						if (card.getConnections()[0]) {
+							connected = true;
+						}
 					}
 				}
 			}
@@ -134,7 +138,9 @@ public class Board {
 					if (!card.isConnectable(eastTile.getPathCard(), Direction.E)) {
 						return false;
 					} else {
-						connected = true;
+						if (card.getConnections()[1]) {
+							connected = true;
+						}
 					}
 				}
 			}
@@ -146,20 +152,24 @@ public class Board {
 					if (!card.isConnectable(southTile.getPathCard(), Direction.S)) {
 						return false;
 					} else {
-						connected = true;	
+						if (card.getConnections()[2]) {
+							connected = true;
+						}	
 					}
 				}
 			}
 			
 			if (checkW) {			
 				Tile westTile = getTiles()[y][x - 1];
-				
+
 				if (westTile.getPathCard() != null) {
-						if (!card.isConnectable(westTile.getPathCard(), Direction.W)) {
-							return false;
-						} else {
+					if (!card.isConnectable(westTile.getPathCard(), Direction.W)) {
+						return false;
+					} else {
+						if (card.getConnections()[3]) {
 							connected = true;
 						}
+					}
 				}
 			}
 			
@@ -171,20 +181,28 @@ public class Board {
 				return false;
 			}
 			
-		} else if (ActionCard.class.isAssignableFrom(validationCard.getClass())) {
-			
+		} else if (validationCard instanceof ActionCard) {
+			if (tiles[y][x].getPathCard() != null) {
+				return true;
+			}
 		}
 		
 		return false;
 	}
 
 	public void placeCard(Card currentCard, int x, int y) {
-		Tile newTile = new Tile(this);
+		Tile tile = tiles[y][x];
 		
-		if (PathCard.class.isAssignableFrom(currentCard.getClass())) {
-			newTile.setPathCard((PathCard) currentCard);				
+		if (currentCard instanceof PathCard) {
+			tile.setPathCard((PathCard) currentCard);				
+		} else if (currentCard instanceof ActionCard) {
+			tile.setActionCard((ActionCard) currentCard);
+
+			if (currentCard instanceof DemolishCard) {
+				tiles[y][x].setPathCard(null);;
+			}
 		}
 
-		tiles[y][x] = newTile;
+		tiles[y][x] = tile;
 	}
 }

@@ -14,10 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -174,14 +172,7 @@ public class Main extends Application {
 			}
 
 			@Override
-			public void onCardPlaced(ImageView cardImage, int x, int y) {
-				for (Node node : board.getChildren()) {
-				    if (board.getColumnIndex(node) == x	&& board.getRowIndex(node) == y) {
-				        ((TileImageView)node).setImage(cardImage.getImage());
-				        ((TileImageView)node).setRotate(cardImage.getRotate());
-				    }
-				}
-				
+			public void onCardPlaced() {
 				rotate.setDisable(true);
 				inspector.setImage(null);
 				board.setDisable(true);
@@ -192,7 +183,6 @@ public class Main extends Application {
 				inspector.setImage(card.getImage());
 				inspector.setRotate(card.getRotate());
 			}
-
 		});
 
 		gameController.initialiseGame(playerCount);

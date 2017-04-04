@@ -1,6 +1,6 @@
 package edu.oosd.sabotage.core;
 
-public class ActionCard extends Card {
+public abstract class ActionCard extends Card {
 
 	/* CONSTRUCTORS */
 	/**
@@ -9,5 +9,4 @@ public class ActionCard extends Card {
 	public ActionCard() {
 		super();		
 	}
-
 }

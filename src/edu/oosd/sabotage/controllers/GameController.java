@@ -1,26 +1,17 @@
 package edu.oosd.sabotage.controllers;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-import com.sun.javafx.scene.traversal.Direction;
-
-import javafx.application.Platform;
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import edu.oosd.sabotage.core.ActionCard;
 import edu.oosd.sabotage.core.Card;
 import edu.oosd.sabotage.core.PathCard;
 import edu.oosd.sabotage.core.GameContext;
 import edu.oosd.sabotage.core.Player;
 import edu.oosd.sabotage.core.Tile;
-import edu.oosd.sabotage.core.cards.CornerCard;
-import edu.oosd.sabotage.core.cards.DeadEndCard;
-import edu.oosd.sabotage.core.cards.GoalCard;
-import edu.oosd.sabotage.core.cards.StraightCard;
-import edu.oosd.sabotage.core.cards.TIntersectionCard;
-import edu.oosd.sabotage.core.cards.XIntersectionCard;
+import edu.oosd.sabotage.core.cards.*;
 import edu.oosd.sabotage.ui.TileImageView;
 
 public class GameController {
@@ -36,6 +27,8 @@ public class GameController {
 			"/edu/oosd/sabotage/assets/images/tintersection.png");
 	Image XINTIMAGE = new Image(
 			"/edu/oosd/sabotage/assets/images/xintersection.png");
+	Image DEMOLISHIMAGE = new Image(
+			"/edu/oosd/sabotage/assets/images/demolish.png");
 	Image GOALIMAGE = new Image("/edu/oosd/sabotage/assets/images/goal.png");
 	Image BACKIMAGE = new Image("/edu/oosd/sabotage/assets/images/back.png");
 
@@ -60,18 +53,17 @@ public class GameController {
 
 		for (int y = 0; y < tiles.length; y++) {
 			for (int x = 0; x < tiles[y].length; x++) {
+				PathCard card = tiles[y][x].getPathCard();
 				TileImageView temp;
 
-				if (tiles[y][x].getPathCard() == null) {
+				if (card == null) {
 					temp = new TileImageView(EMPTYIMAGE, x, y);
-				} else if (tiles[y][x].getPathCard() instanceof XIntersectionCard) {
+				} else if (card instanceof XIntersectionCard) {
 					temp = new TileImageView(XINTIMAGE, x, y);
-					listener.onLogUpdate("> Starting position set at: " + x
-							+ ", " + y + "\n");
-				} else if (tiles[y][x].getPathCard() instanceof GoalCard) {
+					listener.onLogUpdate("> Starting position set at: " + x + ", " + y + "\n");
+				} else if (card instanceof GoalCard) {
 					temp = new TileImageView(BACKIMAGE, x, y);
-					listener.onLogUpdate("> Goal card set at: " + x + ", " + y
-							+ "\n");
+					listener.onLogUpdate("> Goal card set at: " + x + ", " + y + "\n");
 				} else {
 					/* Should never reach here */
 					temp = null;
@@ -98,6 +90,45 @@ public class GameController {
 				+ gc.getCurrentPlayer().getName() + " goes first!\n");
 
 		displayTurn();
+	}
+
+	private void displayBoard(Tile[][] tiles) {
+		ArrayList<TileImageView> boardImages = new ArrayList<TileImageView>();
+
+		for (int y = 0; y < tiles.length; y++) {
+			for (int x = 0; x < tiles[y].length; x++) {
+				PathCard card = tiles[y][x].getPathCard();
+				TileImageView temp;
+
+				if (card == null) {
+					temp = new TileImageView(EMPTYIMAGE, x, y);
+				} else if (card instanceof DeadEndCard) {
+					temp = new TileImageView(DEADENDIMAGE, x, y);
+					temp.setRotate(card.getRotationAsDouble());
+				} else if (card instanceof CornerCard) {
+					temp = new TileImageView(CORNERIMAGE, x, y);
+					temp.setRotate(card.getRotationAsDouble());
+				} else if (card instanceof StraightCard) {
+					temp = new TileImageView(STRAIGHTIMAGE, x, y);
+					temp.setRotate(card.getRotationAsDouble());
+				} else if (card instanceof TIntersectionCard) {
+					temp = new TileImageView(TINTIMAGE, x, y);
+					temp.setRotate(card.getRotationAsDouble());
+				} else if (card instanceof XIntersectionCard) {
+					temp = new TileImageView(XINTIMAGE, x, y);
+					temp.setRotate(card.getRotationAsDouble());
+				} else {
+					/* Should never reach here */
+					temp = new TileImageView(BACKIMAGE, x, y);
+				}
+
+				temp.setFitHeight(64);
+				temp.setFitWidth(64);
+				boardImages.add(temp);
+			}
+		}
+
+		listener.onBoardUpdate(boardImages);
 	}
 
 	public void addListener(GameListener listener) {
@@ -138,7 +169,10 @@ public class GameController {
 		}
 
 		listener.onDeckTextUpdate("Deck: " + gc.getBoard().getDeck().size());
-
+		
+		/* DISPLAY BOARD */
+		displayBoard(gc.getBoard().getTiles());
+		
 		/* DISPLAY PLAYER'S HAND */
 		displayHand(player);
 	}
@@ -147,22 +181,7 @@ public class GameController {
 		ArrayList<ImageView> handImages = new ArrayList<ImageView>();
 
 		for (Card card : player.getHand()) {
-			ImageView temp;
-
-			if (card instanceof DeadEndCard) {
-				temp = new ImageView(DEADENDIMAGE);
-			} else if (card instanceof CornerCard) {
-				temp = new ImageView(CORNERIMAGE);
-			} else if (card instanceof StraightCard) {
-				temp = new ImageView(STRAIGHTIMAGE);
-			} else if (card instanceof TIntersectionCard) {
-				temp = new ImageView(TINTIMAGE);
-			} else if (card instanceof XIntersectionCard) {
-				temp = new ImageView(XINTIMAGE);
-			} else {
-				/* Should never reach here */
-				temp = new ImageView(BACKIMAGE);
-			}
+			ImageView temp = getImageViewOfCard(card);
 
 			temp.setFitHeight(64);
 			temp.setFitWidth(64);
@@ -177,31 +196,32 @@ public class GameController {
 		listener.onHandUpdate(handImages);
 	}
 
-	public void displayInspector() {
-		Card card = gc.getCurrentCard();
-
-		ImageView temp = getImageViewOfCard(card);		
-		temp.setRotate(((PathCard) card).getRotationAsDouble());
-
-		listener.onInspectorRefresh(temp);
-	}
-
 	public void rotateCurrentCard() {
 		gc.rotateCurrentCard();
 		displayInspector();
 	}
 
+	public void displayInspector() {
+		Card card = gc.getCurrentCard();
+
+		ImageView temp = new ImageView();
+
+		temp = getImageViewOfCard(card);
+		
+		if (card instanceof PathCard) {
+			temp.setRotate(((PathCard) card).getRotationAsDouble());
+		}
+
+		listener.onInspectorRefresh(temp);
+	}
+
 	public void placeCurrentCard(int x, int y) {
 		// VALIDATE CARD PLACEMENT
 		if (gc.validateCurrentCard(x, y)) {
-			Card card = gc.getCurrentCard();
-			ImageView temp = getImageViewOfCard(card);
-			temp.setRotate(((PathCard) card).getRotationAsDouble());
-
-			listener.onCardPlaced(temp, x, y);
-
+			
 			gc.placeCurrentCard(x, y);
 			gc.setCurrentCard(null);
+			listener.onCardPlaced();
 
 			turnCompleted();
 		} else {
@@ -223,6 +243,8 @@ public class GameController {
 			temp = new ImageView(TINTIMAGE);
 		} else if (card instanceof XIntersectionCard) {
 			temp = new ImageView(XINTIMAGE);
+		} else if (card instanceof DemolishCard) {
+			temp = new ImageView(DEMOLISHIMAGE);
 		} else {
 			/* Should never reach here */
 			temp = new ImageView(BACKIMAGE);
