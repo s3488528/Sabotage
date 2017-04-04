@@ -12,6 +12,7 @@ public interface GameListener {
 	void onLogUpdate(String logAppendText);
 	void onBoardUpdate(ArrayList<TileImageView> boardImages);
 	void onDeckTextUpdate(String deckText);
-	void onCardSelected(Image card);
+	void onCardSelected();
+	void onInspectorRefresh(ImageView card);
 	void onCardPlaced(ImageView cardImage, int x, int y);
 }

@@ -25,7 +25,7 @@ public abstract class PathCard extends Card implements Rotatable, Connectable {
 			/* If 'other' is to the north of 'this' */
 			case N:
 				/* If 'this' has a north connection, and 'other' has a south connection */
-				if (getConnections()[0] && otherConnections[2]) {
+				if (getConnections()[0] == otherConnections[2]) {
 					return true;
 				}
 				break;
@@ -33,7 +33,7 @@ public abstract class PathCard extends Card implements Rotatable, Connectable {
 			/* If 'other' is to the east of 'this' */
 			case E:
 				/* If 'this' has a east connection, and 'other' has a west connection */
-				if (getConnections()[1] && otherConnections[3]) {
+				if (getConnections()[1] == otherConnections[3]) {
 					return true;
 				}
 				break;
@@ -41,7 +41,7 @@ public abstract class PathCard extends Card implements Rotatable, Connectable {
 			/* If 'other' is to the south of 'this' */
 			case S:
 				/* If 'this' has a south connection, and 'other' has a north connection */
-				if (getConnections()[2] && otherConnections[0]) {
+				if (getConnections()[2] == otherConnections[0]) {
 					return true;
 				}
 				break;
@@ -49,7 +49,7 @@ public abstract class PathCard extends Card implements Rotatable, Connectable {
 			/* If 'other' is to the wegetConnections()[3st of 'this' */
 			case W:
 				/* If 'this' has a west connection, and 'other' has a east connection */
-				if (getConnections()[3] && otherConnections[1]) {
+				if (getConnections()[3] == otherConnections[1]) {
 					return true;
 				}
 				break;

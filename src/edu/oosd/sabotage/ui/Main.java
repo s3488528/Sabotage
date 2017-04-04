@@ -63,9 +63,9 @@ public class Main extends Application {
 
 	private void initialiseMenuScene() {
 		/* Spinners */
-		Spinner<Integer> boardWidthSpinner = new Spinner<Integer>(8, 16, 8);
-		Spinner<Integer> boardHeightSpinner = new Spinner<Integer>(5, 10, 5);
-		Spinner<Integer> playerCountSpinner = new Spinner<Integer>(3, 8, 4);
+		Spinner<Integer> boardWidthSpinner = new Spinner<Integer>(5, 8, 8);
+		Spinner<Integer> boardHeightSpinner = new Spinner<Integer>(4, 6, 5);
+		Spinner<Integer> playerCountSpinner = new Spinner<Integer>(3, 6, 4);
 
 		/* title */
 		Text title = new Text("ISYS1084 - " + GAME_TITLE);
@@ -81,11 +81,11 @@ public class Main extends Application {
 		GridPane optionsPane = new GridPane();
 		optionsPane.setHgap(10);
 		optionsPane.setVgap(10);
-		optionsPane.add(new Label("Board Width (8 - 16):"), 0, 0);
+		optionsPane.add(new Label("Board Width (5 - 12):"), 0, 0);
 		optionsPane.add(boardWidthSpinner, 1, 0);
 		optionsPane.add(new Label("Board Height (5 - 10):"), 0, 1);
 		optionsPane.add(boardHeightSpinner, 1, 1);
-		optionsPane.add(new Label("Number of Players (3 - 8):"), 0, 2);
+		optionsPane.add(new Label("Number of Players (3 - 6):"), 0, 2);
 		optionsPane.add(playerCountSpinner, 1, 2);
 
 		/* main grid */
@@ -165,10 +165,12 @@ public class Main extends Application {
 			}
 
 			@Override
-			public void onCardSelected(Image card) {
+			public void onCardSelected() {
+				for (Node card : hand.getChildren()) {
+			        ((ImageView)card).setVisible(true);
+				}
 				rotate.setDisable(false);
 				board.setDisable(false);
-				inspector.setImage(card);
 			}
 
 			@Override
@@ -183,7 +185,12 @@ public class Main extends Application {
 				rotate.setDisable(true);
 				inspector.setImage(null);
 				board.setDisable(true);
-				log.appendText("The card has been placed at: " + x + ", " + y);
+			}
+
+			@Override
+			public void onInspectorRefresh(ImageView card) {
+				inspector.setImage(card.getImage());
+				inspector.setRotate(card.getRotate());
 			}
 
 		});
@@ -248,7 +255,6 @@ public class Main extends Application {
 	}
 	
 	private void rotateCurrentCard() {
-		inspector.setRotate(inspector.getRotate() + 90);
 		gameController.rotateCurrentCard();
 	}
 	

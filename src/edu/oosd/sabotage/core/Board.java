@@ -181,10 +181,10 @@ public class Board {
 	public void placeCard(Card currentCard, int x, int y) {
 		Tile newTile = new Tile(this);
 		
-		if (currentCard.getClass() == PathCard.class) {
+		if (PathCard.class.isAssignableFrom(currentCard.getClass())) {
 			newTile.setPathCard((PathCard) currentCard);				
 		}
-		
+
 		tiles[y][x] = newTile;
 	}
 }
