@@ -6,6 +6,8 @@ import java.util.Random;
 import java.util.Stack;
 
 import edu.oosd.sabotage.core.cards.DemolishCard;
+import edu.oosd.sabotage.core.cards.HostageCard;
+import edu.oosd.sabotage.core.cards.RescueCard;
 
 public class Board {
 	
@@ -120,7 +122,7 @@ public class Board {
 			if (checkN) {			
 				Tile northTile = getTiles()[y - 1][x];
 
-				if (northTile.getPathCard() != null) {
+				if (northTile.getPathCard() != null && !northTile.hasHostage()) {
 					if (!card.isConnectable(northTile.getPathCard(), Direction.N)) {
 						return false;
 					} else {
@@ -134,7 +136,7 @@ public class Board {
 			if (checkE) {			
 				Tile eastTile = getTiles()[y][x + 1];
 
-				if (eastTile.getPathCard() != null) {
+				if (eastTile.getPathCard() != null && !eastTile.hasHostage()) {
 					if (!card.isConnectable(eastTile.getPathCard(), Direction.E)) {
 						return false;
 					} else {
@@ -148,7 +150,7 @@ public class Board {
 			if (checkS) {			
 				Tile southTile = getTiles()[y + 1][x];
 
-				if (southTile.getPathCard() != null) {
+				if (southTile.getPathCard() != null && !southTile.hasHostage()) {
 					if (!card.isConnectable(southTile.getPathCard(), Direction.S)) {
 						return false;
 					} else {
@@ -162,7 +164,7 @@ public class Board {
 			if (checkW) {			
 				Tile westTile = getTiles()[y][x - 1];
 
-				if (westTile.getPathCard() != null) {
+				if (westTile.getPathCard() != null && !westTile.hasHostage()) {
 					if (!card.isConnectable(westTile.getPathCard(), Direction.W)) {
 						return false;
 					} else {
@@ -182,8 +184,14 @@ public class Board {
 			}
 			
 		} else if (validationCard instanceof ActionCard) {
-			if (tiles[y][x].getPathCard() != null) {
-				return true;
+			if (validationCard instanceof RescueCard) {
+				if (tiles[y][x].hasHostage()) {
+					return true;
+				}
+			} else {
+				if (tiles[y][x].getPathCard() != null) {
+					return true;
+				}
 			}
 		}
 		
@@ -196,10 +204,12 @@ public class Board {
 		if (currentCard instanceof PathCard) {
 			tile.setPathCard((PathCard) currentCard);				
 		} else if (currentCard instanceof ActionCard) {
-			tile.setActionCard((ActionCard) currentCard);
-
 			if (currentCard instanceof DemolishCard) {
-				tiles[y][x].setPathCard(null);;
+				tiles[y][x].setPathCard(null);
+			} else if (currentCard instanceof HostageCard) {
+				tile.setHasHostage(true);
+			} else if (currentCard instanceof RescueCard) {
+				tile.setHasHostage(false);
 			}
 		}
 

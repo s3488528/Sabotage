@@ -29,6 +29,10 @@ public class GameController {
 			"/edu/oosd/sabotage/assets/images/xintersection.png");
 	Image DEMOLISHIMAGE = new Image(
 			"/edu/oosd/sabotage/assets/images/demolish.png");
+	Image HOSTAGEIMAGE = new Image(
+			"/edu/oosd/sabotage/assets/images/hostage.png");
+	Image RESCUEIMAGE = new Image(
+			"/edu/oosd/sabotage/assets/images/rescue.png");
 	Image GOALIMAGE = new Image("/edu/oosd/sabotage/assets/images/goal.png");
 	Image BACKIMAGE = new Image("/edu/oosd/sabotage/assets/images/back.png");
 
@@ -120,6 +124,10 @@ public class GameController {
 				} else {
 					/* Should never reach here */
 					temp = new TileImageView(BACKIMAGE, x, y);
+				}
+				
+				if (tiles[y][x].hasHostage()) {
+					temp.setImage(HOSTAGEIMAGE);
 				}
 
 				temp.setFitHeight(64);
@@ -245,6 +253,10 @@ public class GameController {
 			temp = new ImageView(XINTIMAGE);
 		} else if (card instanceof DemolishCard) {
 			temp = new ImageView(DEMOLISHIMAGE);
+		} else if (card instanceof HostageCard) {
+			temp = new ImageView(HOSTAGEIMAGE);
+		} else if (card instanceof RescueCard) {
+			temp = new ImageView(RESCUEIMAGE);
 		} else {
 			/* Should never reach here */
 			temp = new ImageView(BACKIMAGE);

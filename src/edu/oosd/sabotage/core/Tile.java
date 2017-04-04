@@ -5,7 +5,7 @@ public class Tile {
 	/* DECLARATIONS */
 	private Board parentBoard;
 	private PathCard pathCard = null;
-	private ActionCard actionCard = null;
+	private boolean hasHostage = false;
 
 	/* CONSTRUCTORS */
 	/**
@@ -25,11 +25,11 @@ public class Tile {
 		this.pathCard = pathCard;
 	}
 
-	public ActionCard getActionCard() {
-		return actionCard;
+	public boolean hasHostage() {
+		return hasHostage;
 	}
 
-	public void setActionCard(ActionCard actionCard) {
-		this.actionCard = actionCard;
+	public void setHasHostage(boolean hasHostage) {
+		this.hasHostage = hasHostage;
 	}
 }

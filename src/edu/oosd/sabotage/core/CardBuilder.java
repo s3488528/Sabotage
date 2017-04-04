@@ -13,7 +13,9 @@ enum cardType {
 	corner,
 	tintersection,
 	xintersection,
-	demolish
+	demolish,
+	hostage,
+	rescue
 }
 
 public class CardBuilder {
@@ -43,6 +45,12 @@ public class CardBuilder {
 				break;		
 			case demolish:
 				tempCard = new DemolishCard();
+				break;	
+			case hostage:
+				tempCard = new HostageCard();
+				break;	
+			case rescue:
+				tempCard = new RescueCard();
 				break;
 		}
 				
