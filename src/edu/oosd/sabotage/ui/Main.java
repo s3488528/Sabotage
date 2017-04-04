@@ -110,6 +110,7 @@ public class Main extends Application {
 	ImageView inspector;
 	Button rotate;
 	Text deckText;
+	Button discard;
 	
 	private void showGameScene(int boardWidth, int boardHeight, int playerCount) {
 		gameController = new GameController(boardWidth, boardHeight, 20);
@@ -168,12 +169,14 @@ public class Main extends Application {
 			        ((ImageView)card).setVisible(true);
 				}
 				rotate.setDisable(false);
+				discard.setDisable(false);
 				board.setDisable(false);
 			}
 
 			@Override
-			public void onCardPlaced() {
+			public void onTurnStart() {
 				rotate.setDisable(true);
+				discard.setDisable(true);
 				inspector.setImage(null);
 				board.setDisable(true);
 			}
@@ -221,7 +224,13 @@ public class Main extends Application {
         });
 		rotate.setDisable(true);
 		
-		Button discard = new Button("Discard Card");
+		discard = new Button("Discard Card");
+		discard.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				discardCurrentCard();
+			}
+        });
 		discard.setDisable(true);
 		
 		deckText = new Text("");
@@ -241,6 +250,10 @@ public class Main extends Application {
 		main.setLeft(detailsPane);
 
 		_game = new Scene(main, WINDOW_WIDTH, WINDOW_HEIGHT);
+	}
+
+	private void discardCurrentCard() {
+		gameController.discardCurrentCard();
 	}
 	
 	private void rotateCurrentCard() {

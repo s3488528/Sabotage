@@ -206,6 +206,7 @@ public class Board {
 		} else if (currentCard instanceof ActionCard) {
 			if (currentCard instanceof DemolishCard) {
 				tiles[y][x].setPathCard(null);
+				tiles[y][x].setHasHostage(false);
 			} else if (currentCard instanceof HostageCard) {
 				tile.setHasHostage(true);
 			} else if (currentCard instanceof RescueCard) {

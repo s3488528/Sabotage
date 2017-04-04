@@ -13,5 +13,5 @@ public interface GameListener {
 	void onDeckTextUpdate(String deckText);
 	void onCardSelected();
 	void onInspectorRefresh(ImageView card);
-	void onCardPlaced();
+	void onTurnStart();
 }

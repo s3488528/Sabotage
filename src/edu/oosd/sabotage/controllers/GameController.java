@@ -106,6 +106,9 @@ public class GameController {
 
 				if (card == null) {
 					temp = new TileImageView(EMPTYIMAGE, x, y);
+				} else if (tiles[y][x].hasHostage()) {
+					temp = new TileImageView(HOSTAGEIMAGE, x, y);
+					temp.setRotate(0);
 				} else if (card instanceof DeadEndCard) {
 					temp = new TileImageView(DEADENDIMAGE, x, y);
 					temp.setRotate(card.getRotationAsDouble());
@@ -124,11 +127,7 @@ public class GameController {
 				} else {
 					/* Should never reach here */
 					temp = new TileImageView(BACKIMAGE, x, y);
-				}
-				
-				if (tiles[y][x].hasHostage()) {
-					temp.setImage(HOSTAGEIMAGE);
-				}
+				}				
 
 				temp.setFitHeight(64);
 				temp.setFitWidth(64);
@@ -183,6 +182,8 @@ public class GameController {
 		
 		/* DISPLAY PLAYER'S HAND */
 		displayHand(player);
+		
+		listener.onTurnStart();
 	}
 
 	public void displayHand(Player player) {
@@ -229,7 +230,6 @@ public class GameController {
 			
 			gc.placeCurrentCard(x, y);
 			gc.setCurrentCard(null);
-			listener.onCardPlaced();
 
 			turnCompleted();
 		} else {
@@ -238,6 +238,11 @@ public class GameController {
 		}
 	}
 
+	public void discardCurrentCard() {
+		gc.discardCurrentCard();
+		turnCompleted();
+	}
+	
 	public ImageView getImageViewOfCard(Card card) {
 		ImageView temp;
 
@@ -264,4 +269,5 @@ public class GameController {
 
 		return temp;
 	}
+
 }

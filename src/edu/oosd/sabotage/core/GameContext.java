@@ -27,7 +27,7 @@ public class GameContext {
 		for (int i = 0; i < playerCount; i++) {
 			Player tempPlayer = new Player("Player " + (i + 1));
 			
-			for (int j = 0; j < 4; j++) {
+			for (int j = 0; j < 7; j++) {
 				tempPlayer.addCardToHand(CardBuilder.createRandomCard());
 			}
 			
@@ -92,6 +92,10 @@ public class GameContext {
 		currentPlayer.getHand().remove(currentCard);
 	}
 
+	public void discardCurrentCard() {
+		currentPlayer.getHand().remove(currentCard);
+	}
+	
 	public void cyclePlayer() {
 		int currentIndex = players.indexOf(currentPlayer);
 	
