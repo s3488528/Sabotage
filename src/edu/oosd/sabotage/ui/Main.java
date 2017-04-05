@@ -34,7 +34,7 @@ public class Main extends Application {
 	public static final double WINDOW_HEIGHT = 600;
 
 	/* String Constants */
-	public final String GAME_TITLE = "Sabotage";
+	public final String GAME_TITLE = "Railway Sabotage";
 
 	/* Declarations */
 	Stage _window;
