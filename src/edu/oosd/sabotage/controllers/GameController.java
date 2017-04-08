@@ -2,37 +2,38 @@ package edu.oosd.sabotage.controllers;
 
 import java.util.ArrayList;
 
+import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import edu.oosd.sabotage.core.ActionCard;
+import javafx.scene.input.MouseEvent;
 import edu.oosd.sabotage.core.Card;
-import edu.oosd.sabotage.core.PathCard;
 import edu.oosd.sabotage.core.GameContext;
+import edu.oosd.sabotage.core.PathCard;
 import edu.oosd.sabotage.core.Player;
 import edu.oosd.sabotage.core.Tile;
-import edu.oosd.sabotage.core.cards.*;
+import edu.oosd.sabotage.core.cards.CornerCard;
+import edu.oosd.sabotage.core.cards.DeadEndCard;
+import edu.oosd.sabotage.core.cards.DemolishCard;
+import edu.oosd.sabotage.core.cards.HostageCard;
+import edu.oosd.sabotage.core.cards.RescueCard;
+import edu.oosd.sabotage.core.cards.StraightCard;
+import edu.oosd.sabotage.core.cards.TIntersectionCard;
+import edu.oosd.sabotage.core.cards.XIntersectionCard;
 import edu.oosd.sabotage.ui.TileImageView;
 
 public class GameController {
 
 	/* Image Constants */
 	Image EMPTYIMAGE = new Image("/edu/oosd/sabotage/assets/images/empty.png");
-	Image DEADENDIMAGE = new Image(
-			"/edu/oosd/sabotage/assets/images/deadend.png");
+	Image DEADENDIMAGE = new Image("/edu/oosd/sabotage/assets/images/deadend.png");
 	Image CORNERIMAGE = new Image("/edu/oosd/sabotage/assets/images/corner.png");
-	Image STRAIGHTIMAGE = new Image(
-			"/edu/oosd/sabotage/assets/images/straight.png");
-	Image TINTIMAGE = new Image(
-			"/edu/oosd/sabotage/assets/images/tintersection.png");
-	Image XINTIMAGE = new Image(
-			"/edu/oosd/sabotage/assets/images/xintersection.png");
-	Image DEMOLISHIMAGE = new Image(
-			"/edu/oosd/sabotage/assets/images/demolish.png");
-	Image HOSTAGEIMAGE = new Image(
-			"/edu/oosd/sabotage/assets/images/hostage.png");
-	Image RESCUEIMAGE = new Image(
-			"/edu/oosd/sabotage/assets/images/rescue.png");
+	Image STRAIGHTIMAGE = new Image("/edu/oosd/sabotage/assets/images/straight.png");
+	Image TINTIMAGE = new Image("/edu/oosd/sabotage/assets/images/tintersection.png");
+	Image XINTIMAGE = new Image("/edu/oosd/sabotage/assets/images/xintersection.png");
+	Image DEMOLISHIMAGE = new Image("/edu/oosd/sabotage/assets/images/demolish.png");
+	Image HOSTAGEIMAGE = new Image("/edu/oosd/sabotage/assets/images/hostage.png");
+	Image RESCUEIMAGE = new Image("/edu/oosd/sabotage/assets/images/rescue.png");
 	Image GOALIMAGE = new Image("/edu/oosd/sabotage/assets/images/goal.png");
 	Image BACKIMAGE = new Image("/edu/oosd/sabotage/assets/images/back.png");
 
@@ -41,62 +42,85 @@ public class GameController {
 
 	/* Flags */
 	boolean gameCompleted = false;
-
-	public GameController(int boardWidth, int boardHeight, int deckCount) {
-		gc = new GameContext(boardWidth, boardHeight, deckCount);
+	
+	/**
+	 * GameController class Constructor
+	 */
+	public GameController() {
+		gc = new GameContext();
+	}
+	
+	/**
+	 * Adds a GameListener to this GameController
+	 * @param listener	The GameListener to add
+	 */
+	public void addListener(GameListener listener) {
+		this.listener = listener;
 	}
 
-	public void initialiseGame(int playerCount) {
+	/**
+	 * Initializes a new game with the specified settings
+	 * @param boardWidth	The number of tiles spanning across the board
+	 * @param boardHeight	The number of tiles spanning down the board
+	 * @param deckCount		The number of starting cards in the deck
+	 * @param playerCount	The number of players in the game
+	 */
+	public void initialiseGame(int boardWidth, int boardHeight, int deckCount, int playerCount) {		
+		/* Initialise board */
+		gc.initializeBoard(boardWidth, boardHeight);
 		Tile[][] tiles = gc.getBoard().getTiles();
-		listener.onLogUpdate("> Generated board with " + tiles.length
-				+ " vertical tiles and " + tiles[0].length
-				+ " horizontal tiles.");
-
-		/* DISPLAY BOARD */
-		ArrayList<TileImageView> boardImages = new ArrayList<TileImageView>();
-
-		for (int y = 0; y < tiles.length; y++) {
-			for (int x = 0; x < tiles[y].length; x++) {
-				PathCard card = tiles[y][x].getPathCard();
-				TileImageView temp;
-
-				if (card == null) {
-					temp = new TileImageView(EMPTYIMAGE, x, y);
-				} else if (card instanceof XIntersectionCard) {
-					temp = new TileImageView(XINTIMAGE, x, y);
-					listener.onLogUpdate("> Starting position set at: " + x + ", " + y);
-				} else if (card instanceof GoalCard) {
-					temp = new TileImageView(BACKIMAGE, x, y);
-					listener.onLogUpdate("> Goal card set at: " + x + ", " + y);
-				} else {
-					/* Should never reach here */
-					temp = null;
-				}
-
-				temp.setFitHeight(64);
-				temp.setFitWidth(64);
-				boardImages.add(temp);
-			}
-		}
-
-		listener.onBoardUpdate(boardImages);
-
-		/* INIT PLAYERS */
+		listener.onLogUpdate("> Generated board with " + tiles.length + " vertical tiles and " + tiles[0].length + " horizontal tiles.");
+		
+		/* Initialise board */
+		gc.initializeDeck(deckCount);
+		listener.onLogUpdate("> The deck has been created with " + deckCount + " cards.");
+		
+		/* Initialise players */
 		gc.initializePlayers(playerCount);
-		listener.onLogUpdate("> "
-				+ playerCount
-				+ " players ("
-				+ gc.getPlayersAsString()
-				+ ") have joined the game. Someone has been chosen as the saboteur!");
+		listener.onLogUpdate("> " + gc.getPlayers().size() + " players (" + gc.getPlayersAsString() + ") have joined the game. Someone has been chosen as the villain!");
 
+		/* Shuffle players */
 		gc.shufflePlayers();
-		listener.onLogUpdate("> Players have been shuffled. "
-				+ gc.getCurrentPlayer().getName() + " goes first!");
+		listener.onLogUpdate("> Players have been shuffled. " + gc.getCurrentPlayer().getName() + " goes first!");
 
+		/* Update the UI */
 		displayTurn();
 	}
 
-	private void displayBoard(Tile[][] tiles) {
+	/**
+	 * Updates the UI based on the game model data (GameContext).
+	 * 
+	 * @see GameContext
+	 */
+	public void displayTurn() {
+		Player player = gc.getCurrentPlayer();
+
+		/* Update deck */
+		listener.onDeckTextUpdate("Deck: " + gc.getDeck().size());
+
+		/* Display the board */
+		displayBoard();
+
+		/* Display the current player's hand */
+		displayHand();
+
+		if (player.isVillain()) {
+			listener.onTurnStart(player.getName() + "'s turn (You are a villain).");
+		} else {
+			listener.onTurnStart(player.getName() + "'s turn.");
+		}
+
+		/* Output to log */
+		listener.onLogUpdate("==========");
+		listener.onLogUpdate("> It's " + player.getName() + "'s turn.");
+
+	}
+
+	/**
+	 * Updates the UI board based on the GameContext's Board
+	 */
+	private void displayBoard() {
+		Tile[][] tiles = gc.getBoard().getTiles();
 		ArrayList<TileImageView> boardImages = new ArrayList<TileImageView>();
 
 		for (int y = 0; y < tiles.length; y++) {
@@ -127,7 +151,17 @@ public class GameController {
 				} else {
 					/* Should never reach here */
 					temp = new TileImageView(BACKIMAGE, x, y);
-				}				
+				}
+
+				temp.setOnMouseEntered(e -> temp.getScene().setCursor(Cursor.HAND));
+				temp.setOnMouseExited(e -> temp.getScene().setCursor(Cursor.DEFAULT));
+				temp.setOnMouseClicked(new EventHandler<MouseEvent>() {
+					@Override
+					public void handle(MouseEvent e) {
+						TileImageView image = (TileImageView) e.getSource();
+						placeCurrentCard(image.getxPos(), image.getyPos());
+					}
+				});
 
 				temp.setFitHeight(64);
 				temp.setFitWidth(64);
@@ -138,55 +172,11 @@ public class GameController {
 		listener.onBoardUpdate(boardImages);
 	}
 
-	public void addListener(GameListener listener) {
-		this.listener = listener;
-	}
-
-	public void handCardClicked(ImageView temp, Card card) {
-		gc.setCurrentCard(card);
-		listener.onCardSelected();
-		temp.setVisible(false);
-		displayInspector();
-	}
-
 	/**
-	 * Cycle to the next player and update the UI
+	 * Updates the UI hand
 	 */
-	public void turnCompleted() {
-		gc.cyclePlayer();
-		displayTurn();
-	}
-
-	/**
-	 * Updates the UI based on the game model data (GameContext).
-	 * 
-	 * @see GameContext
-	 */
-	public void displayTurn() {
+	public void displayHand() {
 		Player player = gc.getCurrentPlayer();
-
-		listener.onLogUpdate("==========");
-		listener.onLogUpdate("> It's " + player.getName() + "'s turn.");
-
-		if (player.isSaboteur()) {
-			listener.onTurnUpdate(player.getName()
-					+ "'s turn (You are a saboteur).");
-		} else {
-			listener.onTurnUpdate(player.getName() + "'s turn.");
-		}
-
-		listener.onDeckTextUpdate("Deck: " + gc.getBoard().getDeck().size());
-		
-		/* DISPLAY BOARD */
-		displayBoard(gc.getBoard().getTiles());
-		
-		/* DISPLAY PLAYER'S HAND */
-		displayHand(player);
-		
-		listener.onTurnStart();
-	}
-
-	public void displayHand(Player player) {
 		ArrayList<ImageView> handImages = new ArrayList<ImageView>();
 
 		for (Card card : player.getHand()) {
@@ -195,8 +185,7 @@ public class GameController {
 			temp.setFitHeight(64);
 			temp.setFitWidth(64);
 			temp.setOnMouseEntered(e -> temp.getScene().setCursor(Cursor.HAND));
-			temp.setOnMouseExited(e -> temp.getScene()
-					.setCursor(Cursor.DEFAULT));
+			temp.setOnMouseExited(e -> temp.getScene().setCursor(Cursor.DEFAULT));
 			temp.setOnMouseClicked(e -> handCardClicked(temp, card));
 
 			handImages.add(temp);
@@ -205,18 +194,15 @@ public class GameController {
 		listener.onHandUpdate(handImages);
 	}
 
-	public void rotateCurrentCard() {
-		gc.rotateCurrentCard();
-		displayInspector();
-	}
-
-	public void displayInspector() {
+	/**
+	 * Updates the UI inspector with the GameContext's currently selected card
+	 */
+	public void displayCurrentCard() {
 		Card card = gc.getCurrentCard();
 
 		ImageView temp = new ImageView();
-
 		temp = getImageViewOfCard(card);
-		
+
 		if (card instanceof PathCard) {
 			temp.setRotate(((PathCard) card).getRotationAsDouble());
 		}
@@ -224,29 +210,78 @@ public class GameController {
 		listener.onInspectorRefresh(temp);
 	}
 
+	/**
+	 * Notifies the game model that a hand card has been clicked
+	 * @param cardImage	The ImageView of the card being clicked
+	 * @param card		The Card being clicked
+	 */
+	public void handCardClicked(ImageView cardImage, Card card) {
+		gc.setCurrentCard(card);
+
+		listener.onCardSelected(cardImage);
+		displayCurrentCard();
+	}
+
+	/**
+	 * Rotates the currently selected card
+	 */
+	public void rotateCurrentCard() {
+		gc.rotateCurrentCard();
+		displayCurrentCard();
+	}
+
+	/**
+	 * Places the current card at position (x, y) on the board
+	 */
 	public void placeCurrentCard(int x, int y) {
-		Card currentCard = gc.getCurrentCard();
-		
 		if (gc.validateCurrentCard(x, y)) {
-			
-			listener.onLogUpdate(currentCard.getPlacedText(gc.getCurrentPlayer().getName(), x, y));
-			
+
+			listener.onLogUpdate(gc.getCurrentCard().getPlacedText(gc.getCurrentPlayer().getName(), x, y));
+
 			gc.placeCurrentCard(x, y);
 			gc.setCurrentCard(null);
 
 			turnCompleted();
 		} else {
-			listener.onLogUpdate("That card cannot be placed at " + x + ", " + y);
+			listener.onLogUpdate("> " + gc.getCurrentCard().getPlaceFailedText(x, y));
 		}
 	}
 
+	/**
+	 * Discards the currently selected card
+	 */
 	public void discardCurrentCard() {
 		listener.onLogUpdate(gc.getCurrentPlayer().getName() + " discarded a card.");
-		
+
 		gc.discardCurrentCard();
 		turnCompleted();
 	}
+
+	/**
+	 * Draws one card from the deck and gives it to the current player
+	 */
+	public void drawFromDeck() {
+	}
+
+	/**
+	 * Cycle to the next player and update the UI
+	 */
+	public void turnCompleted() {
+		if (gc.drawFromDeck()) {
+			listener.onLogUpdate(gc.getCurrentPlayer().getName() + " drew a card from the deck.");
+		} else {
+			listener.onLogUpdate("> There are not more cards in the deck!");
+		}
+		
+		gc.cyclePlayer();
+		displayTurn();
+	}
 	
+	/**
+	 * Creates a new ImageView based on the specified card
+	 * @param card	The card to make an ImageView from
+	 * @return		An ImageView representing the card
+	 */
 	public ImageView getImageViewOfCard(Card card) {
 		ImageView temp;
 

@@ -2,16 +2,15 @@ package edu.oosd.sabotage.controllers;
 
 import java.util.ArrayList;
 
-import edu.oosd.sabotage.ui.TileImageView;
 import javafx.scene.image.ImageView;
+import edu.oosd.sabotage.ui.TileImageView;
 
 public interface GameListener {
-	void onTurnUpdate(String text);
 	void onHandUpdate(ArrayList<ImageView> handImages);
 	void onLogUpdate(String logAppendText);
 	void onBoardUpdate(ArrayList<TileImageView> boardImages);
 	void onDeckTextUpdate(String deckText);
-	void onCardSelected();
+	void onCardSelected(ImageView cardImage);
 	void onInspectorRefresh(ImageView card);
-	void onTurnStart();
+	void onTurnStart(String text);
 }

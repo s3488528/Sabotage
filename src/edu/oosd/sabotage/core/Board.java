@@ -3,16 +3,15 @@ package edu.oosd.sabotage.core;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-import java.util.Stack;
 
 import edu.oosd.sabotage.core.cards.DemolishCard;
+import edu.oosd.sabotage.core.cards.GoalCard;
 import edu.oosd.sabotage.core.cards.HostageCard;
 import edu.oosd.sabotage.core.cards.RescueCard;
 
 public class Board {
 	
 	private Tile[][] tiles;
-	private Stack<Card> deck;
 	
 	private Random random = new Random();
 
@@ -22,9 +21,8 @@ public class Board {
 	 * 
 	 * @param	boardWidth	The number of tiles spanning across the board
 	 * @param	boardHeight	The number of tiles spanning down the board
-	 * @param	deckCount	The number of starting cards in the deck
 	 */
-	public Board(int boardWidth, int boardHeight, int deckCount) {
+	public Board(int boardWidth, int boardHeight) {
 		tiles = new Tile[boardHeight][boardWidth];
 		ArrayList<Tile> rightTiles = new ArrayList<Tile>();
 
@@ -42,23 +40,12 @@ public class Board {
 		/* Set a random tile on the left as the starting tile */
 		Tile startingTile = tiles[random.nextInt(boardHeight)][0];
 		startingTile.setPathCard(CardBuilder.createStartingCard(startingTile));
-		deck = new Stack<Card>();
 
 		/* Set 3 random tiles on the right as the goal tiles */		
 		Collections.shuffle(rightTiles);
 		rightTiles.get(0).setPathCard(CardBuilder.createGoalCard(rightTiles.get(0), true));
 		rightTiles.get(1).setPathCard(CardBuilder.createGoalCard(rightTiles.get(1), false));
-		rightTiles.get(2).setPathCard(CardBuilder.createGoalCard(rightTiles.get(2), false));
-				
-		/* Populate the deck with random cards */
-		for (int i = 0; i < deckCount; i++) {			
-			Card tempCard = CardBuilder.createRandomCard();
-			deck.add(tempCard);
-		}
-	}
-
-	public Stack<Card> getDeck() {
-		return deck;
+		rightTiles.get(2).setPathCard(CardBuilder.createGoalCard(rightTiles.get(2), false));				
 	}
 
 	/**
@@ -71,28 +58,6 @@ public class Board {
 	}
 
 	/**
-	 * Gets all tiles as string
-	 *
-	 * @return      All tiles as String
-	 */
-	public String getTilesAsString() {
-		String str = "";
-		
-		for (int y = 0; y < tiles.length; y++) { 
-			for (int x = 0; x < tiles[y].length; x++) { 
-				str += "[" + x + ", " + y + "]";
-			}
-			str += System.getProperty("line.separator");
-		}
-		
-		for (int i = 0; i < deck.size(); i++) { 
-			str += i + ". " + deck.get(i).toString() + System.getProperty("line.separator");
-		}
-		
-		return str;
-	}
-
-	/**
 	 * Checks if a card is able to be placed
 	 * @param validationCard The card to be validated
 	 * @param x	The x position of the card
@@ -100,9 +65,13 @@ public class Board {
 	 * @return True if card can be placed, false otherwise
 	 */
 	public boolean validateCard(Card validationCard, int x, int y) {
+		Tile existingTile = getTiles()[y][x];
+		
 		if (validationCard instanceof PathCard) {
-			if (getTiles()[y][x].getPathCard() != null) {
-				return false;	
+			
+			/* Path cards cannot be placed on top of another path card */
+			if (existingTile.getPathCard() != null) {
+				return false;
 			}
 			
 			boolean checkN = true;
@@ -114,6 +83,7 @@ public class Board {
 			
 			PathCard card = (PathCard) validationCard;
 			
+			/* No need to check outside edge tiles */
 			if (y == 0) 					{ checkN = false; }
 			if (y == tiles.length - 1) 		{ checkS = false; }
 			if (x == 0) 					{ checkW = false; }
@@ -122,8 +92,8 @@ public class Board {
 			if (checkN) {			
 				Tile northTile = getTiles()[y - 1][x];
 
-				if (northTile.getPathCard() != null && !northTile.hasHostage()) {
-					if (!card.isConnectable(northTile.getPathCard(), Direction.N)) {
+				if (northTile.getPathCard() != null) {
+					if (!card.isConnectable(northTile.getPathCard(), Direction.N) || northTile.hasHostage()) {
 						return false;
 					} else {
 						if (card.getConnections()[0]) {
@@ -136,8 +106,8 @@ public class Board {
 			if (checkE) {			
 				Tile eastTile = getTiles()[y][x + 1];
 
-				if (eastTile.getPathCard() != null && !eastTile.hasHostage()) {
-					if (!card.isConnectable(eastTile.getPathCard(), Direction.E)) {
+				if (eastTile.getPathCard() != null) {
+					if (!card.isConnectable(eastTile.getPathCard(), Direction.E) || eastTile.hasHostage()) {
 						return false;
 					} else {
 						if (card.getConnections()[1]) {
@@ -150,8 +120,8 @@ public class Board {
 			if (checkS) {			
 				Tile southTile = getTiles()[y + 1][x];
 
-				if (southTile.getPathCard() != null && !southTile.hasHostage()) {
-					if (!card.isConnectable(southTile.getPathCard(), Direction.S)) {
+				if (southTile.getPathCard() != null) {
+					if (!card.isConnectable(southTile.getPathCard(), Direction.S) || southTile.hasHostage()) {
 						return false;
 					} else {
 						if (card.getConnections()[2]) {
@@ -164,8 +134,8 @@ public class Board {
 			if (checkW) {			
 				Tile westTile = getTiles()[y][x - 1];
 
-				if (westTile.getPathCard() != null && !westTile.hasHostage()) {
-					if (!card.isConnectable(westTile.getPathCard(), Direction.W)) {
+				if (westTile.getPathCard() != null) {
+					if (!card.isConnectable(westTile.getPathCard(), Direction.W) || westTile.hasHostage()) {
 						return false;
 					} else {
 						if (card.getConnections()[3]) {
@@ -176,24 +146,30 @@ public class Board {
 			}
 			
 			if (connected) {
-				// If there is at least one connection:
+				/* If there is at least one connection: */
 				return true;				
 			} else {
-				// If there are no connections:
+				/* If there are no connections: */
 				return false;
 			}
 			
 		} else if (validationCard instanceof ActionCard) {
+
+			/* Action cards cannot be played on a goal card or the starting card */
+			if (existingTile.getPathCard() instanceof GoalCard || existingTile.getPathCard().isStartingCard()) {
+				return false;
+			}
+			
 			if (validationCard instanceof RescueCard) {
-				if (tiles[y][x].hasHostage()) {
+				if (existingTile.hasHostage()) {
 					return true;
 				}
 			} else if (validationCard instanceof HostageCard) {
-				if (tiles[y][x].getPathCard() != null && !tiles[y][x].hasHostage()) {
+				if (existingTile.getPathCard() != null && !tiles[y][x].hasHostage()) {
 					return true;
 				}
 			} else {
-				if (tiles[y][x].getPathCard() != null) {
+				if (existingTile.getPathCard() != null) {
 					return true;
 				}
 			}
@@ -202,19 +178,25 @@ public class Board {
 		return false;
 	}
 
-	public void placeCard(Card currentCard, int x, int y) {
+	/**
+	 * Places a card on the board
+	 * @param card	The card to place
+	 * @param x		The x position of the tile
+	 * @param y		The y position of the tile
+	 */	
+	public void placeCard(Card card, int x, int y) {
 		Tile tile = tiles[y][x];
 		
-		if (currentCard instanceof PathCard) {
-			tile.setPathCard((PathCard) currentCard);				
-		} else if (currentCard instanceof ActionCard) {
-			if (currentCard instanceof DemolishCard) {
-				tiles[y][x].setPathCard(null);
-				tiles[y][x].setHasHostage(false);
-			} else if (currentCard instanceof HostageCard) {
-				tile.setHasHostage(true);
-			} else if (currentCard instanceof RescueCard) {
-				tile.setHasHostage(false);
+		if (card instanceof PathCard) {
+			tile.setPathCard((PathCard) card);				
+		} else if (card instanceof ActionCard) {
+			if (card instanceof DemolishCard) {
+				tile.setPathCard(null);
+				tile.setActionCard(null);
+			} else if (card instanceof HostageCard) {
+				tile.setActionCard((ActionCard) card);
+			} else if (card instanceof RescueCard) {
+				tile.setActionCard(null); /* Remove the hostage action card */
 			}
 		}
 

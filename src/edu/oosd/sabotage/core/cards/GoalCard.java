@@ -2,6 +2,8 @@ package edu.oosd.sabotage.core.cards;
 
 import edu.oosd.sabotage.core.PathCard;
 
+
+
 public class GoalCard extends PathCard {
 	
 	private boolean isGoal;
@@ -24,4 +26,13 @@ public class GoalCard extends PathCard {
 		this.isRevealed = isRevealed;
 	}
 
+	@Override
+	public String getPlacedText(String playerName, int x, int y) {
+		return "";
+	}	
+	
+	@Override
+	public String getPlaceFailedText(int x, int y) {
+		return "";
+	}	
 }

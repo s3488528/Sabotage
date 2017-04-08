@@ -5,6 +5,7 @@ public abstract class PathCard extends Card implements Rotatable, Connectable {
 	/* DECLARATIONS */
 	private Angle angle = Angle._0;
 	private boolean[] connections;
+	private boolean isStartingCard;
 
 	/* CONSTRUCTORS */
 	/**
@@ -104,5 +105,20 @@ public abstract class PathCard extends Card implements Rotatable, Connectable {
 		
 		/* should never reach here as angle should always have a value */
 		return null;
+	}
+	
+	/**
+	 * Gets if this path card is the starting card
+	 * @return	True if this card is the starting card; False otherwise
+	 */
+	public boolean isStartingCard() {
+		return isStartingCard;
+	}
+
+	/**
+	 * Set this card to be the starting card
+	 */
+	public void setAsStartingCard() {
+		this.isStartingCard = true;
 	}
 }

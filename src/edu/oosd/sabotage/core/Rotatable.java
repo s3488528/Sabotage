@@ -1,5 +1,8 @@
 package edu.oosd.sabotage.core;
 
+/**
+ * An enumeration representing four predefined angles
+ */
 enum Angle {
 	_0,
 	_90,

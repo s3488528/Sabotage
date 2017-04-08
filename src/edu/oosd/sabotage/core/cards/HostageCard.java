@@ -2,6 +2,8 @@ package edu.oosd.sabotage.core.cards;
 
 import edu.oosd.sabotage.core.ActionCard;
 
+
+
 public class HostageCard extends ActionCard {
 
 	public HostageCard() {
@@ -11,5 +13,10 @@ public class HostageCard extends ActionCard {
 	@Override
 	public String getPlacedText(String playerName, int x, int y) {
 		return playerName + " has placed a hostage at position: " + x + ", " + y;
+	}	
+	
+	@Override
+	public String getPlaceFailedText(int x, int y) {
+		return "A hostage cannot be placed at position: " + x + ", " + y;
 	}	
 }

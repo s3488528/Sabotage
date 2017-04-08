@@ -5,7 +5,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import edu.oosd.sabotage.core.cards.*;
+import edu.oosd.sabotage.core.cards.CornerCard;
+import edu.oosd.sabotage.core.cards.DeadEndCard;
+import edu.oosd.sabotage.core.cards.DemolishCard;
+import edu.oosd.sabotage.core.cards.GoalCard;
+import edu.oosd.sabotage.core.cards.HostageCard;
+import edu.oosd.sabotage.core.cards.RescueCard;
+import edu.oosd.sabotage.core.cards.StraightCard;
+import edu.oosd.sabotage.core.cards.TIntersectionCard;
+import edu.oosd.sabotage.core.cards.XIntersectionCard;
 
 enum cardType {
 	deadend,
@@ -63,13 +71,12 @@ public class CardBuilder {
 	
 	public static PathCard createStartingCard(Tile parentTile) {
 		PathCard tempCard = new XIntersectionCard();
-		tempCard.setTile(parentTile);
+		tempCard.setAsStartingCard();
 		return tempCard;
 	}
 
 	public static PathCard createGoalCard(Tile parentTile, boolean isGoal) {
 		PathCard tempCard = new GoalCard(isGoal);
-		tempCard.setTile(parentTile);
 		return tempCard;
 	}
 }

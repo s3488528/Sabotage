@@ -7,7 +7,7 @@ public class Player {
 	/* DECLARATIONS */
 	private String name;
 	
-	private boolean isSaboteur;
+	private boolean isVillain;
 	
 	private ArrayList<Card> hand;
 	
@@ -33,12 +33,12 @@ public class Player {
 	}
 
 	/**
-	 * Gets if this player is a saboteur
+	 * Gets if this player is a villain
 	 *
-	 * @return      True if this player is a saboteur. False otherwise
+	 * @return      True if this player is a villain. False otherwise
 	 */
-	public boolean isSaboteur() {
-		return isSaboteur;
+	public boolean isVillain() {
+		return isVillain;
 	}
 
 	/**
@@ -56,9 +56,9 @@ public class Player {
 	
 	/* METHODS */
 	/**
-	 * Set this player to be a saboteur
+	 * Set this player to be a villain
 	 */
-	public void setAsSaboteur() {
-		this.isSaboteur = true;
+	public void setAsVillain() {
+		this.isVillain = true;
 	}
 }

@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -113,19 +111,13 @@ public class Main extends Application {
 	Button discard;
 	
 	private void showGameScene(int boardWidth, int boardHeight, int playerCount) {
-		gameController = new GameController(boardWidth, boardHeight, 20);
-
 		initialiseGameScene();
 		_window.setScene(_game);
 
-		/* Add anonymous listener */
+		gameController = new GameController();
+		
+		/* Hook anonymous listener to the game controller */
 		gameController.addListener(new GameListener() {
-
-			@Override
-			public void onTurnUpdate(String text) {
-				topText.setText(text);
-			}
-
 			@Override
 			public void onHandUpdate(ArrayList<ImageView> handImages) {
 				hand.getChildren().clear();
@@ -145,15 +137,6 @@ public class Main extends Application {
 				board.getChildren().clear();
 
 				for (TileImageView image : boardImages) {
-					image.setOnMouseEntered(e -> _game.setCursor(Cursor.HAND));
-					image.setOnMouseExited(e -> _game.setCursor(Cursor.DEFAULT));
-					image.setOnMouseClicked(new EventHandler<MouseEvent>() {
-						@Override
-						public void handle(MouseEvent e) {
-							TileImageView image = (TileImageView) e.getSource();
-							placeCurrentCard(image.getxPos(), image.getyPos());
-						}
-					});
 					board.add(image, image.getxPos(), image.getyPos());
 				}
 			}
@@ -164,17 +147,22 @@ public class Main extends Application {
 			}
 
 			@Override
-			public void onCardSelected() {
+			public void onCardSelected(ImageView cardImage) {
 				for (Node card : hand.getChildren()) {
 			        ((ImageView)card).setVisible(true);
 				}
+				
+				cardImage.setVisible(false);
+				
 				rotate.setDisable(false);
 				discard.setDisable(false);
 				board.setDisable(false);
 			}
 
 			@Override
-			public void onTurnStart() {
+			public void onTurnStart(String text) {
+				topText.setText(text);
+				
 				rotate.setDisable(true);
 				discard.setDisable(true);
 				inspector.setImage(null);
@@ -188,7 +176,7 @@ public class Main extends Application {
 			}
 		});
 
-		gameController.initialiseGame(playerCount);
+		gameController.initialiseGame(boardWidth, boardHeight, 20, playerCount);
 	}
 	
 	private void initialiseGameScene() {
@@ -252,15 +240,11 @@ public class Main extends Application {
 		_game = new Scene(main, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
 
-	private void discardCurrentCard() {
+	private void discardCurrentCard() {		
 		gameController.discardCurrentCard();
 	}
 	
 	private void rotateCurrentCard() {
 		gameController.rotateCurrentCard();
-	}
-	
-	private void placeCurrentCard(int x, int y) {
-		gameController.placeCurrentCard(x, y);
 	}
 }
