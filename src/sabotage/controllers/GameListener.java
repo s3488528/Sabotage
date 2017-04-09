@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import javafx.scene.image.ImageView;
 import sabotage.core.Card;
 import sabotage.core.Tile;
-import sabotage.ui.TileImageView;
 
 public interface GameListener {
 	void onHandUpdate(ArrayList<Card> handCards);

@@ -1,26 +1,10 @@
 package sabotage.controllers;
 
-import java.util.ArrayList;
-
-import javafx.event.EventHandler;
-import javafx.scene.Cursor;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import sabotage.core.Card;
 import sabotage.core.GameContext;
-import sabotage.core.PathCard;
 import sabotage.core.Player;
 import sabotage.core.Tile;
-import sabotage.core.cards.CornerCard;
-import sabotage.core.cards.DeadEndCard;
-import sabotage.core.cards.DemolishCard;
-import sabotage.core.cards.HostageCard;
-import sabotage.core.cards.RescueCard;
-import sabotage.core.cards.StraightCard;
-import sabotage.core.cards.TIntersectionCard;
-import sabotage.core.cards.XIntersectionCard;
-import sabotage.ui.TileImageView;
 
 public class GameController {
 
