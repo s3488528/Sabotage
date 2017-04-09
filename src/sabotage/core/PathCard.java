@@ -1,4 +1,4 @@
-package edu.oosd.sabotage.core;
+package sabotage.core;
 
 public abstract class PathCard extends Card implements Rotatable, Connectable {
 

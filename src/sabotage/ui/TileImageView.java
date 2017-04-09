@@ -1,4 +1,4 @@
-package edu.oosd.sabotage.ui;
+package sabotage.ui;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

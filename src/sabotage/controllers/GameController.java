@@ -1,26 +1,26 @@
-package edu.oosd.sabotage.controllers;
+package sabotage.controllers;
 
 import java.util.ArrayList;
 
+import sabotage.core.Card;
+import sabotage.core.GameContext;
+import sabotage.core.PathCard;
+import sabotage.core.Player;
+import sabotage.core.Tile;
+import sabotage.core.cards.CornerCard;
+import sabotage.core.cards.DeadEndCard;
+import sabotage.core.cards.DemolishCard;
+import sabotage.core.cards.HostageCard;
+import sabotage.core.cards.RescueCard;
+import sabotage.core.cards.StraightCard;
+import sabotage.core.cards.TIntersectionCard;
+import sabotage.core.cards.XIntersectionCard;
+import sabotage.ui.TileImageView;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import edu.oosd.sabotage.core.Card;
-import edu.oosd.sabotage.core.GameContext;
-import edu.oosd.sabotage.core.PathCard;
-import edu.oosd.sabotage.core.Player;
-import edu.oosd.sabotage.core.Tile;
-import edu.oosd.sabotage.core.cards.CornerCard;
-import edu.oosd.sabotage.core.cards.DeadEndCard;
-import edu.oosd.sabotage.core.cards.DemolishCard;
-import edu.oosd.sabotage.core.cards.HostageCard;
-import edu.oosd.sabotage.core.cards.RescueCard;
-import edu.oosd.sabotage.core.cards.StraightCard;
-import edu.oosd.sabotage.core.cards.TIntersectionCard;
-import edu.oosd.sabotage.core.cards.XIntersectionCard;
-import edu.oosd.sabotage.ui.TileImageView;
 
 public class GameController {
 

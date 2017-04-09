@@ -1,6 +1,6 @@
-package edu.oosd.sabotage.core.cards;
+package sabotage.core.cards;
 
-import edu.oosd.sabotage.core.ActionCard;
+import sabotage.core.ActionCard;
 
 
 

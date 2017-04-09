@@ -1,9 +1,9 @@
-package edu.oosd.sabotage.controllers;
+package sabotage.controllers;
 
 import java.util.ArrayList;
 
+import sabotage.ui.TileImageView;
 import javafx.scene.image.ImageView;
-import edu.oosd.sabotage.ui.TileImageView;
 
 public interface GameListener {
 	void onHandUpdate(ArrayList<ImageView> handImages);

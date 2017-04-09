@@ -1,19 +1,19 @@
-package edu.oosd.sabotage.core;
+package sabotage.core;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import edu.oosd.sabotage.core.cards.CornerCard;
-import edu.oosd.sabotage.core.cards.DeadEndCard;
-import edu.oosd.sabotage.core.cards.DemolishCard;
-import edu.oosd.sabotage.core.cards.GoalCard;
-import edu.oosd.sabotage.core.cards.HostageCard;
-import edu.oosd.sabotage.core.cards.RescueCard;
-import edu.oosd.sabotage.core.cards.StraightCard;
-import edu.oosd.sabotage.core.cards.TIntersectionCard;
-import edu.oosd.sabotage.core.cards.XIntersectionCard;
+import sabotage.core.cards.CornerCard;
+import sabotage.core.cards.DeadEndCard;
+import sabotage.core.cards.DemolishCard;
+import sabotage.core.cards.GoalCard;
+import sabotage.core.cards.HostageCard;
+import sabotage.core.cards.RescueCard;
+import sabotage.core.cards.StraightCard;
+import sabotage.core.cards.TIntersectionCard;
+import sabotage.core.cards.XIntersectionCard;
 
 enum cardType {
 	deadend,

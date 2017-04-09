@@ -1,4 +1,4 @@
-package edu.oosd.sabotage.core;
+package sabotage.core;
 
 /**
  * An enumeration representing the four cardinal directions

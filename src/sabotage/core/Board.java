@@ -1,13 +1,13 @@
-package edu.oosd.sabotage.core;
+package sabotage.core;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import edu.oosd.sabotage.core.cards.DemolishCard;
-import edu.oosd.sabotage.core.cards.GoalCard;
-import edu.oosd.sabotage.core.cards.HostageCard;
-import edu.oosd.sabotage.core.cards.RescueCard;
+import sabotage.core.cards.DemolishCard;
+import sabotage.core.cards.GoalCard;
+import sabotage.core.cards.HostageCard;
+import sabotage.core.cards.RescueCard;
 
 public class Board {
 	

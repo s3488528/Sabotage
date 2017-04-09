@@ -1,6 +1,6 @@
-package edu.oosd.sabotage.core;
+package sabotage.core;
 
-import edu.oosd.sabotage.core.cards.HostageCard;
+import sabotage.core.cards.HostageCard;
 
 public class Tile {
 
