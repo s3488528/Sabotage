@@ -24,6 +24,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import sabotage.controllers.GameController;
 import sabotage.controllers.GameListener;
+import sabotage.controllers.JavaFXGameListener;
 
 public class Main extends Application {
 
@@ -116,65 +117,9 @@ public class Main extends Application {
 
 		gameController = new GameController();
 		
-		/* Hook anonymous listener to the game controller */
-		gameController.addListener(new GameListener() {
-			@Override
-			public void onHandUpdate(ArrayList<ImageView> handImages) {
-				hand.getChildren().clear();
-				
-				for (ImageView image : handImages) {
-					hand.getChildren().add(image);
-				}
-			}
-
-			@Override
-			public void onLogUpdate(String logAppendText) {
-				log.appendText(logAppendText + "\n");
-			}
-
-			@Override
-			public void onBoardUpdate(ArrayList<TileImageView> boardImages) {
-				board.getChildren().clear();
-
-				for (TileImageView image : boardImages) {
-					board.add(image, image.getxPos(), image.getyPos());
-				}
-			}
-
-			@Override
-			public void onDeckTextUpdate(String text) {
-				deckText.setText(text);
-			}
-
-			@Override
-			public void onCardSelected(ImageView cardImage) {
-				for (Node card : hand.getChildren()) {
-			        ((ImageView)card).setVisible(true);
-				}
-				
-				cardImage.setVisible(false);
-				
-				rotate.setDisable(false);
-				discard.setDisable(false);
-				board.setDisable(false);
-			}
-
-			@Override
-			public void onTurnStart(String text) {
-				topText.setText(text);
-				
-				rotate.setDisable(true);
-				discard.setDisable(true);
-				inspector.setImage(null);
-				board.setDisable(true);
-			}
-
-			@Override
-			public void onInspectorRefresh(ImageView card) {
-				inspector.setImage(card.getImage());
-				inspector.setRotate(card.getRotate());
-			}
-		});
+		/* Hook new JavaFXListener to the game controller */
+		gameController.addListener(new JavaFXGameListener(gameController, topText, log, board, 
+				hand, inspector, rotate, deckText, discard));
 
 		gameController.initialiseGame(boardWidth, boardHeight, 20, playerCount);
 	}
