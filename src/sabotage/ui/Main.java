@@ -2,8 +2,6 @@ package sabotage.ui;
 
 import java.util.ArrayList;
 
-import sabotage.controllers.GameController;
-import sabotage.controllers.GameListener;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -24,6 +22,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import sabotage.controllers.GameController;
+import sabotage.controllers.GameListener;
 
 public class Main extends Application {
 

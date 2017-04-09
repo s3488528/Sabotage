@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import sabotage.core.cards.DemolishCard;
 import sabotage.core.cards.GoalCard;
 import sabotage.core.cards.HostageCard;
 import sabotage.core.cards.RescueCard;
