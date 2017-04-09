@@ -258,12 +258,6 @@ public class GameController {
 	}
 
 	/**
-	 * Draws one card from the deck and gives it to the current player
-	 */
-	public void drawFromDeck() {
-	}
-
-	/**
 	 * Cycle to the next player and update the UI
 	 */
 	public void turnCompleted() {

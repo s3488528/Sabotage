@@ -17,18 +17,18 @@ public interface Rotatable {
 	 *
 	 * @return      The angle in degrees
 	 */
-	Angle getRotation();
+	abstract Angle getRotation();
 
 	/**
 	 * Gets this object's angle in degrees.
 	 *
 	 * @return      The angle in degrees
 	 */
-	double getRotationAsDouble();
+	abstract double getRotationAsDouble();
 
 	/**
 	 * Sets this object's angle in degrees.
 	 */
-	void setRotation(Angle angle);
+	abstract void setRotation(Angle angle);
 	 
 }

@@ -7,10 +7,10 @@ public interface Connectable {
 	 *
 	 * @return      True if connection is valid. False otherwise
 	 */
-	boolean isConnectable(Connectable other, Direction direction);
+	abstract boolean isConnectable(Connectable other, Direction direction);
 
 	/**
 	 * Gets this object's connections
 	 */
-	boolean[] getConnections(); 
+	abstract boolean[] getConnections(); 
 }
