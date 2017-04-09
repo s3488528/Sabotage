@@ -13,9 +13,9 @@ The open/closed principle can be seen with the Connectable and Rotatable interfa
 
 The Liskov substitution principle can be seen with the Card class. All the properties of a Card class can also be held true for any of its subclasses. For example, a Card object is able to be a part of a Player's hand, as well as a Board's deck. This is also true for any PathCard, ActionCard, and is still true for any further subclassed classes such as a CornerCard or a HostageCard.
 
-An example of the interface segregation principle in this project are the two PathCard interfaces: Connectable and Rotatable. These interfaces abstract away distinct properties of a PathCard, improving cohesion.
+An example of the interface segregation principle in this project are the two PathCard interfaces: Connectable and Rotatable. These interfaces abstract away distinct properties of a PathCard, improving cohesion. This also means that any new cards that uses rotation / connectability can re-use these interfaces.
 
 The dependency inversion principle is seen in the GameListener and the JavaFXGameListener. These two classes allow the high level code (GameController/GameContext) is able to remain separate from the low level code (Main). This segregation is achieved in two parts:
- - The GameListener interface exposes UI 'events' which can be called by the model
- - The JavaFXGameListener provides a JavaFX-specific implementation to handle the 'events'
- 
+ - The GameListener interface exposes 'UI events' which can be called by the model
+ - The JavaFXGameListener provides a JavaFX-specific implementation to handle the 'UI events'
+This way, different UI implementations can still handle the same 'UI events' by creating a new class (Say AwtGameListener for an AWT implementation) without changing the model.
