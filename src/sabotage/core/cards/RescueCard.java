@@ -1,6 +1,7 @@
 package sabotage.core.cards;
 
 import sabotage.core.ActionCard;
+import sabotage.core.Tile;
 
 
 
@@ -10,6 +11,11 @@ public class RescueCard extends ActionCard {
 		super();
 	}
 
+	@Override
+	public void placeCardOnTile(Tile tile) {
+		tile.setActionCard(null); /* Remove hostage action card */
+	}	
+	
 	@Override
 	public String getPlacedText(String playerName, int x, int y) {
 		return playerName + " has rescued the hostage at position: " + x + ", " + y;

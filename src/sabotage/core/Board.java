@@ -177,29 +177,4 @@ public class Board {
 		
 		return false;
 	}
-
-	/**
-	 * Places a card on the board
-	 * @param card	The card to place
-	 * @param x		The x position of the tile
-	 * @param y		The y position of the tile
-	 */	
-	public void placeCard(Card card, int x, int y) {
-		Tile tile = tiles[y][x];
-		
-		if (card instanceof PathCard) {
-			tile.setPathCard((PathCard) card);				
-		} else if (card instanceof ActionCard) {
-			if (card instanceof DemolishCard) {
-				tile.setPathCard(null);
-				tile.setActionCard(null);
-			} else if (card instanceof HostageCard) {
-				tile.setActionCard((ActionCard) card);
-			} else if (card instanceof RescueCard) {
-				tile.setActionCard(null); /* Remove the hostage action card */
-			}
-		}
-
-		tiles[y][x] = tile;
-	}
 }

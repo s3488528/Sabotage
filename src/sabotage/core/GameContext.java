@@ -95,7 +95,7 @@ public class GameContext {
 	 * Places the current card on the board
 	 */
 	public void placeCurrentCard(int x, int y) {
-		board.placeCard(currentCard, x, y);
+		currentCard.placeCardOnTile(board.getTiles()[y][x]);
 		currentPlayer.getHand().remove(currentCard);
 	}
 
