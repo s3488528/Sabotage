@@ -25,17 +25,17 @@ import javafx.scene.input.MouseEvent;
 public class GameController {
 
 	/* Image Constants */
-	Image EMPTYIMAGE = new Image("/edu/oosd/sabotage/assets/images/empty.png");
-	Image DEADENDIMAGE = new Image("/edu/oosd/sabotage/assets/images/deadend.png");
-	Image CORNERIMAGE = new Image("/edu/oosd/sabotage/assets/images/corner.png");
-	Image STRAIGHTIMAGE = new Image("/edu/oosd/sabotage/assets/images/straight.png");
-	Image TINTIMAGE = new Image("/edu/oosd/sabotage/assets/images/tintersection.png");
-	Image XINTIMAGE = new Image("/edu/oosd/sabotage/assets/images/xintersection.png");
-	Image DEMOLISHIMAGE = new Image("/edu/oosd/sabotage/assets/images/demolish.png");
-	Image HOSTAGEIMAGE = new Image("/edu/oosd/sabotage/assets/images/hostage.png");
-	Image RESCUEIMAGE = new Image("/edu/oosd/sabotage/assets/images/rescue.png");
-	Image GOALIMAGE = new Image("/edu/oosd/sabotage/assets/images/goal.png");
-	Image BACKIMAGE = new Image("/edu/oosd/sabotage/assets/images/back.png");
+	Image EMPTYIMAGE = new Image("/sabotage/assets/images/empty.png");
+	Image DEADENDIMAGE = new Image("/sabotage/assets/images/deadend.png");
+	Image CORNERIMAGE = new Image("/sabotage/assets/images/corner.png");
+	Image STRAIGHTIMAGE = new Image("/sabotage/assets/images/straight.png");
+	Image TINTIMAGE = new Image("/sabotage/assets/images/tintersection.png");
+	Image XINTIMAGE = new Image("/sabotage/assets/images/xintersection.png");
+	Image DEMOLISHIMAGE = new Image("/sabotage/assets/images/demolish.png");
+	Image HOSTAGEIMAGE = new Image("/sabotage/assets/images/hostage.png");
+	Image RESCUEIMAGE = new Image("/sabotage/assets/images/rescue.png");
+	Image GOALIMAGE = new Image("/sabotage/assets/images/goal.png");
+	Image BACKIMAGE = new Image("/sabotage/assets/images/back.png");
 
 	private GameContext gc;
 	private GameListener listener;
