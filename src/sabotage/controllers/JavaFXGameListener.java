@@ -78,7 +78,7 @@ public class JavaFXGameListener implements GameListener {
 			temp.setFitWidth(64);
 			temp.setOnMouseEntered(e -> temp.getScene().setCursor(Cursor.HAND));
 			temp.setOnMouseExited(e -> temp.getScene().setCursor(Cursor.DEFAULT));
-			temp.setOnMouseClicked(e -> gameCon.handCardClicked(temp, card));
+			temp.setOnMouseClicked(e -> gameCon.handCardClicked(card));
 
 			handImages.add(temp);
 		}
@@ -158,13 +158,7 @@ public class JavaFXGameListener implements GameListener {
 	}
 
 	@Override
-	public void onCardSelected(ImageView cardImage) {
-		for (Node card : hand.getChildren()) {
-			((ImageView) card).setVisible(true);
-		}
-
-		cardImage.setVisible(false);
-
+	public void onCardSelected() {
 		rotate.setDisable(false);
 		discard.setDisable(false);
 		board.setDisable(false);

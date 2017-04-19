@@ -11,7 +11,7 @@ public interface GameListener {
 	void onLogUpdate(String logAppendText);
 	void onBoardUpdate(Tile[][] tiles);
 	void onDeckUpdate(int deckCount);
-	void onCardSelected(ImageView cardImage);
+	void onCardSelected();
 	void onInspectorRefresh(Card card);
 	void onTurnStart(String playerName, boolean isVillain);
 }

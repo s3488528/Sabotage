@@ -108,10 +108,10 @@ public class GameController {
 	 * @param cardImage	The ImageView of the card being clicked
 	 * @param card		The Card being clicked
 	 */
-	public void handCardClicked(ImageView cardImage, Card card) {
+	public void handCardClicked(Card card) {
 		gc.setCurrentCard(card);
-
-		listener.onCardSelected(cardImage);
+		
+		listener.onCardSelected();
 		displayCurrentCard();
 	}
 
