@@ -75,7 +75,7 @@ public class GameController {
 		/* Display the current player's hand */
 		displayHand();
 
-		listener.onTurnStart(player.getName(), player.isVillain());
+		listener.onTurnStart(player.getName(), player.getColor(), player.isVillain());
 
 		/* Output to log */
 		listener.onLogUpdate("==========");

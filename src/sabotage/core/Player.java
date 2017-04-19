@@ -7,6 +7,8 @@ public class Player {
 	/* DECLARATIONS */
 	private String name;
 	
+	private PlayerColour color;
+
 	private boolean isVillain;
 	
 	private ArrayList<Card> hand;
@@ -17,9 +19,10 @@ public class Player {
 	 *
 	 * @param	name	This player's name
 	 */
-	public Player(String name) {
+	public Player(String name, PlayerColour color) {
 		this.name = name;
 		this.hand = new ArrayList<Card>();
+		this.color = color;
 	}
 
 	/* GETTERS & SETTERS */
@@ -49,15 +52,24 @@ public class Player {
 	public ArrayList<Card> getHand() {
 		return hand;
 	}
-	
-	public void addCardToHand(Card card) {
-		hand.add(card);
+
+	/**
+	 * Gets this player's color
+	 *
+	 * @return      This player's color
+	 */
+	public PlayerColour getColor() {
+		return color;
 	}
 	
 	/* METHODS */
 	/**
 	 * Set this player to be a villain
-	 */
+	 */	
+	public void addCardToHand(Card card) {
+		hand.add(card);
+	}
+	
 	public void setAsVillain() {
 		this.isVillain = true;
 	}

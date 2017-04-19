@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javafx.scene.image.ImageView;
 import sabotage.core.Card;
+import sabotage.core.PlayerColour;
 import sabotage.core.Tile;
 
 public interface GameListener {
@@ -13,5 +14,5 @@ public interface GameListener {
 	void onDeckUpdate(int deckCount);
 	void onCardSelected();
 	void onInspectorRefresh(Card card);
-	void onTurnStart(String playerName, boolean isVillain);
+	void onTurnStart(String playerName, PlayerColour playerColor, boolean isVillain);
 }

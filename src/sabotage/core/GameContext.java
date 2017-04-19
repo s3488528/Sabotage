@@ -43,9 +43,9 @@ public class GameContext {
 	 */
 	public void initializePlayers(int playerCount) {
 		players = new ArrayList<Player>();
-		
+				
 		for (int i = 0; i < playerCount; i++) {
-			Player tempPlayer = new Player("Player " + (i + 1));
+			Player tempPlayer = new Player("Player " + (i + 1), PlayerColour.values()[i]);
 			
 			for (int j = 0; j < 5; j++) {
 				tempPlayer.addCardToHand(CardBuilder.createRandomCard());

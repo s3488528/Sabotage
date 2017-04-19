@@ -12,8 +12,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import sabotage.core.Card;
+import sabotage.core.PlayerColour;
 import sabotage.core.PathCard;
 import sabotage.core.Tile;
 import sabotage.core.cards.CornerCard;
@@ -165,11 +167,32 @@ public class JavaFXGameListener implements GameListener {
 	}
 
 	@Override
-	public void onTurnStart(String playerName, boolean isVillain) {
+	public void onTurnStart(String playerName, PlayerColour playerColor, boolean isVillain) {
 		if (!isVillain) {
 			topText.setText(playerName + "'s turn.");
 		} else {
 			topText.setText(playerName + "'s turn (You are a villain).");
+		}
+		
+		switch (playerColor) {
+			case red:
+				topText.setFill(Color.RED);
+				break;
+			case blue:
+				topText.setFill(Color.BLUE);
+				break;
+			case green:
+				topText.setFill(Color.GREEN);
+				break;
+			case yellow:
+				topText.setFill(Color.GOLD);
+				break;
+			case teal:
+				topText.setFill(Color.TEAL);
+				break;
+			case orange:
+				topText.setFill(Color.ORANGE);
+				break;
 		}
 
 		rotate.setDisable(true);
