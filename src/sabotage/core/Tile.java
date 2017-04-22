@@ -8,6 +8,7 @@ public class Tile {
 	private Board parentBoard;
 	private PathCard pathCard = null;
 	private ActionCard actionCard = null;
+	private boolean active = false;
 
 	/* CONSTRUCTORS */
 	/**
@@ -49,5 +50,22 @@ public class Tile {
 	 */
 	public boolean hasHostage() {		
 		return (actionCard instanceof HostageCard);
+	}
+
+	/**
+	 * Gets if this tile has a path card and is reachable from the starting tile
+	 * @return	True if active, false otherwise
+	 */
+	public boolean isActive() {
+		return active;
+	}
+
+
+	/**
+	 * Sets if this tile has a path card and is reachable from the starting tile
+	 * @param active True if active, false otherwise
+	 */
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

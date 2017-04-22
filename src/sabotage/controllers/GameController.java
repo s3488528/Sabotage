@@ -133,6 +133,8 @@ public class GameController {
 
 			gc.placeCurrentCard(x, y);
 			gc.setCurrentCard(null);
+			
+			gc.validateActiveTiles();
 
 			turnCompleted();
 		} else {

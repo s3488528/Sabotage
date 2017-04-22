@@ -121,6 +121,10 @@ public class GameContext {
 		
 		currentPlayer = players.get(currentIndex);
 	}
+
+	public void validateActiveTiles() {
+		board.validateActiveTiles();
+	}
 	
 	/**
 	 * Draws one card from the deck and gives it to the current player

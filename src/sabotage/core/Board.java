@@ -12,6 +12,8 @@ public class Board {
 	
 	private Tile[][] tiles;
 	
+	private int startingY;
+	
 	private Random random = new Random();
 
 	/* CONSTRUCTORS */
@@ -37,8 +39,10 @@ public class Board {
 		}
 		
 		/* Set a random tile on the left as the starting tile */
-		Tile startingTile = tiles[random.nextInt(boardHeight)][0];
+		startingY = random.nextInt(boardHeight);
+		Tile startingTile = tiles[startingY][0];
 		startingTile.setPathCard(CardBuilder.createStartingCard(startingTile));
+		startingTile.setActive(true);
 
 		/* Set 3 random tiles on the right as the goal tiles */		
 		Collections.shuffle(rightTiles);
@@ -95,7 +99,7 @@ public class Board {
 					if (!card.isConnectable(northTile.getPathCard(), Direction.N) || northTile.hasHostage()) {
 						return false;
 					} else {
-						if (card.getConnections()[0]) {
+						if (card.getConnections()[0] && northTile.isActive()) {
 							connected = true;
 						}
 					}
@@ -105,11 +109,11 @@ public class Board {
 			if (checkE) {			
 				Tile eastTile = getTiles()[y][x + 1];
 
-				if (eastTile.getPathCard() != null) {
+				if (eastTile.getPathCard() != null ) {
 					if (!card.isConnectable(eastTile.getPathCard(), Direction.E) || eastTile.hasHostage()) {
 						return false;
 					} else {
-						if (card.getConnections()[1]) {
+						if (card.getConnections()[1] && eastTile.isActive()) {
 							connected = true;
 						}
 					}
@@ -123,7 +127,7 @@ public class Board {
 					if (!card.isConnectable(southTile.getPathCard(), Direction.S) || southTile.hasHostage()) {
 						return false;
 					} else {
-						if (card.getConnections()[2]) {
+						if (card.getConnections()[2] && southTile.isActive()) {
 							connected = true;
 						}	
 					}
@@ -137,7 +141,7 @@ public class Board {
 					if (!card.isConnectable(westTile.getPathCard(), Direction.W) || westTile.hasHostage()) {
 						return false;
 					} else {
-						if (card.getConnections()[3]) {
+						if (card.getConnections()[3] && westTile.isActive()) {
 							connected = true;
 						}
 					}
@@ -152,10 +156,9 @@ public class Board {
 				return false;
 			}
 			
-		} else if (validationCard instanceof ActionCard) {
-
+		} else if (validationCard instanceof ActionCard) {			
 			/* Action cards cannot be played on a goal card or the starting card */
-			if (existingTile.getPathCard() instanceof GoalCard || existingTile.getPathCard().isStartingCard()) {
+			if (existingTile.getPathCard() == null || existingTile.getPathCard() instanceof GoalCard || existingTile.getPathCard().isStartingCard()) {
 				return false;
 			}
 			
@@ -164,7 +167,7 @@ public class Board {
 					return true;
 				}
 			} else if (validationCard instanceof HostageCard) {
-				if (existingTile.getPathCard() != null && !tiles[y][x].hasHostage()) {
+				if (!tiles[y][x].hasHostage()) {
 					return true;
 				}
 			} else {
@@ -175,5 +178,91 @@ public class Board {
 		}
 		
 		return false;
+	}
+
+	public void validateActiveTiles() {
+		/* Clear all tiles active on the board */
+		for (int y = 0; y < tiles.length; y++) { 
+			for (int x = 0; x < tiles[0].length; x++) { 
+				tiles[y][x].setActive(false);
+			}
+		}
+		
+		// Direction.E is a hack, since we know that all starting tiles will start on the left edge
+		recursivelyActivateTiles(0, startingY, Direction.E);
+	}
+	
+	/***
+	 * Validates all tiles' active states (i.e. tile is connected to the starting path card)
+	 * @param x				The x-position of the tile being validated
+	 * @param y				The y-position of the tile being validated
+	 * @param direction		The direction from the previously recursed tile (so we don't re-validate tiles)
+	 */
+	private void recursivelyActivateTiles(int x, int y, Direction direction) {		
+		/* Break out if tile has a hostage */
+		if (tiles[y][x].hasHostage()) {
+			return;
+		}
+
+		// Set this tile as active
+		tiles[y][x].setActive(true);
+				
+		boolean checkN = true;
+		boolean checkE = true;
+		boolean checkS = true;
+		boolean checkW = true;		
+
+		PathCard card = tiles[y][x].getPathCard();
+		
+		/* No need to check outside edge tiles */
+		if (y == 0)						{ checkN = false; }
+		if (y == tiles.length - 1) 		{ checkS = false; }
+ 		if (x == 0) 					{ checkW = false; }
+		if (x == tiles[0].length - 1 ) 	{ checkE = false; }
+
+		/* No need to re-check tiles */
+		if (direction == Direction.S)	{ checkN = false; }
+		if (direction == Direction.W) 	{ checkE = false; }
+		if (direction == Direction.N)	{ checkS = false; }
+ 		if (direction == Direction.E)	{ checkW = false; }
+		
+		/* No need to check tiles unconnected by path card */
+		boolean[] conn = card.getConnections();
+		if (!conn[0])	{ checkN = false; }
+		if (!conn[1]) 	{ checkE = false; }
+		if (!conn[2])	{ checkS = false; }
+ 		if (!conn[3])	{ checkW = false; }
+
+		if (checkN) {
+			Tile northTile = tiles[y - 1][x];
+			
+			if (northTile.getPathCard() != null && northTile.isActive() == false) {
+				recursivelyActivateTiles(x, y - 1, Direction.N);
+			}
+		}
+		
+		if (checkE) {
+			Tile eastTile = getTiles()[y][x + 1];
+
+			if (eastTile.getPathCard() != null && eastTile.isActive() == false) {
+				recursivelyActivateTiles(x + 1, y, Direction.E);
+			}
+		}
+		
+		if (checkS) {
+			Tile southTile = getTiles()[y + 1][x];
+
+			if (southTile.getPathCard() != null && southTile.isActive() == false) {
+				recursivelyActivateTiles(x, y + 1, Direction.S);
+			}
+		}
+		
+		if (checkW) {
+			Tile eastTile = getTiles()[y][x - 1];
+
+			if (eastTile.getPathCard() != null && eastTile.isActive() == false) {
+				recursivelyActivateTiles(x - 1, y, Direction.W);
+			}
+		}		
 	}
 }
