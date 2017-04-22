@@ -23,14 +23,15 @@ public class GoalCard extends PathCard {
 		return isRevealed;
 	}
 
-	public void setRevealed(boolean isRevealed) {
-		this.isRevealed = isRevealed;
+	public void reveal() {
+		isRevealed = true;
 	}
 
 	@Override
 	public void placeCardOnTile(Tile tile) {
 		tile.setPathCard(this);
 	}	
+	
 	@Override
 	public String getPlacedText(String playerName, int x, int y) {
 		return "";

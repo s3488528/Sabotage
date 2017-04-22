@@ -214,6 +214,12 @@ public class Board {
 
 		PathCard card = tiles[y][x].getPathCard();
 		
+		if (card instanceof GoalCard) {
+			((GoalCard) card).reveal();
+			tiles[y][x].setActive(false);
+			return;
+		}
+		
 		/* No need to check outside edge tiles */
 		if (y == 0)						{ checkN = false; }
 		if (y == tiles.length - 1) 		{ checkS = false; }

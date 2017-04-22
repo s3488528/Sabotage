@@ -21,6 +21,7 @@ import sabotage.core.Tile;
 import sabotage.core.cards.CornerCard;
 import sabotage.core.cards.DeadEndCard;
 import sabotage.core.cards.DemolishCard;
+import sabotage.core.cards.GoalCard;
 import sabotage.core.cards.HostageCard;
 import sabotage.core.cards.RescueCard;
 import sabotage.core.cards.StraightCard;
@@ -114,7 +115,7 @@ public class JavaFXGameListener implements GameListener {
 				PathCard card = tile.getPathCard();
 				TileImageView temp;
 
-				if (card == null) {
+				if (card == null) {					
 					temp = new TileImageView(EMPTYIMAGE, x, y);
 				} else if (tile.hasHostage()) {
 					temp = new TileImageView(HOSTAGEIMAGE, x, y);
@@ -159,7 +160,14 @@ public class JavaFXGameListener implements GameListener {
 					}
 					temp.setRotate(card.getRotationAsDouble());
 					
-				} else {
+				} else if (card instanceof GoalCard) {
+					if (((GoalCard) card).isRevealed()) {
+						temp = new TileImageView(XINTIMAGE, x, y);
+					} else {
+						temp = new TileImageView(BACKIMAGE, x, y);
+					}
+					
+				} else {					
 					/* Should never reach here */
 					temp = new TileImageView(BACKIMAGE, x, y);
 				}
