@@ -96,7 +96,7 @@ public class Board {
 				Tile northTile = getTiles()[y - 1][x];
 
 				if (northTile.getPathCard() != null) {
-					if (!card.isConnectable(northTile.getPathCard(), Direction.N) || northTile.hasHostage()) {
+					if (!card.isConnectable(northTile.getPathCard(), Direction.N)) {
 						return false;
 					} else {
 						if (card.getConnections()[0] && northTile.isActive()) {
@@ -110,7 +110,7 @@ public class Board {
 				Tile eastTile = getTiles()[y][x + 1];
 
 				if (eastTile.getPathCard() != null ) {
-					if (!card.isConnectable(eastTile.getPathCard(), Direction.E) || eastTile.hasHostage()) {
+					if (!card.isConnectable(eastTile.getPathCard(), Direction.E)) {
 						return false;
 					} else {
 						if (card.getConnections()[1] && eastTile.isActive()) {
@@ -124,7 +124,7 @@ public class Board {
 				Tile southTile = getTiles()[y + 1][x];
 
 				if (southTile.getPathCard() != null) {
-					if (!card.isConnectable(southTile.getPathCard(), Direction.S) || southTile.hasHostage()) {
+					if (!card.isConnectable(southTile.getPathCard(), Direction.S)) {
 						return false;
 					} else {
 						if (card.getConnections()[2] && southTile.isActive()) {
@@ -138,7 +138,7 @@ public class Board {
 				Tile westTile = getTiles()[y][x - 1];
 
 				if (westTile.getPathCard() != null) {
-					if (!card.isConnectable(westTile.getPathCard(), Direction.W) || westTile.hasHostage()) {
+					if (!card.isConnectable(westTile.getPathCard(), Direction.W)) {
 						return false;
 					} else {
 						if (card.getConnections()[3] && westTile.isActive()) {
@@ -198,14 +198,14 @@ public class Board {
 	 * @param y				The y-position of the tile being validated
 	 * @param direction		The direction from the previously recursed tile (so we don't re-validate tiles)
 	 */
-	private void recursivelyActivateTiles(int x, int y, Direction direction) {		
+	private void recursivelyActivateTiles(int x, int y, Direction direction) {	
+		// Set this tile as active	
+		tiles[y][x].setActive(true);
+		
 		/* Break out if tile has a hostage */
 		if (tiles[y][x].hasHostage()) {
 			return;
 		}
-
-		// Set this tile as active
-		tiles[y][x].setActive(true);
 				
 		boolean checkN = true;
 		boolean checkE = true;
