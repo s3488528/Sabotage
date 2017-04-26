@@ -27,7 +27,7 @@ import sabotage.core.cards.RescueCard;
 import sabotage.core.cards.StraightCard;
 import sabotage.core.cards.TIntersectionCard;
 import sabotage.core.cards.XIntersectionCard;
-import sabotage.ui.TileImageView;
+import sabotage.ui.TileStackPane;
 
 public class JavaFXGameListener implements GameListener {
 
@@ -47,6 +47,7 @@ public class JavaFXGameListener implements GameListener {
 	
 	Image DEMOLISHIMAGE = new Image("/sabotage/assets/images/demolish.png");
 	Image HOSTAGEIMAGE = new Image("/sabotage/assets/images/hostage.png");
+	Image HOSTAGEICONIMAGE = new Image("/sabotage/assets/images/hostage_icon.png");
 	Image RESCUEIMAGE = new Image("/sabotage/assets/images/rescue.png");
 	Image GOALIMAGE = new Image("/sabotage/assets/images/goal.png");
 	Image BACKIMAGE = new Image("/sabotage/assets/images/back.png");
@@ -107,90 +108,95 @@ public class JavaFXGameListener implements GameListener {
 
 	@Override
 	public void onBoardUpdate(Tile[][] tiles) {
-		ArrayList<TileImageView> boardImages = new ArrayList<TileImageView>();
+		ArrayList<TileStackPane> boardImages = new ArrayList<TileStackPane>();
 
 		for (int y = 0; y < tiles.length; y++) {
 			for (int x = 0; x < tiles[y].length; x++) {
 				Tile tile = tiles[y][x];
 				PathCard card = tile.getPathCard();
-				TileImageView temp;
+				TileStackPane tsp = new TileStackPane(x, y);			
+				ImageView image;
 
-				if (card == null) {					
-					temp = new TileImageView(EMPTYIMAGE, x, y);
-				} else if (tile.hasHostage()) {
-					temp = new TileImageView(HOSTAGEIMAGE, x, y);
-					temp.setRotate(0);
+				if (card == null) {			
+					image = new ImageView(EMPTYIMAGE);
 				} else if (card instanceof DeadEndCard) {		
 					if (!tile.isActive()) {
-						temp = new TileImageView(DEADENDINACTIVEIMAGE, x, y);
+						image = new ImageView(DEADENDINACTIVEIMAGE);
 					} else {
-						temp = new TileImageView(DEADENDIMAGE, x, y);
+						image = new ImageView(DEADENDIMAGE);
 					}
-					temp.setRotate(card.getRotationAsDouble());		
+					image.setRotate(card.getRotationAsDouble());		
 					
 				} else if (card instanceof CornerCard) {
 					if (!tile.isActive()) {
-						temp = new TileImageView(CORNERINACTIVEIMAGE, x, y);
+						image = new ImageView(CORNERINACTIVEIMAGE);
 					} else {
-						temp = new TileImageView(CORNERIMAGE, x, y);
+						image = new ImageView(CORNERIMAGE);
 					}
-					temp.setRotate(card.getRotationAsDouble());
+					image.setRotate(card.getRotationAsDouble());
 					
 				} else if (card instanceof StraightCard) {
 					if (!tile.isActive()) {
-						temp = new TileImageView(STRAIGHTINACTIVEIMAGE, x, y);
+						image = new ImageView(STRAIGHTINACTIVEIMAGE);
 					} else {
-						temp = new TileImageView(STRAIGHTIMAGE, x, y);
+						image = new ImageView(STRAIGHTIMAGE);
 					}
-					temp.setRotate(card.getRotationAsDouble());
+					image.setRotate(card.getRotationAsDouble());
 					
 				} else if (card instanceof TIntersectionCard) {
 					if (!tile.isActive()) {
-						temp = new TileImageView(TINTINACTIVEIMAGE, x, y);
+						image = new ImageView(TINTINACTIVEIMAGE);
 					} else {
-						temp = new TileImageView(TINTIMAGE, x, y);
+						image = new ImageView(TINTIMAGE);
 					}
-					temp.setRotate(card.getRotationAsDouble());
+					image.setRotate(card.getRotationAsDouble());
 					
 				} else if (card instanceof XIntersectionCard) {
 					if (!tile.isActive()) {
-						temp = new TileImageView(XINTINACTIVEIMAGE, x, y);
+						image = new ImageView(XINTINACTIVEIMAGE);
 					} else {
-						temp = new TileImageView(XINTIMAGE, x, y);
+						image = new ImageView(XINTIMAGE);
 					}
-					temp.setRotate(card.getRotationAsDouble());
+					image.setRotate(card.getRotationAsDouble());
 					
 				} else if (card instanceof GoalCard) {
 					if (((GoalCard) card).isRevealed()) {
-						temp = new TileImageView(XINTIMAGE, x, y);
+						image = new ImageView(XINTIMAGE);
 					} else {
-						temp = new TileImageView(BACKIMAGE, x, y);
-					}
-					
+						image = new ImageView(BACKIMAGE);
+					}					
 				} else {					
 					/* Should never reach here */
-					temp = new TileImageView(BACKIMAGE, x, y);
+					image = new ImageView(BACKIMAGE);
+				}
+				
+				image.setFitWidth(64);
+				image.setFitHeight(64);
+				
+				tsp.getChildren().add(image);
+				
+				if (tile.hasHostage()) {
+					ImageView hostageImage = new ImageView(HOSTAGEICONIMAGE);
+					tsp.getChildren().add(hostageImage);
 				}
 
-				temp.setOnMouseEntered(e -> temp.getScene().setCursor(Cursor.HAND));
-				temp.setOnMouseExited(e -> temp.getScene().setCursor(Cursor.DEFAULT));
-				temp.setOnMouseClicked(new EventHandler<MouseEvent>() {
+				tsp.setOnMouseEntered(e -> tsp.getScene().setCursor(Cursor.HAND));
+				tsp.setOnMouseExited(e -> tsp.getScene().setCursor(Cursor.DEFAULT));
+				tsp.setOnMouseClicked(new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
-						TileImageView image = (TileImageView) e.getSource();
+						TileStackPane image = (TileStackPane) e.getSource();
 						gameCon.placeCurrentCard(image.getxPos(), image.getyPos());
 					}
 				});
-
-				temp.setFitHeight(64);
-				temp.setFitWidth(64);
-				boardImages.add(temp);
+				
+				boardImages.add(tsp);
 			}
 		}
 
 		board.getChildren().clear();
 
-		for (TileImageView image : boardImages) {
+		for (TileStackPane image : boardImages) {
 			board.add(image, image.getxPos(), image.getyPos());
 		}
 	}
