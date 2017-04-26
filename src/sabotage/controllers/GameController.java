@@ -63,7 +63,7 @@ public class GameController {
 	 * 
 	 * @see GameContext
 	 */
-	public void displayTurn() {
+	private void displayTurn() {
 		Player player = gc.getCurrentPlayer();
 		
 		/* Update deck */
@@ -92,14 +92,14 @@ public class GameController {
 	/**
 	 * Updates the UI hand
 	 */
-	public void displayHand() {
+	private void displayHand() {
 		listener.onHandUpdate(gc.getCurrentPlayer().getHand());
 	}
 
 	/**
 	 * Updates the UI inspector with the GameContext's currently selected card
 	 */
-	public void displayCurrentCard() {
+	private void displayCurrentCard() {
 		listener.onInspectorRefresh(gc.getCurrentCard());
 	}
 
@@ -136,15 +136,7 @@ public class GameController {
 			
 			gc.validateActiveTiles();
 			
-			if (gc.getBoard().getGoalReached()) {
-				displayTurn();
-				listener.onGameCompleted(false);
-			} else if (allCardsPlayed()) {
-				displayTurn();
-				listener.onGameCompleted(true);
-			} else {
-				turnCompleted();
-			}
+			turnCompleted();
 		} else {
 			listener.onLogUpdate("> " + gc.getCurrentCard().getPlaceFailedText(x, y));
 		}
@@ -163,7 +155,17 @@ public class GameController {
 	/**
 	 * Cycle to the next player and update the UI
 	 */
-	public void turnCompleted() {
+	private void turnCompleted() {
+		if (gc.getBoard().getGoalReached()) {
+			displayTurn();
+			listener.onGameCompleted(false);
+			return;
+		} else if (allCardsPlayed()) {
+			displayTurn();
+			listener.onGameCompleted(true);
+			return;
+		} 
+		
 		if (gc.drawFromDeck()) {
 			listener.onLogUpdate(gc.getCurrentPlayer().getName() + " drew a card from the deck.");
 		} else {
