@@ -161,7 +161,11 @@ public class JavaFXGameListener implements GameListener {
 					
 				} else if (card instanceof GoalCard) {
 					if (((GoalCard) card).isRevealed()) {
-						image = new ImageView(XINTIMAGE);
+						if (((GoalCard) card).isGoal()) {
+							image = new ImageView(GOALIMAGE);
+						} else {
+							image = new ImageView(XINTIMAGE);
+						}
 					} else {
 						image = new ImageView(BACKIMAGE);
 					}					
@@ -291,5 +295,21 @@ public class JavaFXGameListener implements GameListener {
 		}
 
 		return temp;
+	}
+
+	@Override
+	public void onGameCompleted(Boolean villainWins) {
+		topText.setFill(Color.BLACK);
+		
+		if (villainWins) {
+			topText.setText("THE VILLAINS HAVE WON!");
+		} else {
+			topText.setText("THE VILLAINS HAVE FAILED!");
+		}
+		
+		board.setDisable(true);
+		hand.setDisable(true);
+		rotate.setDisable(true);
+		discard.setDisable(true);
 	}
 }

@@ -10,12 +10,11 @@ import sabotage.core.cards.RescueCard;
 
 public class Board {
 	
-	private Tile[][] tiles;
-	
-	private int startingY;
-	
+	private Tile[][] tiles;	
+	private int startingY;	
 	private Random random = new Random();
-
+	private Boolean goalReached = false;
+	
 	/* CONSTRUCTORS */
 	/**
 	 * Tile class constructor
@@ -217,6 +216,11 @@ public class Board {
 		if (card instanceof GoalCard) {
 			((GoalCard) card).reveal();
 			tiles[y][x].setActive(false);
+			
+			if (((GoalCard) card).isGoal()) {
+				goalReached = true;
+			}
+			
 			return;
 		}
 		
@@ -270,5 +274,13 @@ public class Board {
 				recursivelyActivateTiles(x - 1, y, Direction.W);
 			}
 		}		
+	}
+
+	/***
+	 * Gets if the goal card has been reached by the path
+	 * @return True if goal has been reached, false otherwise
+	 */
+	public Boolean getGoalReached() {
+		return goalReached;
 	}
 }

@@ -15,4 +15,5 @@ public interface GameListener {
 	void onCardSelected();
 	void onInspectorRefresh(Card card);
 	void onTurnStart(String playerName, PlayerColour playerColor, boolean isVillain);
+	void onGameCompleted(Boolean villainWins);
 }

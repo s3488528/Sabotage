@@ -65,7 +65,7 @@ public class GameController {
 	 */
 	public void displayTurn() {
 		Player player = gc.getCurrentPlayer();
-
+		
 		/* Update deck */
 		listener.onDeckUpdate(gc.getDeck().size());
 
@@ -135,8 +135,16 @@ public class GameController {
 			gc.setCurrentCard(null);
 			
 			gc.validateActiveTiles();
-
-			turnCompleted();
+			
+			if (gc.getBoard().getGoalReached()) {
+				displayTurn();
+				listener.onGameCompleted(false);
+			} else if (allCardsPlayed()) {
+				displayTurn();
+				listener.onGameCompleted(true);
+			} else {
+				turnCompleted();
+			}
 		} else {
 			listener.onLogUpdate("> " + gc.getCurrentCard().getPlaceFailedText(x, y));
 		}
@@ -161,8 +169,25 @@ public class GameController {
 		} else {
 			listener.onLogUpdate("> There are not more cards in the deck!");
 		}
-		
-		gc.cyclePlayer();
+
+		do {
+			gc.cyclePlayer();
+		} while ((gc.getCurrentPlayer().getHand().isEmpty()));
+
 		displayTurn();
+	}
+	
+	private boolean allCardsPlayed() {
+		if (!gc.getDeck().empty()) {
+			return false;
+		}
+		
+		for (Player player : gc.getPlayers()) {
+			if (!player.getHand().isEmpty()) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
