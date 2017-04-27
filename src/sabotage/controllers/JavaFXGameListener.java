@@ -12,9 +12,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import sabotage.core.Card;
+import sabotage.core.Player;
 import sabotage.core.PlayerColour;
 import sabotage.core.PathCard;
 import sabotage.core.Tile;
@@ -54,7 +56,9 @@ public class JavaFXGameListener implements GameListener {
 
 	/* Game Scene controls */
 	Text topText;
-	TextArea log;
+	Text roundText;
+	Text turnText;
+	VBox playerList;
 	GridPane board;
 	HBox hand;
 	ImageView inspector;
@@ -66,11 +70,13 @@ public class JavaFXGameListener implements GameListener {
 	// A reference to the GameController so we can handle events (clicks)
 	GameController gameCon;
 
-	public JavaFXGameListener(GameController gameCon, Text topText, TextArea log, GridPane board, 
+	public JavaFXGameListener(GameController gameCon, Text topText, Text roundText, Text turnText, VBox playerList, GridPane board, 
 			HBox hand, ImageView inspector, Button rotateRight, Button rotateLeft, Text deckText, Button discard) {
 		this.gameCon = gameCon;
 		this.topText = topText;
-		this.log = log;
+		this.roundText = roundText;
+		this.turnText = turnText;
+		this.playerList = playerList;
 		this.board = board;
 		this.hand = hand;
 		this.inspector = inspector;
@@ -104,10 +110,10 @@ public class JavaFXGameListener implements GameListener {
 	}
 
 	@Override
-	public void onLogUpdate(String logAppendText) {
-		log.appendText(logAppendText + "\n");
+	public void onRoundUpdate(int round) {
+		roundText.setText("ROUND: " + round);
 	}
-
+	
 	@Override
 	public void onBoardUpdate(Tile[][] tiles) {
 		ArrayList<TileStackPane> boardImages = new ArrayList<TileStackPane>();
@@ -213,7 +219,8 @@ public class JavaFXGameListener implements GameListener {
 	}
 
 	@Override
-	public void onCardSelected() {
+	public void onCardSelected(ArrayList<Player> list, Player currentPlayer) {
+		rebuildPlayerList(list, currentPlayer, true);
 		rotateRight.setDisable(false);
 		rotateLeft.setDisable(false);
 		discard.setDisable(false);
@@ -221,14 +228,19 @@ public class JavaFXGameListener implements GameListener {
 	}
 
 	@Override
-	public void onTurnStart(String playerName, PlayerColour playerColor, boolean isVillain) {
-		if (!isVillain) {
+	public void onTurnStart(ArrayList<Player> list, Player currentPlayer, int turnNumber) {
+		String playerName = currentPlayer.getName();
+		PlayerColour playerColour = currentPlayer.getColor();
+		
+		if (!currentPlayer.isVillain()) {
 			topText.setText(playerName + "'s turn.");
 		} else {
 			topText.setText(playerName + "'s turn (You are a villain).");
 		}
 		
-		switch (playerColor) {
+		turnText.setText("TURN: " + turnNumber);
+		
+		switch (playerColour) {
 			case red:
 				topText.setFill(Color.RED);
 				break;
@@ -248,12 +260,72 @@ public class JavaFXGameListener implements GameListener {
 				topText.setFill(Color.ORANGE);
 				break;
 		}
-
+		
+		rebuildPlayerList(list, currentPlayer, false);
+		
 		rotateRight.setDisable(true);
 		rotateLeft.setDisable(true);
 		discard.setDisable(true);
 		inspector.setImage(null);
 		board.setDisable(true);
+	}
+	
+	private void rebuildPlayerList(ArrayList<Player> list, Player currentPlayer, boolean enableDonate) {
+		playerList.getChildren().clear();
+		
+		for (Player player : list) {
+			HBox temp = new HBox(5);
+			Text name = new Text(player.getName());
+			
+			Button donate = new Button("Donate Card");
+			donate.setOnMouseClicked(e -> gameCon.donateCurrentCard(player));
+			
+			if (enableDonate) {
+				donate.setDisable(false);
+			} else {
+				donate.setDisable(true);
+			}
+			
+			if (player.equals(currentPlayer)) {
+				donate.setDisable(true); // Cannot donate to self
+				
+				name.setStyle("-fx-font-weight: bold");
+				name.setFill(Color.WHITE);
+
+				switch (player.getColor()) {
+					case red:
+						temp.setStyle("-fx-background-color: red;\n" +
+									 "-fx-padding: 8;");
+						break;
+					case blue:
+						temp.setStyle("-fx-background-color: blue;\n" +
+								 "-fx-padding: 8;");
+						break;
+					case green:
+						temp.setStyle("-fx-background-color: green;\n" +
+								 "-fx-padding: 8;");
+						break;
+					case yellow:
+						temp.setStyle("-fx-background-color: gold;\n" +
+								 "-fx-padding: 8;");
+						break;
+					case teal:
+						temp.setStyle("-fx-background-color: teal;\n" +
+								 "-fx-padding: 8;");
+						break;
+					case orange:
+						temp.setStyle("-fx-background-color: darkorange;\n" +
+								 "-fx-padding: 8;");
+						break;
+				}
+			} else {
+				temp.setStyle("-fx-padding: 8;");
+			}
+			
+			temp.getChildren().addAll(name, donate);			
+			
+			playerList.getChildren().add(temp);
+		}
 	}
 
 	@Override

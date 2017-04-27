@@ -15,6 +15,8 @@ public class GameContext {
 	
 	private Random random = new Random();
 
+	private int turnNo = 1;
+
 	/**
 	 * Initializes a new board with the specified settings
 	 * @param boardWidth	The number of tiles spanning across the board
@@ -134,6 +136,9 @@ public class GameContext {
 		} else {
 			/* If we've reached the end of the list, loop back to the start */
 			currentIndex = 0;
+			
+			/* Also increment turn number */
+			turnNo += 1;
 		}
 		
 		currentPlayer = players.get(currentIndex);
@@ -210,12 +215,25 @@ public class GameContext {
 		
 		return String.join(", ", string);
 	}
-
+	
 	/**
 	 * Gets the GameContext's list of players
 	 * @return	An ArrayList of players
 	 */
 	public ArrayList<Player> getPlayers() {
 		return players;
+	}
+
+	/**
+	 * Gets the current turn number
+	 * @return	The turn number
+	 */
+	public int getTurnNo() {
+		return turnNo;
+	}
+
+	public void donateCurrentCard(Player player) {
+		player.addCardToHand(currentCard);
+		currentPlayer.getHand().remove(currentCard);
 	}
 }

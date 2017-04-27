@@ -10,6 +10,8 @@ public class GameController {
 
 	private GameContext gc;
 	private GameListener listener;
+	
+	private int roundNo = 1;
 
 	/* Flags */
 	boolean gameCompleted = false;
@@ -40,20 +42,18 @@ public class GameController {
 		/* Initialise board */
 		gc.initializeBoard(boardWidth, boardHeight);
 		Tile[][] tiles = gc.getBoard().getTiles();
-		listener.onLogUpdate("> Generated board with " + tiles.length + " vertical tiles and " + tiles[0].length + " horizontal tiles.");
 		
 		/* Initialise board */
 		gc.initializeDeck(deckCount);
-		listener.onLogUpdate("> The deck has been created with " + deckCount + " cards.");
 		
 		/* Initialise players */
 		gc.initializePlayers(playerCount);
-		listener.onLogUpdate("> " + gc.getPlayers().size() + " players (" + gc.getPlayersAsString() + ") have joined the game. Someone has been chosen as the villain!");
 
 		/* Shuffle players */
 		gc.shufflePlayers();
-		listener.onLogUpdate("> Players have been shuffled. " + gc.getCurrentPlayer().getName() + " goes first!");
 
+		listener.onRoundUpdate(roundNo);
+		
 		/* Update the UI */
 		displayTurn();
 	}
@@ -75,11 +75,7 @@ public class GameController {
 		/* Display the current player's hand */
 		displayHand();
 
-		listener.onTurnStart(player.getName(), player.getColor(), player.isVillain());
-
-		/* Output to log */
-		listener.onLogUpdate("==========");
-		listener.onLogUpdate("> It's " + player.getName() + "'s turn.");
+		listener.onTurnStart(gc.getPlayers(), player, gc.getTurnNo());
 	}
 
 	/**
@@ -111,7 +107,7 @@ public class GameController {
 	public void handCardClicked(Card card) {
 		gc.setCurrentCard(card);
 		
-		listener.onCardSelected();
+		listener.onCardSelected(gc.getPlayers(), gc.getCurrentPlayer());
 		displayCurrentCard();
 	}
 
@@ -129,7 +125,7 @@ public class GameController {
 	public void placeCurrentCard(int x, int y) {
 		if (gc.validateCurrentCard(x, y)) {
 
-			listener.onLogUpdate(gc.getCurrentCard().getPlacedText(gc.getCurrentPlayer().getName(), x, y));
+			//listener.onLogUpdate(gc.getCurrentCard().getPlacedText(gc.getCurrentPlayer().getName(), x, y));
 
 			gc.placeCurrentCard(x, y);
 			gc.setCurrentCard(null);
@@ -138,7 +134,7 @@ public class GameController {
 			
 			turnCompleted();
 		} else {
-			listener.onLogUpdate("> " + gc.getCurrentCard().getPlaceFailedText(x, y));
+			//listener.onLogUpdate("> " + gc.getCurrentCard().getPlaceFailedText(x, y));
 		}
 	}
 
@@ -146,9 +142,15 @@ public class GameController {
 	 * Discards the currently selected card
 	 */
 	public void discardCurrentCard() {
-		listener.onLogUpdate(gc.getCurrentPlayer().getName() + " discarded a card.");
-
 		gc.discardCurrentCard();
+		turnCompleted();
+	}
+
+	/**
+	 * Donates the currently selected card
+	 */
+	public void donateCurrentCard(Player player) {
+		gc.donateCurrentCard(player);
 		turnCompleted();
 	}
 
@@ -167,9 +169,9 @@ public class GameController {
 		} 
 		
 		if (gc.drawFromDeck()) {
-			listener.onLogUpdate(gc.getCurrentPlayer().getName() + " drew a card from the deck.");
+			//listener.onLogUpdate(gc.getCurrentPlayer().getName() + " drew a card from the deck.");
 		} else {
-			listener.onLogUpdate("> There are not more cards in the deck!");
+			//listener.onLogUpdate("> There are not more cards in the deck!");
 		}
 
 		do {

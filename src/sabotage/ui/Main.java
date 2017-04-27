@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -19,6 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import sabotage.controllers.GameController;
 import sabotage.controllers.JavaFXGameListener;
@@ -100,9 +102,11 @@ public class Main extends Application {
 
 	/* Game Scene controls */
 	Text topText;
-	TextArea log;
 	GridPane board;
 	HBox hand;
+	Text roundText;
+	Text turnText;
+	VBox playerList;
 	ImageView inspector;
 	Button rotateLeft;
 	Button rotateRight;
@@ -116,7 +120,7 @@ public class Main extends Application {
 		gameController = new GameController();
 		
 		/* Hook new JavaFXListener to the game controller */
-		gameController.addListener(new JavaFXGameListener(gameController, topText, log, board, 
+		gameController.addListener(new JavaFXGameListener(gameController, topText, roundText, turnText, playerList, board, 
 				hand, inspector, rotateRight, rotateLeft, deckText, discard));
 
 		gameController.initialiseGame(boardWidth, boardHeight, 20, playerCount);
@@ -126,11 +130,25 @@ public class Main extends Application {
 		topText = new Text("TOP LABEL");
 		topText.setFont(new Font(24));
 		BorderPane.setAlignment(topText, Pos.CENTER);
-
-		log = new TextArea("LOG OUTPUT:\n");
-		log.setMaxSize(250, WINDOW_HEIGHT - 100);
-		log.setWrapText(true);
-		log.setEditable(false);
+		
+		roundText = new Text("Round: 0");
+		roundText.maxHeight(20);
+		roundText.setFont(new Font(16));
+		roundText.setTextAlignment(TextAlignment.LEFT);
+		
+		turnText = new Text("Turn: 0");
+		turnText.maxHeight(20);
+		turnText.setFont(new Font(16));
+		turnText.setTextAlignment(TextAlignment.LEFT);
+		
+		playerList = new VBox(5);
+		
+		VBox gameInformation = new VBox(5);
+		gameInformation.setStyle("-fx-padding: 5;\n");
+		gameInformation.setMinSize(250, 0);
+		gameInformation.setMaxSize(250, WINDOW_HEIGHT - 100);
+		gameInformation.setAlignment(Pos.CENTER);
+		gameInformation.getChildren().addAll(roundText, turnText, playerList);
 
 		board = new GridPane();
 		board.setHgap(5);
@@ -166,6 +184,7 @@ public class Main extends Application {
 		
 		HBox rotateButtons = new HBox(5);
 		rotateButtons.getChildren().addAll(rotateLeft, rotateRight);
+		rotateButtons.setAlignment(Pos.CENTER);
 		
 		discard = new Button("Discard Card");
 		discard.setOnAction(new EventHandler<ActionEvent>() {
@@ -181,13 +200,14 @@ public class Main extends Application {
 		VBox detailsPane = new VBox(5);
 		detailsPane.getChildren().addAll(inspector, rotateButtons, discard, deckText);
 		detailsPane.setAlignment(Pos.CENTER);
-		detailsPane.setMinWidth(150);
+		detailsPane.setMinSize(200, 0);
+		detailsPane.setMaxSize(200, WINDOW_HEIGHT - 100);
 		BorderPane.setAlignment(detailsPane, Pos.CENTER);
 		
 		BorderPane main = new BorderPane();
 		main.setMaxSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		main.setTop(topText);
-		main.setRight(log);
+		main.setRight(gameInformation);
 		main.setCenter(board);
 		main.setBottom(hand);
 		main.setLeft(detailsPane);
