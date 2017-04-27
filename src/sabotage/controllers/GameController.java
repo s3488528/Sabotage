@@ -118,8 +118,8 @@ public class GameController {
 	/**
 	 * Rotates the currently selected card
 	 */
-	public void rotateCurrentCard() {
-		gc.rotateCurrentCard();
+	public void rotateCurrentCard(boolean right) {
+		gc.rotateCurrentCard(right);
 		displayCurrentCard();
 	}
 

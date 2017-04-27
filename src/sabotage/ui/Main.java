@@ -104,7 +104,8 @@ public class Main extends Application {
 	GridPane board;
 	HBox hand;
 	ImageView inspector;
-	Button rotate;
+	Button rotateLeft;
+	Button rotateRight;
 	Text deckText;
 	Button discard;
 	
@@ -116,7 +117,7 @@ public class Main extends Application {
 		
 		/* Hook new JavaFXListener to the game controller */
 		gameController.addListener(new JavaFXGameListener(gameController, topText, log, board, 
-				hand, inspector, rotate, deckText, discard));
+				hand, inspector, rotateRight, rotateLeft, deckText, discard));
 
 		gameController.initialiseGame(boardWidth, boardHeight, 20, playerCount);
 	}
@@ -145,14 +146,26 @@ public class Main extends Application {
 		
 		inspector = new ImageView();
 		
-		rotate = new Button("Rotate Card");
-		rotate.setOnAction(new EventHandler<ActionEvent>() {
+		rotateRight = new Button("Rotate Right");
+		rotateRight.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				rotateCurrentCard();
+				rotateCurrentCard(true);
 			}
         });
-		rotate.setDisable(true);
+		rotateRight.setDisable(true);
+		
+		rotateLeft = new Button("Rotate Left");
+		rotateLeft.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				rotateCurrentCard(false);
+			}
+        });
+		rotateLeft.setDisable(true);
+		
+		HBox rotateButtons = new HBox(5);
+		rotateButtons.getChildren().addAll(rotateLeft, rotateRight);
 		
 		discard = new Button("Discard Card");
 		discard.setOnAction(new EventHandler<ActionEvent>() {
@@ -166,7 +179,7 @@ public class Main extends Application {
 		deckText = new Text("");
 		
 		VBox detailsPane = new VBox(5);
-		detailsPane.getChildren().addAll(inspector, rotate, discard, deckText);
+		detailsPane.getChildren().addAll(inspector, rotateButtons, discard, deckText);
 		detailsPane.setAlignment(Pos.CENTER);
 		detailsPane.setMinWidth(150);
 		BorderPane.setAlignment(detailsPane, Pos.CENTER);
@@ -186,7 +199,7 @@ public class Main extends Application {
 		gameController.discardCurrentCard();
 	}
 	
-	private void rotateCurrentCard() {
-		gameController.rotateCurrentCard();
+	private void rotateCurrentCard(Boolean right) {
+		gameController.rotateCurrentCard(right);
 	}
 }

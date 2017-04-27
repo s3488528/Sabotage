@@ -65,10 +65,11 @@ public class GameContext {
 		currentPlayer = players.get(0);
 	}
 
-	public void rotateCurrentCard() {
+	public void rotateCurrentCard(boolean right) {
 		PathCard card = (PathCard) currentCard;
 		
-		switch (card.getRotation()) {
+		if (right) {
+			switch (card.getRotation()) {
 			case _0:
 				card.setRotation(Angle._90);
 				break;
@@ -81,6 +82,22 @@ public class GameContext {
 			case _270:
 				card.setRotation(Angle._0);
 				break;
+			}
+		} else {
+			switch (card.getRotation()) {
+			case _0:
+				card.setRotation(Angle._270);
+				break;
+			case _90:
+				card.setRotation(Angle._0);
+				break;
+			case _180:
+				card.setRotation(Angle._90);
+				break;
+			case _270:
+				card.setRotation(Angle._180);
+				break;
+			}
 		}
 	}
 

@@ -58,7 +58,8 @@ public class JavaFXGameListener implements GameListener {
 	GridPane board;
 	HBox hand;
 	ImageView inspector;
-	Button rotate;
+	Button rotateRight;
+	Button rotateLeft;
 	Text deckText;
 	Button discard;
 	
@@ -66,14 +67,15 @@ public class JavaFXGameListener implements GameListener {
 	GameController gameCon;
 
 	public JavaFXGameListener(GameController gameCon, Text topText, TextArea log, GridPane board, 
-			HBox hand, ImageView inspector, Button rotate, Text deckText, Button discard) {
+			HBox hand, ImageView inspector, Button rotateRight, Button rotateLeft, Text deckText, Button discard) {
 		this.gameCon = gameCon;
 		this.topText = topText;
 		this.log = log;
 		this.board = board;
 		this.hand = hand;
 		this.inspector = inspector;
-		this.rotate = rotate;
+		this.rotateRight = rotateRight;
+		this.rotateLeft = rotateLeft;
 		this.deckText = deckText;
 		this.discard = discard;
 	}
@@ -212,7 +214,8 @@ public class JavaFXGameListener implements GameListener {
 
 	@Override
 	public void onCardSelected() {
-		rotate.setDisable(false);
+		rotateRight.setDisable(false);
+		rotateLeft.setDisable(false);
 		discard.setDisable(false);
 		board.setDisable(false);
 	}
@@ -246,7 +249,8 @@ public class JavaFXGameListener implements GameListener {
 				break;
 		}
 
-		rotate.setDisable(true);
+		rotateRight.setDisable(true);
+		rotateLeft.setDisable(true);
 		discard.setDisable(true);
 		inspector.setImage(null);
 		board.setDisable(true);
@@ -259,6 +263,11 @@ public class JavaFXGameListener implements GameListener {
 
 		if (card instanceof PathCard) {
 			cardImage.setRotate(((PathCard) card).getRotationAsDouble());
+			rotateRight.setDisable(false);
+			rotateLeft.setDisable(false);
+		} else {
+			rotateRight.setDisable(true);
+			rotateLeft.setDisable(true);
 		}
 
 		inspector.setImage(cardImage.getImage());
@@ -307,9 +316,11 @@ public class JavaFXGameListener implements GameListener {
 			topText.setText("THE VILLAINS HAVE FAILED!");
 		}
 		
+		// Disable all controls
 		board.setDisable(true);
 		hand.setDisable(true);
-		rotate.setDisable(true);
+		rotateRight.setDisable(true);
+		rotateLeft.setDisable(true);
 		discard.setDisable(true);
 	}
 }
