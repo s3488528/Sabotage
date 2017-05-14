@@ -112,6 +112,8 @@ public class Main extends Application {
 	Button rotateRight;
 	Text deckText;
 	Button discard;
+	Spinner<Integer> undoSpinner;
+	HBox undo;
 	
 	private void showGameScene(int boardWidth, int boardHeight, int playerCount) {
 		initialiseGameScene();
@@ -121,7 +123,7 @@ public class Main extends Application {
 		
 		/* Hook new JavaFXListener to the game controller */
 		gameController.addListener(new JavaFXGameListener(gameController, topText, roundText, turnText, playerList, board, 
-				hand, inspector, rotateRight, rotateLeft, deckText, discard));
+				hand, inspector, rotateRight, rotateLeft, deckText, discard, undoSpinner, undo));
 
 		gameController.initialiseGame(boardWidth, boardHeight, 20, playerCount);
 	}
@@ -143,12 +145,14 @@ public class Main extends Application {
 		
 		playerList = new VBox(5);
 		
-		VBox gameInformation = new VBox(5);
-		gameInformation.setStyle("-fx-padding: 5;\n");
-		gameInformation.setMinSize(250, 0);
-		gameInformation.setMaxSize(250, WINDOW_HEIGHT - 100);
-		gameInformation.setAlignment(Pos.CENTER);
-		gameInformation.getChildren().addAll(roundText, turnText, playerList);
+		deckText = new Text("");
+		
+		VBox gameInformationPane = new VBox(5);
+		gameInformationPane.setStyle("-fx-padding: 5;\n");
+		gameInformationPane.setMinSize(250, 0);
+		gameInformationPane.setMaxSize(250, WINDOW_HEIGHT - 100);
+		gameInformationPane.setAlignment(Pos.CENTER);
+		gameInformationPane.getChildren().addAll(roundText, turnText, playerList, deckText);
 
 		board = new GridPane();
 		board.setHgap(5);
@@ -173,7 +177,7 @@ public class Main extends Application {
         });
 		rotateRight.setDisable(true);
 		
-		rotateLeft = new Button("Rotate Left");
+		rotateLeft = new Button("Rotate Left"); 
 		rotateLeft.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
@@ -195,22 +199,35 @@ public class Main extends Application {
         });
 		discard.setDisable(true);
 		
-		deckText = new Text("");
+		undoSpinner = new Spinner<Integer>(1, 3, 1);
+		undoSpinner.setPrefWidth(50);
+
+		Button undoButton = new Button("Undo");
+		undoButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				undoTurns(undoSpinner.getValue());
+			}
+        });
 		
-		VBox detailsPane = new VBox(5);
-		detailsPane.getChildren().addAll(inspector, rotateButtons, discard, deckText);
-		detailsPane.setAlignment(Pos.CENTER);
-		detailsPane.setMinSize(200, 0);
-		detailsPane.setMaxSize(200, WINDOW_HEIGHT - 100);
-		BorderPane.setAlignment(detailsPane, Pos.CENTER);
+		undo = new HBox(5);
+		undo.getChildren().addAll(undoButton, undoSpinner);
+		undo.setAlignment(Pos.CENTER);
+		
+		VBox actionInformationPane = new VBox(5);
+		actionInformationPane.getChildren().addAll(inspector, rotateButtons, discard, undo);
+		actionInformationPane.setAlignment(Pos.CENTER);
+		actionInformationPane.setMinSize(200, 0);
+		actionInformationPane.setMaxSize(200, WINDOW_HEIGHT - 100);
+		BorderPane.setAlignment(actionInformationPane, Pos.CENTER);
 		
 		BorderPane main = new BorderPane();
 		main.setMaxSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		main.setTop(topText);
-		main.setRight(gameInformation);
+		main.setRight(gameInformationPane);
 		main.setCenter(board);
 		main.setBottom(hand);
-		main.setLeft(detailsPane);
+		main.setLeft(actionInformationPane);
 
 		_game = new Scene(main, WINDOW_WIDTH, WINDOW_HEIGHT);
 	}
@@ -221,5 +238,9 @@ public class Main extends Application {
 	
 	private void rotateCurrentCard(Boolean right) {
 		gameController.rotateCurrentCard(right);
+	}
+	
+	private void undoTurns(int turns) {
+		gameController.undoTurns(turns);
 	}
 }

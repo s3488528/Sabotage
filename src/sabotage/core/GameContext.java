@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Stack;
 
+import sabotage.core.commands.CommandHistory;
+
 public class GameContext {
 
 	private Board board;
@@ -13,9 +15,15 @@ public class GameContext {
 	private Player currentPlayer;
 	private Card currentCard;
 	
+	private CommandHistory commHistory;
+	
 	private Random random = new Random();
 
 	private int turnNo = 1;
+	
+	public GameContext() {
+		commHistory = new CommandHistory();
+	}
 
 	/**
 	 * Initializes a new board with the specified settings
@@ -235,5 +243,13 @@ public class GameContext {
 	public void donateCurrentCard(Player player) {
 		player.addCardToHand(currentCard);
 		currentPlayer.getHand().remove(currentCard);
+	}
+
+	public void undoTurn() {
+		commHistory.undoLast();
+	}
+
+	public int getUndoCount() {
+		return commHistory.getUndoStackCount();
 	}
 }

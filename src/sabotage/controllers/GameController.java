@@ -75,7 +75,7 @@ public class GameController {
 		/* Display the current player's hand */
 		displayHand();
 
-		listener.onTurnStart(gc.getPlayers(), player, gc.getTurnNo());
+		listener.onTurnStart(gc.getPlayers(), player, gc.getTurnNo(), gc.getUndoCount());
 	}
 
 	/**
@@ -193,5 +193,14 @@ public class GameController {
 		}
 
 		return true;
+	}
+
+	public void undoTurns(Integer turns) {
+		for (int i = 0; i < turns; i++) {
+			gc.undoTurn();
+		}
+		
+		gc.getCurrentPlayer().UndoUsed();
+		turnCompleted();
 	}
 }

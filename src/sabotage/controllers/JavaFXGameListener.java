@@ -6,6 +6,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Spinner;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -66,12 +67,14 @@ public class JavaFXGameListener implements GameListener {
 	Button rotateLeft;
 	Text deckText;
 	Button discard;
+	Spinner<Integer> undoSpinner;
+	HBox undo;
 	
 	// A reference to the GameController so we can handle events (clicks)
 	GameController gameCon;
 
 	public JavaFXGameListener(GameController gameCon, Text topText, Text roundText, Text turnText, VBox playerList, GridPane board, 
-			HBox hand, ImageView inspector, Button rotateRight, Button rotateLeft, Text deckText, Button discard) {
+			HBox hand, ImageView inspector, Button rotateRight, Button rotateLeft, Text deckText, Button discard, Spinner<Integer> undoSpinner, HBox undo) {
 		this.gameCon = gameCon;
 		this.topText = topText;
 		this.roundText = roundText;
@@ -84,6 +87,8 @@ public class JavaFXGameListener implements GameListener {
 		this.rotateLeft = rotateLeft;
 		this.deckText = deckText;
 		this.discard = discard;
+		this.undoSpinner = undoSpinner;
+		this.undo = undo;
 	}
 
 	@Override
@@ -228,7 +233,7 @@ public class JavaFXGameListener implements GameListener {
 	}
 
 	@Override
-	public void onTurnStart(ArrayList<Player> list, Player currentPlayer, int turnNumber) {
+	public void onTurnStart(ArrayList<Player> list, Player currentPlayer, int turnNumber, int undoStackCount) {
 		String playerName = currentPlayer.getName();
 		PlayerColour playerColour = currentPlayer.getColor();
 		
@@ -267,7 +272,15 @@ public class JavaFXGameListener implements GameListener {
 		rotateLeft.setDisable(true);
 		discard.setDisable(true);
 		inspector.setImage(null);
-		board.setDisable(true);
+		
+		if (undoStackCount <= 0 || !currentPlayer.canUndo()) {
+			undo.setDisable(true);
+		} else {
+			undo.setDisable(false);
+			undoSpinner = new Spinner<Integer>(1, undoStackCount, 1);
+		}
+		
+		board.setDisable(true);		
 	}
 	
 	private void rebuildPlayerList(ArrayList<Player> list, Player currentPlayer, boolean enableDonate) {

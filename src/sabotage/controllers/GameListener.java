@@ -15,6 +15,6 @@ public interface GameListener {
 	void onDeckUpdate(int deckCount);
 	void onCardSelected(ArrayList<Player> list, Player currentPlayer);
 	void onInspectorRefresh(Card card);
-	void onTurnStart(ArrayList<Player> playerList, Player currentPlayer, int turnNumber);
+	void onTurnStart(ArrayList<Player> playerList, Player currentPlayer, int turnNumber, int undoStackCount);
 	void onGameCompleted(Boolean villainWins);
 }

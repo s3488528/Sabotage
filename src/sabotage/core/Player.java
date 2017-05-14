@@ -8,6 +8,8 @@ public class Player {
 	private String name;
 	
 	private PlayerColour color;
+	
+	private boolean canUndo;
 
 	private boolean isVillain;
 	
@@ -23,6 +25,7 @@ public class Player {
 		this.name = name;
 		this.hand = new ArrayList<Card>();
 		this.color = color;
+		this.canUndo = true;
 	}
 
 	/* GETTERS & SETTERS */
@@ -72,5 +75,21 @@ public class Player {
 	
 	public void setAsVillain() {
 		this.isVillain = true;
+	}
+	
+	/**
+	 * Gets if this player can undo
+	 *
+	 * @return      True if player can undo; false otherwise
+	 */
+	public boolean canUndo() {
+		return canUndo;
+	}
+	
+	/**
+	 * Called when player has used undo 
+	 */
+	public void UndoUsed() {
+		canUndo = false;
 	}
 }
