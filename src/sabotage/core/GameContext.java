@@ -6,14 +6,17 @@ import java.util.Random;
 import java.util.Stack;
 
 import sabotage.core.commands.CommandHistory;
+import sabotage.core.commands.DiscardCommand;
 
 public class GameContext {
 
 	private Board board;
-	private Stack<Card> deck;
 	private ArrayList<Player> players;
 	private Player currentPlayer;
 	private Card currentCard;
+
+	private Deck deck;
+	private Stack<Deck.DeckMemento> deckStates;
 	
 	private CommandHistory commHistory;
 	
@@ -40,11 +43,14 @@ public class GameContext {
 	 */
 	public void initializeDeck(int deckCount) {
 		/* Populate the deck with random cards */
-		deck = new Stack<Card>();		
+		deck = new Deck();		
 		for (int i = 0; i < deckCount; i++) {			
 			Card tempCard = CardBuilder.createRandomCard();
 			deck.add(tempCard);
 		}
+		
+		// initialise deck memento stack
+		deckStates = new Stack<Deck.DeckMemento>();
 	}
 
 	/**
@@ -123,14 +129,14 @@ public class GameContext {
 	 */
 	public void placeCurrentCard(int x, int y) {
 		currentCard.placeCardOnTile(board.getTiles()[y][x]);
-		currentPlayer.getHand().remove(currentCard);
+		currentPlayer.removeCardFromHand(currentCard);
 	}
 
 	/**
 	 * Removes the current card from the player's hand
 	 */
 	public void discardCurrentCard() {
-		currentPlayer.getHand().remove(currentCard);
+		commHistory.executeCommand(new DiscardCommand(currentPlayer, currentCard));
 	}
 	
 	/**
@@ -151,6 +157,25 @@ public class GameContext {
 		
 		currentPlayer = players.get(currentIndex);
 	}
+	
+	/**
+	 * Cycles to the previous player
+	 */
+	public void cyclePreviousPlayer() {
+		int currentIndex = players.indexOf(currentPlayer);
+	
+		if (currentIndex > 0) {
+			currentIndex -= 1;
+		} else {
+			/* If we've reached the start of the list, loop back to the end */
+			currentIndex = players.size() - 1;
+			
+			/* Also decrement turn number */
+			turnNo -= 1;
+		}
+		
+		currentPlayer = players.get(currentIndex);
+	}
 
 	public void validateActiveTiles() {
 		board.validateActiveTiles();
@@ -165,9 +190,11 @@ public class GameContext {
 			return false;
 		}
 
+		deckStates.push(deck.getCurrentAsMemento());
+
 		Card drawnCard = deck.pop();
 		currentPlayer.addCardToHand(drawnCard);
-
+		
 		return true;
 	}
 	
@@ -183,7 +210,7 @@ public class GameContext {
 	 * Gets the GameContext's deck
 	 * @return	The deck
 	 */
-	public Stack<Card> getDeck() {
+	public Deck getDeck() {
 		return deck;
 	}
 
@@ -242,10 +269,12 @@ public class GameContext {
 
 	public void donateCurrentCard(Player player) {
 		player.addCardToHand(currentCard);
-		currentPlayer.getHand().remove(currentCard);
+		currentPlayer.removeCardFromHand(currentCard);
 	}
 
 	public void undoTurn() {
+		cyclePreviousPlayer();
+		deck.restoreFromMemento(deckStates.pop());
 		commHistory.undoLast();
 	}
 

@@ -67,12 +67,22 @@ public class Player {
 	
 	/* METHODS */
 	/**
-	 * Set this player to be a villain
+	 * Adds a card to this player's hand
 	 */	
 	public void addCardToHand(Card card) {
 		hand.add(card);
 	}
 	
+	/**
+	 * Removes a card from this player's hand
+	 */	
+	public void removeCardFromHand(Card card) {
+		hand.remove(card);
+	}
+
+	/**
+	 * Set this player to be a villain
+	 */	
 	public void setAsVillain() {
 		this.isVillain = true;
 	}
@@ -91,5 +101,12 @@ public class Player {
 	 */
 	public void UndoUsed() {
 		canUndo = false;
+	}
+
+	/**
+	 */
+	public void replaceHand(ArrayList<Card> hand) {
+		this.hand.clear();
+		this.hand = hand;
 	}
 }

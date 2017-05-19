@@ -195,12 +195,13 @@ public class GameController {
 		return true;
 	}
 
-	public void undoTurns(Integer turns) {
+	public void undoTurns(Integer turns) {		
+		gc.getCurrentPlayer().UndoUsed();
+		
 		for (int i = 0; i < turns; i++) {
 			gc.undoTurn();
 		}
-		
-		gc.getCurrentPlayer().UndoUsed();
-		turnCompleted();
+
+		displayTurn();
 	}
 }
