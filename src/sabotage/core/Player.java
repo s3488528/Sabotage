@@ -104,6 +104,7 @@ public class Player {
 	}
 
 	/**
+	 * Replaces this player's hand with another hand 
 	 */
 	public void replaceHand(ArrayList<Card> hand) {
 		this.hand.clear();
