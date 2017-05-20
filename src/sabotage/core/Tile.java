@@ -88,6 +88,8 @@ public class Tile {
     	this.pathCard = prevTile.pathCard;
     	this.actionCard = prevTile.actionCard;
     	this.active = prevTile.active;
+    	
+    	parentBoard.validateActiveTiles();
     }
     
     public static class TileMemento {
