@@ -7,6 +7,7 @@ import java.util.Stack;
 
 import sabotage.core.commands.CommandHistory;
 import sabotage.core.commands.DiscardCommand;
+import sabotage.core.commands.DonateCommand;
 
 public class GameContext {
 
@@ -268,8 +269,7 @@ public class GameContext {
 	}
 
 	public void donateCurrentCard(Player player) {
-		player.addCardToHand(currentCard);
-		currentPlayer.removeCardFromHand(currentCard);
+		commHistory.executeCommand(new DonateCommand(currentPlayer, player, currentCard));
 	}
 
 	public void undoTurn() {
