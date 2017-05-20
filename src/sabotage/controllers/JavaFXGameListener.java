@@ -7,6 +7,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -277,7 +278,7 @@ public class JavaFXGameListener implements GameListener {
 			undo.setDisable(true);
 		} else {
 			undo.setDisable(false);
-			undoSpinner = new Spinner<Integer>(1, undoStackCount, 1);
+			undoSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, undoStackCount, 1));
 		}
 		
 		board.setDisable(true);		
