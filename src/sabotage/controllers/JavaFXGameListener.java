@@ -278,7 +278,9 @@ public class JavaFXGameListener implements GameListener {
 			undo.setDisable(true);
 		} else {
 			undo.setDisable(false);
-			undoSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, undoStackCount, 1));
+			
+			int max = Math.min(undoStackCount, 3);
+			undoSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, max, 1));
 		}
 		
 		board.setDisable(true);		
