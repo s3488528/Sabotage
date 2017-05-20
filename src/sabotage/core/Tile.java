@@ -1,5 +1,8 @@
 package sabotage.core;
 
+import java.util.Stack;
+
+import sabotage.core.Deck.DeckMemento;
 import sabotage.core.cards.HostageCard;
 
 public class Tile {
@@ -37,6 +40,13 @@ public class Tile {
 	}
 
 	/**
+	 * Removed the path card associated with this tile
+	 */
+	public void removePathCard() {
+		this.pathCard = null;
+	}
+	
+	/**
 	 * Gets the action card associated with this tile
 	 * @return	The path card
 	 */
@@ -60,7 +70,6 @@ public class Tile {
 		return active;
 	}
 
-
 	/**
 	 * Sets if this tile has a path card and is reachable from the starting tile
 	 * @param active True if active, false otherwise
@@ -68,4 +77,31 @@ public class Tile {
 	public void setActive(boolean active) {
 		this.active = active;
 	}
+
+    public TileMemento getCurrentAsMemento() {
+        return new TileMemento(this);
+    }
+ 
+    public void restoreFromMemento(TileMemento memento) {
+    	Tile prevTile = memento.getSavedState();
+    	
+    	this.pathCard = prevTile.pathCard;
+    	this.actionCard = prevTile.actionCard;
+    	this.active = prevTile.active;
+    }
+    
+    public static class TileMemento {
+    	private Tile tile;
+
+        public TileMemento(Tile tile) {
+        	this.tile = new Tile(tile.parentBoard);
+        	this.tile.pathCard = tile.pathCard;
+        	this.tile.actionCard = tile.actionCard;
+        	this.tile.active = tile.active;
+        }
+ 
+        private Tile getSavedState() {
+            return tile;
+        }
+    }
 }

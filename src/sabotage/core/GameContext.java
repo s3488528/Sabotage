@@ -8,6 +8,7 @@ import java.util.Stack;
 import sabotage.core.commands.CommandHistory;
 import sabotage.core.commands.DiscardCommand;
 import sabotage.core.commands.DonateCommand;
+import sabotage.core.commands.PlaceCommand;
 
 public class GameContext {
 
@@ -129,8 +130,7 @@ public class GameContext {
 	 * Places the current card on the board
 	 */
 	public void placeCurrentCard(int x, int y) {
-		currentCard.placeCardOnTile(board.getTiles()[y][x]);
-		currentPlayer.removeCardFromHand(currentCard);
+		commHistory.executeCommand(new PlaceCommand(currentPlayer, board.getTiles()[y][x], currentCard));
 	}
 
 	/**
