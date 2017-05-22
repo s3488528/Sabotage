@@ -225,6 +225,7 @@ public class Board {
 		
 		/* Break out if tile has a hostage */
 		if (tiles[y][x].hasHostage()) {
+			tiles[y][x].setActive(false);
 			return;
 		}
 				
