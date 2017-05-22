@@ -13,14 +13,9 @@ public class ObstructionCard extends ActionCard {
 	public void placeCardOnTile(Tile tile) {
 		tile.setActionCard(this);
 	}	
-	
+
 	@Override
-	public String getPlacedText(String playerName, int x, int y) {
-		return playerName + " has placed an obstruction at position: " + x + ", " + y;
-	}	
-	
-	@Override
-	public String getPlaceFailedText(int x, int y) {
-		return "An obstruction cannot be placed at position: " + x + ", " + y;
+	public String getDescription() {
+		return "Obstruction Card - Can be used on any empty tile to place an obstruction. An obstruction prevents path cards from being played on the tile.";
 	}	
 }

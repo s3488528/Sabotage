@@ -105,6 +105,7 @@ public class Main extends Application {
 	Text turnText;
 	VBox playerList;
 	ImageView inspector;
+	Label cardDescription;
 	Button rotateLeft;
 	Button rotateRight;
 	Text deckText;
@@ -120,7 +121,7 @@ public class Main extends Application {
 		
 		/* Hook new JavaFXListener to the game controller */
 		gameController.addListener(new JavaFXGameListener(gameController, topText, roundText, turnText, playerList, board, 
-				hand, inspector, rotateRight, rotateLeft, deckText, discard, undoSpinner, undo));
+				hand, inspector, cardDescription, rotateRight, rotateLeft, deckText, discard, undoSpinner, undo));
 
 		gameController.initialiseGame(boardWidth, boardHeight, 20, playerCount);
 	}
@@ -164,6 +165,10 @@ public class Main extends Application {
 		BorderPane.setAlignment(hand, Pos.CENTER);
 		
 		inspector = new ImageView();
+		
+		cardDescription = new Label();
+		cardDescription.setMaxWidth(150);
+		cardDescription.setWrapText(true);
 		
 		rotateRight = new Button("Rotate Right");
 		rotateRight.setOnAction(new EventHandler<ActionEvent>() {
@@ -212,7 +217,7 @@ public class Main extends Application {
 		undo.setAlignment(Pos.CENTER);
 		
 		VBox actionInformationPane = new VBox(5);
-		actionInformationPane.getChildren().addAll(inspector, rotateButtons, discard, undo);
+		actionInformationPane.getChildren().addAll(inspector, cardDescription, rotateButtons, discard, undo);
 		actionInformationPane.setAlignment(Pos.CENTER);
 		actionInformationPane.setMinSize(200, 0);
 		actionInformationPane.setMaxSize(200, WINDOW_HEIGHT - 100);

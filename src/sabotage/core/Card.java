@@ -8,19 +8,7 @@ public abstract class Card {
 	public abstract void placeCardOnTile(Tile tile);
 
 	/**
-	 * Returns a message to display when this card is placed
-	 * @param playerName	The player's name who placed the card
-	 * @param x				The x-position of the tile
-	 * @param y				The y-position of the tile
-	 * @return				The message to display
+	 * Returns a message to display when this card is selected
 	 */
-	public abstract String getPlacedText(String playerName, int x, int y);
-
-	/**
-	 * Returns a message to display when this card is discarded
-	 * @param x				The x-position of the tile
-	 * @param y				The y-position of the tile
-	 * @return				The message to display
-	 */
-	public abstract String getPlaceFailedText(int x, int y);
+	public abstract String getDescription();
 }

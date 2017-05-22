@@ -15,14 +15,9 @@ public class HostageCard extends ActionCard {
 	public void placeCardOnTile(Tile tile) {
 		tile.setActionCard(this);
 	}	
-	
+
 	@Override
-	public String getPlacedText(String playerName, int x, int y) {
-		return playerName + " has placed a hostage at position: " + x + ", " + y;
-	}	
-	
-	@Override
-	public String getPlaceFailedText(int x, int y) {
-		return "A hostage cannot be placed at position: " + x + ", " + y;
+	public String getDescription() {
+		return "Hostage Card - Can be placed on any path card to block adjacent connections.";
 	}	
 }

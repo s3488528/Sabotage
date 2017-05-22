@@ -13,14 +13,9 @@ public class ClearCard extends ActionCard {
 	public void placeCardOnTile(Tile tile) {
 		tile.setActionCard(null); /* Clear obstruction card */
 	}	
-	
+
 	@Override
-	public String getPlacedText(String playerName, int x, int y) {
-		return playerName + " has cleared the obstruction at position: " + x + ", " + y;
-	}	
-	
-	@Override
-	public String getPlaceFailedText(int x, int y) {
-		return "There is no obstruction to be cleared at position: " + x + ", " + y;
+	public String getDescription() {
+		return "Clear Card - Can be used on an obstruction to remove it.";
 	}	
 }

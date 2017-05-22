@@ -13,14 +13,9 @@ public class DemolishCard extends ActionCard {
 		tile.setPathCard(null);
 		tile.setActionCard(null);
 	}	
-	
+
 	@Override
-	public String getPlacedText(String playerName, int x, int y) {
-		return playerName + " has demolished the tile at position: " + x + ", " + y;
-	}	
-	
-	@Override
-	public String getPlaceFailedText(int x, int y) {
-		return "The tile at position: " + x + ", " + y + " cannot be demolished.";
+	public String getDescription() {
+		return "Demolish Card - Can be placed on any path card to demolish it. Demolishing a path card with a hostage will also remove the hostage.";
 	}	
 }

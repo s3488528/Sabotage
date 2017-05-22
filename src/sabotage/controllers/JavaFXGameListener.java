@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.image.Image;
@@ -70,6 +71,7 @@ public class JavaFXGameListener implements GameListener {
 	GridPane board;
 	HBox hand;
 	ImageView inspector;
+	Label cardDescription;
 	Button rotateRight;
 	Button rotateLeft;
 	Text deckText;
@@ -81,7 +83,7 @@ public class JavaFXGameListener implements GameListener {
 	GameController gameCon;
 
 	public JavaFXGameListener(GameController gameCon, Text topText, Text roundText, Text turnText, VBox playerList, GridPane board, 
-			HBox hand, ImageView inspector, Button rotateRight, Button rotateLeft, Text deckText, Button discard, Spinner<Integer> undoSpinner, HBox undo) {
+			HBox hand, ImageView inspector, Label cardDescription, Button rotateRight, Button rotateLeft, Text deckText, Button discard, Spinner<Integer> undoSpinner, HBox undo) {
 		this.gameCon = gameCon;
 		this.topText = topText;
 		this.roundText = roundText;
@@ -90,6 +92,7 @@ public class JavaFXGameListener implements GameListener {
 		this.board = board;
 		this.hand = hand;
 		this.inspector = inspector;
+		this.cardDescription = cardDescription;
 		this.rotateRight = rotateRight;
 		this.rotateLeft = rotateLeft;
 		this.deckText = deckText;
@@ -280,6 +283,8 @@ public class JavaFXGameListener implements GameListener {
 		
 		rebuildPlayerList(list, currentPlayer, false);
 		
+		cardDescription.setText("");
+		
 		rotateRight.setDisable(true);
 		rotateLeft.setDisable(true);
 		discard.setDisable(true);
@@ -371,6 +376,8 @@ public class JavaFXGameListener implements GameListener {
 
 		inspector.setImage(cardImage.getImage());
 		inspector.setRotate(cardImage.getRotate());
+		
+		cardDescription.setText(card.getDescription());
 	}
 
 	/**

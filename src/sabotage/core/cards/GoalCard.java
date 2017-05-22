@@ -31,14 +31,9 @@ public class GoalCard extends PathCard {
 	public void placeCardOnTile(Tile tile) {
 		tile.setPathCard(this);
 	}	
-	
+
 	@Override
-	public String getPlacedText(String playerName, int x, int y) {
-		return "";
-	}	
-	
-	@Override
-	public String getPlaceFailedText(int x, int y) {
-		return "";
+	public String getDescription() {
+		return "Goal Card";
 	}	
 }

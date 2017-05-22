@@ -20,12 +20,7 @@ public class ChanceCard extends ActionCard {
 	}	
 	
 	@Override
-	public String getPlacedText(String playerName, int x, int y) {
-		return playerName + " has placed a chance card at position: " + x + ", " + y;
-	}	
-	
-	@Override
-	public String getPlaceFailedText(int x, int y) {
-		return "A chance card cannot be placed at position: " + x + ", " + y;
-	}	
+	public String getDescription() {
+		return "Chance Card - Can be placed on any empty tile. When placed this card will turn into a random path card.";
+	}
 }
