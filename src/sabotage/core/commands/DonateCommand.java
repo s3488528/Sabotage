@@ -1,7 +1,6 @@
 package sabotage.core.commands;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 import sabotage.core.Card;
 import sabotage.core.Player;
@@ -38,11 +37,13 @@ public class DonateCommand implements Command {
 		this.card = card;
 	}
 	
+	@Override
 	public void execute() {
 		donator.removeCardFromHand(card);
 		donatee.addCardToHand(card);
 	}
 	
+	@Override
 	public void undo() {
 		donator.replaceHand(donatorHand);
 		donatee.replaceHand(donateeHand);

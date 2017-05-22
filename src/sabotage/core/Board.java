@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import sabotage.core.cards.ChanceCard;
+import sabotage.core.cards.ClearCard;
+import sabotage.core.cards.DemolishCard;
 import sabotage.core.cards.GoalCard;
 import sabotage.core.cards.HostageCard;
+import sabotage.core.cards.ObstructionCard;
 import sabotage.core.cards.RescueCard;
 
 public class Board {
@@ -73,6 +77,11 @@ public class Board {
 			
 			/* Path cards cannot be placed on top of another path card */
 			if (existingTile.getPathCard() != null) {
+				return false;
+			}
+			
+			/* Path cards cannot be placed on top of a obstruction */
+			if (existingTile.hasObstruction()) {
 				return false;
 			}
 			
@@ -155,23 +164,36 @@ public class Board {
 				return false;
 			}
 			
-		} else if (validationCard instanceof ActionCard) {			
-			/* Action cards cannot be played on a goal card or the starting card */
-			if (existingTile.getPathCard() == null || existingTile.getPathCard() instanceof GoalCard || existingTile.getPathCard().isStartingCard()) {
-				return false;
-			}
-			
-			if (validationCard instanceof RescueCard) {
-				if (existingTile.hasHostage()) {
-					return true;
+		} else if (validationCard instanceof ActionCard) {
+			if (existingTile.getPathCard() != null) {	
+				/* Action cards cannot be played on a goal card or the starting card */
+				if (existingTile.getPathCard() instanceof GoalCard || existingTile.getPathCard().isStartingCard()) {
+					return false;
 				}
-			} else if (validationCard instanceof HostageCard) {
-				if (!tiles[y][x].hasHostage()) {
+						
+				if (validationCard instanceof RescueCard) {
+					if (existingTile.hasHostage()) {
+						return true;
+					}
+				} else if (validationCard instanceof HostageCard) {
+					if (!tiles[y][x].hasHostage()) {
+						return true;
+					}
+				} else if (validationCard instanceof DemolishCard) {
 					return true;
 				}
 			} else {
-				if (existingTile.getPathCard() != null) {
-					return true;
+				/* Obstruction, Clear and Chance cards must be played on an empty tile: */
+				if (validationCard instanceof ObstructionCard) {
+						return true;
+				} else if (validationCard instanceof ClearCard) {
+					if (existingTile.hasObstruction()) {
+						return true;
+					}
+				} else if (validationCard instanceof ChanceCard) {
+					if (!existingTile.hasObstruction()) {
+						return true;
+					}
 				}
 			}
 		}
@@ -246,16 +268,20 @@ public class Board {
 		if (checkN) {
 			Tile northTile = tiles[y - 1][x];
 			
-			if (northTile.getPathCard() != null && northTile.isActive() == false) {
-				recursivelyActivateTiles(x, y - 1, Direction.N);
+			if (northTile.getPathCard() != null && northTile.isActive() == false) {				
+				if (card.isConnectable(northTile.getPathCard(), Direction.N)) {
+					recursivelyActivateTiles(x, y - 1, Direction.N);
+				}
 			}
 		}
 		
 		if (checkE) {
 			Tile eastTile = getTiles()[y][x + 1];
 
-			if (eastTile.getPathCard() != null && eastTile.isActive() == false) {
-				recursivelyActivateTiles(x + 1, y, Direction.E);
+			if (eastTile.getPathCard() != null && eastTile.isActive() == false) {		
+				if (card.isConnectable(eastTile.getPathCard(), Direction.E)) {
+					recursivelyActivateTiles(x + 1, y, Direction.E);
+				}
 			}
 		}
 		
@@ -263,15 +289,19 @@ public class Board {
 			Tile southTile = getTiles()[y + 1][x];
 
 			if (southTile.getPathCard() != null && southTile.isActive() == false) {
-				recursivelyActivateTiles(x, y + 1, Direction.S);
+				if (card.isConnectable(southTile.getPathCard(), Direction.S)) {
+					recursivelyActivateTiles(x, y + 1, Direction.S);
+				}
 			}
 		}
 		
 		if (checkW) {
-			Tile eastTile = getTiles()[y][x - 1];
+			Tile westTile = getTiles()[y][x - 1];
 
-			if (eastTile.getPathCard() != null && eastTile.isActive() == false) {
-				recursivelyActivateTiles(x - 1, y, Direction.W);
+			if (westTile.getPathCard() != null && westTile.isActive() == false) {
+				if (card.isConnectable(westTile.getPathCard(), Direction.W)) {
+					recursivelyActivateTiles(x - 1, y, Direction.W);
+				}
 			}
 		}		
 	}

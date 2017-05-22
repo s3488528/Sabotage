@@ -1,7 +1,6 @@
 package sabotage.core.commands;
 
 import java.util.ArrayList;
-import java.util.Stack;
 
 import sabotage.core.Card;
 import sabotage.core.Player;
@@ -29,10 +28,12 @@ public class DiscardCommand implements Command {
 		this.card = card;
 	}
 	
+	@Override
 	public void execute() {
 		player.removeCardFromHand(card);
 	}
 	
+	@Override
 	public void undo() {
 		player.replaceHand(hand);
 	}

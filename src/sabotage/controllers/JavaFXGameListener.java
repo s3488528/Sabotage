@@ -4,11 +4,9 @@ import java.util.ArrayList;
 
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -18,15 +16,18 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import sabotage.core.Card;
+import sabotage.core.PathCard;
 import sabotage.core.Player;
 import sabotage.core.PlayerColour;
-import sabotage.core.PathCard;
 import sabotage.core.Tile;
+import sabotage.core.cards.ChanceCard;
+import sabotage.core.cards.ClearCard;
 import sabotage.core.cards.CornerCard;
 import sabotage.core.cards.DeadEndCard;
 import sabotage.core.cards.DemolishCard;
 import sabotage.core.cards.GoalCard;
 import sabotage.core.cards.HostageCard;
+import sabotage.core.cards.ObstructionCard;
 import sabotage.core.cards.RescueCard;
 import sabotage.core.cards.StraightCard;
 import sabotage.core.cards.TIntersectionCard;
@@ -53,6 +54,11 @@ public class JavaFXGameListener implements GameListener {
 	Image HOSTAGEIMAGE = new Image("/sabotage/assets/images/hostage.png");
 	Image HOSTAGEICONIMAGE = new Image("/sabotage/assets/images/hostage_icon.png");
 	Image RESCUEIMAGE = new Image("/sabotage/assets/images/rescue.png");
+	Image OBSTRUCTIONIMAGE = new Image("/sabotage/assets/images/obstruction.png");
+	Image OBSTRUCTIONICONIMAGE = new Image("/sabotage/assets/images/obstruction_icon.png");
+	Image CLEARIMAGE = new Image("/sabotage/assets/images/clear.png");
+	Image CHANCEIMAGE = new Image("/sabotage/assets/images/random.png");
+	
 	Image GOALIMAGE = new Image("/sabotage/assets/images/goal.png");
 	Image BACKIMAGE = new Image("/sabotage/assets/images/back.png");
 
@@ -196,6 +202,11 @@ public class JavaFXGameListener implements GameListener {
 				if (tile.hasHostage()) {
 					ImageView hostageImage = new ImageView(HOSTAGEICONIMAGE);
 					tsp.getChildren().add(hostageImage);
+				}
+				
+				if (tile.hasObstruction()) {
+					ImageView obImage = new ImageView(OBSTRUCTIONICONIMAGE);
+					tsp.getChildren().add(obImage);
 				}
 
 				tsp.setOnMouseEntered(e -> tsp.getScene().setCursor(Cursor.HAND));
@@ -386,6 +397,12 @@ public class JavaFXGameListener implements GameListener {
 			temp = new ImageView(HOSTAGEIMAGE);
 		} else if (card instanceof RescueCard) {
 			temp = new ImageView(RESCUEIMAGE);
+		} else if (card instanceof ChanceCard) {
+			temp = new ImageView(CHANCEIMAGE);
+		} else if (card instanceof ObstructionCard) {
+			temp = new ImageView(OBSTRUCTIONIMAGE);
+		} else if (card instanceof ClearCard) {
+			temp = new ImageView(CLEARIMAGE);
 		} else {
 			/* Should never reach here */
 			temp = new ImageView(BACKIMAGE);

@@ -2,10 +2,8 @@ package sabotage.controllers;
 
 import java.util.ArrayList;
 
-import javafx.scene.image.ImageView;
 import sabotage.core.Card;
 import sabotage.core.Player;
-import sabotage.core.PlayerColour;
 import sabotage.core.Tile;
 
 public interface GameListener {

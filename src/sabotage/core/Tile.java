@@ -1,9 +1,7 @@
 package sabotage.core;
 
-import java.util.Stack;
-
-import sabotage.core.Deck.DeckMemento;
 import sabotage.core.cards.HostageCard;
+import sabotage.core.cards.ObstructionCard;
 
 public class Tile {
 
@@ -63,6 +61,13 @@ public class Tile {
 	}
 
 	/**
+	 * Checks if this tile has an obstruction 
+	 */
+	public boolean hasObstruction() {		
+		return (actionCard instanceof ObstructionCard);
+	}
+	
+	/**
 	 * Gets if this tile has a path card and is reachable from the starting tile
 	 * @return	True if active, false otherwise
 	 */
@@ -106,4 +111,16 @@ public class Tile {
             return tile;
         }
     }
+
+	public Card getActionCard() {
+		return actionCard;
+	}
+	
+	public Boolean hasPathCard() {
+		return pathCard != null;
+	}
+	
+	public Boolean hasActionCard() {
+		return actionCard != null;
+	}
 }

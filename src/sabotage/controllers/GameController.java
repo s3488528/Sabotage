@@ -1,6 +1,5 @@
 package sabotage.controllers;
 
-import javafx.scene.image.ImageView;
 import sabotage.core.Card;
 import sabotage.core.GameContext;
 import sabotage.core.Player;
