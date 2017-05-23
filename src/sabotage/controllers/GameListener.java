@@ -15,4 +15,5 @@ public interface GameListener {
 	void onInspectorRefresh(Card card);
 	void onTurnStart(ArrayList<Player> playerList, Player currentPlayer, int turnNumber, int undoStackCount);
 	void onGameCompleted(Boolean villainWins);
+	void onTimerUpdate(int timeLeft);
 }

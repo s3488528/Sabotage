@@ -448,4 +448,9 @@ public class JavaFXGameListener implements GameListener {
 		undo.setDisable(true);
 		undoSpinner.setDisable(true);
 	}
+
+	@Override
+	public void onTimerUpdate(int timeLeft) {
+		topText.setText("Time Left: " + timeLeft);
+	}
 }

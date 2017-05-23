@@ -1,5 +1,10 @@
 package sabotage.controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import sabotage.core.Card;
 import sabotage.core.GameContext;
 import sabotage.core.Player;
@@ -11,6 +16,10 @@ public class GameController {
 	private GameListener listener;
 	
 	private int roundNo = 1;
+	
+	private int turnTime;
+	private int timeLeft;
+	private Timeline turnTimer;
 
 	/* Flags */
 	boolean gameCompleted = false;
@@ -72,6 +81,25 @@ public class GameController {
 
 		/* Display the current player's hand */
 		displayHand();
+		
+		/* Start timer */
+		timeLeft = 15;
+		
+	    turnTimer = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+	            timeLeft -= 1;
+	            listener.onTimerUpdate(timeLeft);
+            }
+        }));
+	    turnTimer.setCycleCount(timeLeft);
+        turnTimer.setOnFinished(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+	    		turnCompleted(true); /* Complete turn when timer finishes */
+            }
+        });
+        turnTimer.play();
 
 		listener.onTurnStart(gc.getPlayers(), player, gc.getTurnNo(), gc.getUndoCount());
 	}
@@ -130,7 +158,7 @@ public class GameController {
 			
 			gc.validateActiveTiles();
 			
-			turnCompleted();
+			turnCompleted(false);
 		} else {
 			//listener.onLogUpdate("> " + gc.getCurrentCard().getPlaceFailedText(x, y));
 		}
@@ -141,7 +169,7 @@ public class GameController {
 	 */
 	public void discardCurrentCard() {
 		gc.discardCurrentCard();
-		turnCompleted();
+		turnCompleted(false);
 	}
 
 	/**
@@ -149,13 +177,13 @@ public class GameController {
 	 */
 	public void donateCurrentCard(Player player) {
 		gc.donateCurrentCard(player);
-		turnCompleted();
+		turnCompleted(false);
 	}
 
 	/**
 	 * Cycle to the next player and update the UI
 	 */
-	private void turnCompleted() {
+	private void turnCompleted(Boolean skipped) {
 		if (gc.getBoard().getGoalReached()) {
 			displayTurn();			
 			gc.distributePoints(false);			
@@ -166,9 +194,13 @@ public class GameController {
 			gc.distributePoints(true);
 			listener.onGameCompleted(true);
 			return;
-		} 
+		}
+
+		turnTimer.stop();
 		
-		gc.drawFromDeck();
+		if (!skipped) {
+			gc.drawFromDeck();
+		}
 		
 		do {
 			gc.cyclePlayer();
