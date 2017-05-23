@@ -294,7 +294,17 @@ public class GameContext {
 
 	public void reset() {
 		commHistory.clear();
+
+		// Fresh hand for each player:
+		for (Player player : players) {
+			player.getHand().clear();
+			
+			for (int j = 0; j < 5; j++) {
+				player.addCardToHand(CardBuilder.createRandomCard());
+			}
+		}
 		
+		// Reset board and deck:
 		initializeBoard(boardWidth, boardHeight);
 		initializeDeck(deckCount);
 	}
