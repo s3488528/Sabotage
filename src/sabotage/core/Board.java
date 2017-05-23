@@ -26,7 +26,7 @@ public class Board {
 	 * @param	boardWidth	The number of tiles spanning across the board
 	 * @param	boardHeight	The number of tiles spanning down the board
 	 */
-	public Board(int boardWidth, int boardHeight) {
+	public Board(int boardWidth, int boardHeight, int treasureCount) {
 		tiles = new Tile[boardHeight][boardWidth];
 		ArrayList<Tile> rightTiles = new ArrayList<Tile>();
 
@@ -47,11 +47,16 @@ public class Board {
 		startingTile.setPathCard(CardBuilder.createStartingCard(startingTile));
 		startingTile.setActive(true);
 
-		/* Set 3 random tiles on the right as the goal tiles */		
+		/* Set random tiles on the right as the goal tiles */		
 		Collections.shuffle(rightTiles);
+		
+		/* Make one real goal: */
 		rightTiles.get(0).setPathCard(CardBuilder.createGoalCard(rightTiles.get(0), true));
-		rightTiles.get(1).setPathCard(CardBuilder.createGoalCard(rightTiles.get(1), false));
-		rightTiles.get(2).setPathCard(CardBuilder.createGoalCard(rightTiles.get(2), false));				
+
+		/* Rest are fake: */
+		for (int i = 1; i < treasureCount; i++) {
+			rightTiles.get(i).setPathCard(CardBuilder.createGoalCard(rightTiles.get(i), false));			
+		}
 	}
 
 	/**

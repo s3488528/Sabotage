@@ -20,6 +20,7 @@ public class GameContext {
 	private int deckCount;
 	private int boardWidth;
 	private int boardHeight;
+	private int treasureCount;
 	
 	private Deck deck;
 	private Stack<Deck.DeckMemento> deckStates;
@@ -39,12 +40,13 @@ public class GameContext {
 	 * @param boardWidth	The number of tiles spanning across the board
 	 * @param boardHeight	The number of tiles spanning down the board
 	 */
-	public void initializeBoard(int boardWidth, int boardHeight) {
+	public void initializeBoard(int boardWidth, int boardHeight, int treasureCount) {
 		 // cache the board dimensions for later rounds
 		this.boardWidth = boardWidth;
 		this.boardHeight = boardHeight;
+		this.treasureCount = treasureCount;
 		
-		this.board = new Board(boardWidth, boardHeight);		
+		this.board = new Board(boardWidth, boardHeight, treasureCount);		
 	}
 	
 	/**
@@ -73,24 +75,23 @@ public class GameContext {
 		players = new ArrayList<Player>();
 				
 		for (int i = 0; i < playerCount; i++) {
-			Player tempPlayer = new Player("Player " + (i + 1), PlayerColour.values()[i]);
+			Player tempPlayer = new Player(PlayerColour.values()[i].name(), PlayerColour.values()[i]);
 			
 			for (int j = 0; j < 5; j++) {
 				tempPlayer.addCardToHand(CardBuilder.createRandomCard());
 			}
 			
 			players.add(tempPlayer);
-		}
-		
-		players.get(random.nextInt(playerCount)).setAsVillain();
+		}	
 	}
 	
 	/**
-	 * Shuffles the players
+	 * Shuffles the players and sets one as villain
 	 */
 	public void shufflePlayers() {
 		Collections.shuffle(players);
-		currentPlayer = players.get(0);
+		currentPlayer = players.get(0);	
+		players.get(random.nextInt(players.size())).setAsVillain(true);	
 	}
 
 	public void rotateCurrentCard(boolean right) {
@@ -284,7 +285,9 @@ public class GameContext {
 
 	public void undoTurn() {
 		cyclePreviousPlayer();
-		deck.restoreFromMemento(deckStates.pop());
+		if (!deckStates.isEmpty()) {
+			deck.restoreFromMemento(deckStates.pop());
+		}
 		commHistory.undoLast();
 	}
 
@@ -305,7 +308,7 @@ public class GameContext {
 		}
 		
 		// Reset board and deck:
-		initializeBoard(boardWidth, boardHeight);
+		initializeBoard(boardWidth, boardHeight, treasureCount);
 		initializeDeck(deckCount);
 	}
 	
@@ -323,5 +326,13 @@ public class GameContext {
 				}
 			}
 		}
+	}
+
+	public void reinitPlayers() {
+		for (Player player : players) {
+			player.setAsVillain(false);
+			player.setUndo(true);
+		}
+		
 	}
 }

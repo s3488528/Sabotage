@@ -258,28 +258,28 @@ public class JavaFXGameListener implements GameListener {
 		if (!currentPlayer.isVillain()) {
 			topText.setText(playerName + "'s turn.");
 		} else {
-			topText.setText(playerName + "'s turn (You are a villain).");
+			topText.setText(playerName + "'s turn (Villain).");
 		}
 		
 		turnText.setText("TURN: " + turnNumber);
 		
 		switch (playerColour) {
-			case red:
+			case Red:
 				topText.setFill(Color.RED);
 				break;
-			case blue:
+			case Blue:
 				topText.setFill(Color.BLUE);
 				break;
-			case green:
+			case Green:
 				topText.setFill(Color.GREEN);
 				break;
-			case yellow:
+			case Yellow:
 				topText.setFill(Color.GOLD);
 				break;
-			case teal:
+			case Teal:
 				topText.setFill(Color.TEAL);
 				break;
-			case orange:
+			case Orange:
 				topText.setFill(Color.ORANGE);
 				break;
 		}
@@ -299,6 +299,7 @@ public class JavaFXGameListener implements GameListener {
 			undo.setDisable(true);
 		} else {
 			undo.setDisable(false);
+			undoSpinner.setDisable(false);
 			
 			int max = Math.min(undoStackCount, 3);
 			undoSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, max, 1));
@@ -313,7 +314,7 @@ public class JavaFXGameListener implements GameListener {
 		for (Player player : list) {
 			HBox temp = new HBox(5);
 			Text score = new Text("" + player.getScore());
-			Text name = new Text(player.getName());
+			Text name = new Text(player.getName() + " - " + player.getScore() + " points");
 			
 			Button donate = new Button("Donate Card");
 			donate.setOnMouseClicked(e -> gameCon.donateCurrentCard(player));
@@ -334,27 +335,27 @@ public class JavaFXGameListener implements GameListener {
 				score.setFill(Color.WHITE);
 
 				switch (player.getColor()) {
-					case red:
+					case Red:
 						temp.setStyle("-fx-background-color: red;\n" +
 									 "-fx-padding: 8;");
 						break;
-					case blue:
+					case Blue:
 						temp.setStyle("-fx-background-color: blue;\n" +
 								 "-fx-padding: 8;");
 						break;
-					case green:
+					case Green:
 						temp.setStyle("-fx-background-color: green;\n" +
 								 "-fx-padding: 8;");
 						break;
-					case yellow:
+					case Yellow:
 						temp.setStyle("-fx-background-color: gold;\n" +
 								 "-fx-padding: 8;");
 						break;
-					case teal:
+					case Teal:
 						temp.setStyle("-fx-background-color: teal;\n" +
 								 "-fx-padding: 8;");
 						break;
-					case orange:
+					case Orange:
 						temp.setStyle("-fx-background-color: darkorange;\n" +
 								 "-fx-padding: 8;");
 						break;
@@ -363,7 +364,7 @@ public class JavaFXGameListener implements GameListener {
 				temp.setStyle("-fx-padding: 8;");
 			}
 			
-			temp.getChildren().addAll(score, name, donate);			
+			temp.getChildren().addAll(name, donate);			
 			
 			playerList.getChildren().add(temp);
 		}

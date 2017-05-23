@@ -81,8 +81,8 @@ public class Player {
 	/**
 	 * Set this player to be a villain
 	 */	
-	public void setAsVillain() {
-		this.isVillain = true;
+	public void setAsVillain(boolean isVillain) {
+		this.isVillain = isVillain;
 	}
 	
 	/**
@@ -97,8 +97,8 @@ public class Player {
 	/**
 	 * Called when player has used undo 
 	 */
-	public void UndoUsed() {
-		canUndo = false;
+	public void setUndo(boolean canUndo) {
+		this.canUndo = canUndo;
 	}
 
 	/**

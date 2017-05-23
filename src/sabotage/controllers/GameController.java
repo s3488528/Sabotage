@@ -47,9 +47,9 @@ public class GameController {
 	 * @param deckCount		The number of starting cards in the deck
 	 * @param playerCount	The number of players in the game
 	 */
-	public void initialiseGame(int boardWidth, int boardHeight, int deckCount, int playerCount) {		
+	public void initialiseGame(int boardWidth, int boardHeight, int deckCount, int playerCount, int treasureCount, int turnTime) {		
 		/* Initialise board */
-		gc.initializeBoard(boardWidth, boardHeight);
+		gc.initializeBoard(boardWidth, boardHeight, treasureCount);
 		
 		/* Initialise board */
 		gc.initializeDeck(deckCount);
@@ -61,6 +61,8 @@ public class GameController {
 		gc.shufflePlayers();
 
 		listener.onRoundUpdate(roundNo);
+		
+		this.turnTime = turnTime;
 		
 		/* Update the UI */
 		displayTurn();
@@ -85,7 +87,7 @@ public class GameController {
 		
 		/* Initialize timer */
 		if (!roundCompleted) {
-			timeLeft = 15;
+			timeLeft = turnTime;
 			
 		    turnTimer = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
 	            @Override
@@ -230,7 +232,8 @@ public class GameController {
 	}
 
 	public void undoTurns(Integer turns) {		
-		gc.getCurrentPlayer().UndoUsed();
+		turnTimer.stop();
+		gc.getCurrentPlayer().setUndo(false);
 		
 		for (int i = 0; i < turns; i++) {
 			gc.undoTurn();
@@ -241,6 +244,8 @@ public class GameController {
 
 	public void nextRound() {	
 		gc.reset();
+		
+		gc.reinitPlayers();
 		
 		/* Shuffle players */
 		gc.shufflePlayers();

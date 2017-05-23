@@ -65,6 +65,9 @@ public class Main extends Application {
 		Spinner<Integer> boardWidthSpinner = new Spinner<Integer>(6, 9, 8);
 		Spinner<Integer> boardHeightSpinner = new Spinner<Integer>(4, 6, 5);
 		Spinner<Integer> playerCountSpinner = new Spinner<Integer>(3, 6, 4);
+		Spinner<Integer> deckCountSpinner = new Spinner<Integer>(0, 40, 20, 5);
+		Spinner<Integer> treasureCountSpinner = new Spinner<Integer>(1, 5, 3);
+		Spinner<Integer> turnTimeSpinner = new Spinner<Integer>(15, 120, 30, 5);
 
 		/* title */
 		Text title = new Text("ISYS1084 - " + GAME_TITLE);
@@ -73,7 +76,11 @@ public class Main extends Application {
 		/* start button */
 		Button start = new Button("Start Game");
 		start.setOnAction(e -> showGameScene(boardWidthSpinner.getValue(),
-				boardHeightSpinner.getValue(), playerCountSpinner.getValue()));
+											boardHeightSpinner.getValue(), 
+											deckCountSpinner.getValue(), 
+											playerCountSpinner.getValue(), 
+											treasureCountSpinner.getValue(), 
+											turnTimeSpinner.getValue()));
 		start.setPrefWidth(85);
 
 		/* options pane */
@@ -86,6 +93,12 @@ public class Main extends Application {
 		optionsPane.add(boardHeightSpinner, 1, 1);
 		optionsPane.add(new Label("Number of Players (3 - 6):"), 0, 2);
 		optionsPane.add(playerCountSpinner, 1, 2);
+		optionsPane.add(new Label("Cards in Deck (0 - 40):"), 0, 3);
+		optionsPane.add(deckCountSpinner, 1, 3);
+		optionsPane.add(new Label("Number of Goals (1 - 5):"), 0, 4);
+		optionsPane.add(treasureCountSpinner, 1, 4);
+		optionsPane.add(new Label("Time Per Turn (15s - 120s):"), 0, 5);
+		optionsPane.add(turnTimeSpinner, 1, 5);
 
 		/* main grid */
 		GridPane main = new GridPane();
@@ -121,7 +134,7 @@ public class Main extends Application {
 	Spinner<Integer> undoSpinner;
 	HBox undo;
 	
-	private void showGameScene(int boardWidth, int boardHeight, int playerCount) {
+	private void showGameScene(int boardWidth, int boardHeight, int deckCount, int playerCount, int treasureCount, int turnTime) {
 		initialiseGameScene();
 		_window.setScene(_game);
 
@@ -131,7 +144,7 @@ public class Main extends Application {
 		gameController.addListener(new JavaFXGameListener(gameController, topText, roundText, turnText, playerList, board, 
 				hand, inspector, cardDescription, rotateRight, rotateLeft, deckText, discard, undoSpinner, undo, nextRound));
 
-		gameController.initialiseGame(boardWidth, boardHeight, 20, playerCount);
+		gameController.initialiseGame(boardWidth, boardHeight, deckCount, playerCount, treasureCount, turnTime);
 	}
 	
 	private void initialiseGameScene() {
@@ -157,8 +170,8 @@ public class Main extends Application {
 		
 		HBox menuPane = new HBox(5);
 		menuPane.setStyle("-fx-padding: 5;\n");
-		menuPane.setAlignment(Pos.CENTER_LEFT);
-		menuPane.getChildren().addAll(quit, nextRound);
+		menuPane.setAlignment(Pos.CENTER_RIGHT);
+		menuPane.getChildren().addAll(nextRound, quit);
 
 		VBox topPane = new VBox(5);
 		topPane.setAlignment(Pos.CENTER);
