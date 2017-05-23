@@ -157,21 +157,19 @@ public class GameController {
 	 */
 	private void turnCompleted() {
 		if (gc.getBoard().getGoalReached()) {
-			displayTurn();
+			displayTurn();			
+			gc.distributePoints(false);			
 			listener.onGameCompleted(false);
 			return;
 		} else if (allCardsPlayed()) {
 			displayTurn();
+			gc.distributePoints(true);
 			listener.onGameCompleted(true);
 			return;
 		} 
 		
-		if (gc.drawFromDeck()) {
-			//listener.onLogUpdate(gc.getCurrentPlayer().getName() + " drew a card from the deck.");
-		} else {
-			//listener.onLogUpdate("> There are not more cards in the deck!");
-		}
-
+		gc.drawFromDeck();
+		
 		do {
 			gc.cyclePlayer();
 		} while ((gc.getCurrentPlayer().getHand().isEmpty()));

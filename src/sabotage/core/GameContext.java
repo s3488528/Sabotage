@@ -308,4 +308,20 @@ public class GameContext {
 		initializeBoard(boardWidth, boardHeight);
 		initializeDeck(deckCount);
 	}
+	
+	public void distributePoints(boolean villainWins) {
+		if (villainWins) {
+			for (Player player : players) {
+				if (player.isVillain()) {
+					player.addToScore(players.size());
+				}
+			}
+		} else {
+			for (Player player : players) {
+				if (!player.isVillain()) {
+					player.addToScore(1);
+				}
+			}
+		}
+	}
 }

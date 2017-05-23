@@ -5,15 +5,12 @@ import java.util.ArrayList;
 public class Player {
 
 	/* DECLARATIONS */
-	private String name;
-	
-	private PlayerColour color;
-	
+	private String name;	
+	private PlayerColour color;	
 	private boolean canUndo;
-
-	private boolean isVillain;
-	
+	private boolean isVillain;	
 	private ArrayList<Card> hand;
+	private int score; 
 	
 	/* CONSTRUCTORS */
 	/**
@@ -26,6 +23,7 @@ public class Player {
 		this.hand = new ArrayList<Card>();
 		this.color = color;
 		this.canUndo = true;
+		this.score = 0;
 	}
 
 	/* GETTERS & SETTERS */
@@ -109,5 +107,17 @@ public class Player {
 	public void replaceHand(ArrayList<Card> hand) {
 		this.hand.clear();
 		this.hand = hand;
+	}
+
+	/**
+	 * Changes this player's score
+	 * @param amount	The amount to change the score by
+	 */
+	public void addToScore(int amount) {
+		this.score += amount;
+	}
+
+	public int getScore() {
+		return score;
 	}
 }

@@ -312,6 +312,7 @@ public class JavaFXGameListener implements GameListener {
 		
 		for (Player player : list) {
 			HBox temp = new HBox(5);
+			Text score = new Text("" + player.getScore());
 			Text name = new Text(player.getName());
 			
 			Button donate = new Button("Donate Card");
@@ -328,6 +329,9 @@ public class JavaFXGameListener implements GameListener {
 				
 				name.setStyle("-fx-font-weight: bold");
 				name.setFill(Color.WHITE);
+
+				score.setStyle("-fx-font-weight: bold");
+				score.setFill(Color.WHITE);
 
 				switch (player.getColor()) {
 					case red:
@@ -359,7 +363,7 @@ public class JavaFXGameListener implements GameListener {
 				temp.setStyle("-fx-padding: 8;");
 			}
 			
-			temp.getChildren().addAll(name, donate);			
+			temp.getChildren().addAll(score, name, donate);			
 			
 			playerList.getChildren().add(temp);
 		}
