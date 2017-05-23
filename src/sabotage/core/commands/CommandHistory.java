@@ -34,5 +34,9 @@ public class CommandHistory {
 	public int getUndoStackCount() {
 		return undoStack.size();
 	}
+
+	public void clear() {
+		undoStack.clear();
+	}
 	
 }

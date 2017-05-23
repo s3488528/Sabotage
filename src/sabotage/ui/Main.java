@@ -112,6 +112,7 @@ public class Main extends Application {
 	VBox playerList;
 	Text deckText;
 	Button quit;
+	Button nextRound;
 	ImageView inspector;
 	Label cardDescription;
 	Button rotateLeft;
@@ -128,7 +129,7 @@ public class Main extends Application {
 		
 		/* Hook new JavaFXListener to the game controller */
 		gameController.addListener(new JavaFXGameListener(gameController, topText, roundText, turnText, playerList, board, 
-				hand, inspector, cardDescription, rotateRight, rotateLeft, deckText, discard, undoSpinner, undo));
+				hand, inspector, cardDescription, rotateRight, rotateLeft, deckText, discard, undoSpinner, undo, nextRound));
 
 		gameController.initialiseGame(boardWidth, boardHeight, 20, playerCount);
 	}
@@ -136,7 +137,34 @@ public class Main extends Application {
 	private void initialiseGameScene() {
 		topText = new Text("TOP LABEL");
 		topText.setFont(new Font(24));
-		BorderPane.setAlignment(topText, Pos.CENTER);
+		
+		quit = new Button("Quit");
+		quit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				showMenuScene();
+			}
+        });
+		
+		nextRound = new Button("Next Round");
+		nextRound.setDisable(true);
+		nextRound.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				nextRound();
+			}
+        });
+		
+		HBox menuPane = new HBox(5);
+		menuPane.setStyle("-fx-padding: 5;\n");
+		menuPane.setAlignment(Pos.CENTER_LEFT);
+		menuPane.getChildren().addAll(quit, nextRound);
+
+		VBox topPane = new VBox(5);
+		topPane.setAlignment(Pos.CENTER);
+		topPane.getChildren().addAll(menuPane, topText);
+		
+		BorderPane.setAlignment(topPane, Pos.CENTER);
 		
 		roundText = new Text("Round: 0");
 		roundText.maxHeight(20);
@@ -152,20 +180,12 @@ public class Main extends Application {
 		
 		deckText = new Text("");
 		
-		quit = new Button("Quit");
-		quit.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				showMenuScene();
-			}
-        });
-		
 		VBox gameInformationPane = new VBox(5);
 		gameInformationPane.setStyle("-fx-padding: 5;\n");
 		gameInformationPane.setMinSize(250, 0);
 		gameInformationPane.setMaxSize(250, WINDOW_HEIGHT - 100);
 		gameInformationPane.setAlignment(Pos.CENTER);
-		gameInformationPane.getChildren().addAll(quit, roundText, turnText, playerList, deckText);
+		gameInformationPane.getChildren().addAll(roundText, turnText, playerList, deckText);
 
 		board = new GridPane();
 		board.setHgap(5);
@@ -240,7 +260,7 @@ public class Main extends Application {
 		
 		BorderPane main = new BorderPane();
 		main.setMaxSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		main.setTop(topText);
+		main.setTop(topPane);
 		main.setRight(gameInformationPane);
 		main.setCenter(board);
 		main.setBottom(hand);
@@ -259,5 +279,10 @@ public class Main extends Application {
 	
 	private void undoTurns(int turns) {
 		gameController.undoTurns(turns);
+	}
+	
+	private void nextRound() {
+		nextRound.setDisable(true);
+		gameController.nextRound();
 	}
 }

@@ -78,12 +78,14 @@ public class JavaFXGameListener implements GameListener {
 	Button discard;
 	Spinner<Integer> undoSpinner;
 	HBox undo;
+	Button nextRound;
 	
 	// A reference to the GameController so we can handle events (clicks)
 	GameController gameCon;
 
 	public JavaFXGameListener(GameController gameCon, Text topText, Text roundText, Text turnText, VBox playerList, GridPane board, 
-			HBox hand, ImageView inspector, Label cardDescription, Button rotateRight, Button rotateLeft, Text deckText, Button discard, Spinner<Integer> undoSpinner, HBox undo) {
+			HBox hand, ImageView inspector, Label cardDescription, Button rotateRight, Button rotateLeft, Text deckText, Button discard, 
+			Spinner<Integer> undoSpinner, HBox undo, Button nextRound) {
 		this.gameCon = gameCon;
 		this.topText = topText;
 		this.roundText = roundText;
@@ -99,6 +101,7 @@ public class JavaFXGameListener implements GameListener {
 		this.discard = discard;
 		this.undoSpinner = undoSpinner;
 		this.undo = undo;
+		this.nextRound = nextRound;
 	}
 
 	@Override
@@ -284,6 +287,8 @@ public class JavaFXGameListener implements GameListener {
 		rebuildPlayerList(list, currentPlayer, false);
 		
 		cardDescription.setText("");
+
+		hand.setDisable(false);
 		
 		rotateRight.setDisable(true);
 		rotateLeft.setDisable(true);
@@ -428,11 +433,15 @@ public class JavaFXGameListener implements GameListener {
 			topText.setText("THE VILLAINS HAVE FAILED!");
 		}
 		
+		nextRound.setDisable(false);
+		
 		// Disable all controls
 		board.setDisable(true);
 		hand.setDisable(true);
 		rotateRight.setDisable(true);
 		rotateLeft.setDisable(true);
 		discard.setDisable(true);
+		undo.setDisable(true);
+		undoSpinner.setDisable(true);
 	}
 }

@@ -40,7 +40,6 @@ public class GameController {
 	public void initialiseGame(int boardWidth, int boardHeight, int deckCount, int playerCount) {		
 		/* Initialise board */
 		gc.initializeBoard(boardWidth, boardHeight);
-		Tile[][] tiles = gc.getBoard().getTiles();
 		
 		/* Initialise board */
 		gc.initializeDeck(deckCount);
@@ -201,6 +200,20 @@ public class GameController {
 			gc.undoTurn();
 		}
 
+		displayTurn();
+	}
+
+	public void nextRound() {	
+		gc.reset();
+		
+		/* Shuffle players */
+		gc.shufflePlayers();
+		
+		roundNo += 1;
+		
+		listener.onRoundUpdate(roundNo);
+		
+		/* Update the UI */
 		displayTurn();
 	}
 }

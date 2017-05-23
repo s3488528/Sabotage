@@ -17,6 +17,10 @@ public class GameContext {
 	private Player currentPlayer;
 	private Card currentCard;
 
+	private int deckCount;
+	private int boardWidth;
+	private int boardHeight;
+	
 	private Deck deck;
 	private Stack<Deck.DeckMemento> deckStates;
 	
@@ -36,6 +40,10 @@ public class GameContext {
 	 * @param boardHeight	The number of tiles spanning down the board
 	 */
 	public void initializeBoard(int boardWidth, int boardHeight) {
+		 // cache the board dimensions for later rounds
+		this.boardWidth = boardWidth;
+		this.boardHeight = boardHeight;
+		
 		this.board = new Board(boardWidth, boardHeight);		
 	}
 	
@@ -44,6 +52,8 @@ public class GameContext {
 	 * @param deckCount		The number of starting cards in the deck
 	 */
 	public void initializeDeck(int deckCount) {
+		this.deckCount = deckCount; // cache the starting deck count for later rounds
+		
 		/* Populate the deck with random cards */
 		deck = new Deck();		
 		for (int i = 0; i < deckCount; i++) {			
@@ -280,5 +290,12 @@ public class GameContext {
 
 	public int getUndoCount() {
 		return commHistory.getUndoStackCount();
+	}
+
+	public void reset() {
+		commHistory.clear();
+		
+		initializeBoard(boardWidth, boardHeight);
+		initializeDeck(deckCount);
 	}
 }
