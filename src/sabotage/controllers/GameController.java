@@ -17,12 +17,13 @@ public class GameController {
 	
 	private int roundNo = 1;
 	
+	
 	private int turnTime;
 	private int timeLeft;
 	private Timeline turnTimer;
 
 	/* Flags */
-	boolean gameCompleted = false;
+	boolean roundCompleted = false;
 	
 	/**
 	 * GameController class Constructor
@@ -82,25 +83,27 @@ public class GameController {
 		/* Display the current player's hand */
 		displayHand();
 		
-		/* Start timer */
-		timeLeft = 15;
+		/* Initialize timer */
+		if (!roundCompleted) {
+			timeLeft = 15;
+			
+		    turnTimer = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
+	            @Override
+	            public void handle(ActionEvent actionEvent) {
+		            timeLeft -= 1;
+		            listener.onTimerUpdate(timeLeft);
+	            }
+	        }));
+		    turnTimer.setCycleCount(timeLeft);
+	        turnTimer.setOnFinished(new EventHandler<ActionEvent>() {
+	            @Override
+	            public void handle(ActionEvent actionEvent) {
+		    		turnCompleted(true); /* Complete turn when timer finishes */
+	            }
+	        });
+	        turnTimer.play();
+		}
 		
-	    turnTimer = new Timeline(new KeyFrame(Duration.seconds(1), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-	            timeLeft -= 1;
-	            listener.onTimerUpdate(timeLeft);
-            }
-        }));
-	    turnTimer.setCycleCount(timeLeft);
-        turnTimer.setOnFinished(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-	    		turnCompleted(true); /* Complete turn when timer finishes */
-            }
-        });
-        turnTimer.play();
-
 		listener.onTurnStart(gc.getPlayers(), player, gc.getTurnNo(), gc.getUndoCount());
 	}
 
@@ -184,19 +187,22 @@ public class GameController {
 	 * Cycle to the next player and update the UI
 	 */
 	private void turnCompleted(Boolean skipped) {
+		turnTimer.stop();
+		
+		/* Win conditions */
 		if (gc.getBoard().getGoalReached()) {
+			roundCompleted = true;
+			gc.distributePoints(false);
 			displayTurn();			
-			gc.distributePoints(false);			
 			listener.onGameCompleted(false);
 			return;
 		} else if (allCardsPlayed()) {
-			displayTurn();
+			roundCompleted = true;
 			gc.distributePoints(true);
+			displayTurn();
 			listener.onGameCompleted(true);
 			return;
 		}
-
-		turnTimer.stop();
 		
 		if (!skipped) {
 			gc.drawFromDeck();
@@ -240,6 +246,7 @@ public class GameController {
 		gc.shufflePlayers();
 		
 		roundNo += 1;
+		roundCompleted = false;
 		
 		listener.onRoundUpdate(roundNo);
 		
