@@ -53,6 +53,12 @@ public class Main extends Application {
 		_window.setScene(_menu);
 		_window.show();
 	}
+	
+	private void showMenuScene() {
+		initialiseMenuScene();
+		_window.setScene(_menu);
+		_window.show();
+	}
 
 	private void initialiseMenuScene() {
 		/* Spinners */
@@ -104,11 +110,12 @@ public class Main extends Application {
 	Text roundText;
 	Text turnText;
 	VBox playerList;
+	Text deckText;
+	Button quit;
 	ImageView inspector;
 	Label cardDescription;
 	Button rotateLeft;
 	Button rotateRight;
-	Text deckText;
 	Button discard;
 	Spinner<Integer> undoSpinner;
 	HBox undo;
@@ -145,12 +152,20 @@ public class Main extends Application {
 		
 		deckText = new Text("");
 		
+		quit = new Button("Quit");
+		quit.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				showMenuScene();
+			}
+        });
+		
 		VBox gameInformationPane = new VBox(5);
 		gameInformationPane.setStyle("-fx-padding: 5;\n");
 		gameInformationPane.setMinSize(250, 0);
 		gameInformationPane.setMaxSize(250, WINDOW_HEIGHT - 100);
 		gameInformationPane.setAlignment(Pos.CENTER);
-		gameInformationPane.getChildren().addAll(roundText, turnText, playerList, deckText);
+		gameInformationPane.getChildren().addAll(quit, roundText, turnText, playerList, deckText);
 
 		board = new GridPane();
 		board.setHgap(5);
