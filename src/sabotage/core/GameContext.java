@@ -10,7 +10,9 @@ import sabotage.core.commands.DiscardCommand;
 import sabotage.core.commands.DonateCommand;
 import sabotage.core.commands.PlaceCommand;
 
-public class GameContext {
+public final class GameContext {
+	
+	private static final GameContext INSTANCE = new GameContext();
 
 	private Board board;
 	private ArrayList<Player> players;
@@ -25,15 +27,17 @@ public class GameContext {
 	private Deck deck;
 	private Stack<Deck.DeckMemento> deckStates;
 	
-	private CommandHistory commHistory;
+	private CommandHistory commHistory = new CommandHistory();
 	
 	private Random random = new Random();
 
 	private int turnNo = 1;
 	
-	public GameContext() {
-		commHistory = new CommandHistory();
-	}
+	private GameContext() {	}
+	
+    public static GameContext getInstance() {
+        return INSTANCE;
+    }
 
 	/**
 	 * Initializes a new board with the specified settings

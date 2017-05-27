@@ -29,7 +29,7 @@ public class GameController {
 	 * GameController class Constructor
 	 */
 	public GameController() {
-		gc = new GameContext();
+		gc = GameContext.getInstance();
 	}
 	
 	/**
