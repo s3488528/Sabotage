@@ -1,6 +1,5 @@
 package sabotage.core.cards;
 
-import sabotage.core.Player;
 import sabotage.core.cards.logic.CardLogic;
 
 public abstract class ActionCard extends Card {

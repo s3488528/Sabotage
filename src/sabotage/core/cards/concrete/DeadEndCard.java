@@ -1,6 +1,5 @@
 package sabotage.core.cards.concrete;
 
-import sabotage.core.Tile;
 import sabotage.core.cards.PathCard;
 
 public class DeadEndCard extends PathCard {	
