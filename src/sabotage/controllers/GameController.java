@@ -189,7 +189,7 @@ public class GameController {
 	 * Uses the currently selected card on a player
 	 */
 	public void useCardOnPlayer(Player player) {
-		if (!(gc.getCurrentCard() instanceof PersonalCard) || !player.isActive()) {
+		if (!(gc.getCurrentCard() instanceof PersonalCard)) {
 			return;
 		}
 		
@@ -223,8 +223,13 @@ public class GameController {
 		}
 		
 		do {
+			if (!gc.getCurrentPlayer().isActive()) {
+				gc.getCurrentPlayer().setActive(true);
+			}
+			
 			gc.cyclePlayer();
-		} while ((gc.getCurrentPlayer().getHand().isEmpty()));
+		} while ((gc.getCurrentPlayer().getHand().isEmpty()) || !gc.getCurrentPlayer().isActive());
+		// Skip players whose hands are empty, or are inactive
 
 		displayTurn();
 	}

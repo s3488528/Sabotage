@@ -10,6 +10,7 @@ import sabotage.core.cards.concrete.ChanceCard;
 import sabotage.core.cards.concrete.ClearCard;
 import sabotage.core.cards.concrete.CornerCard;
 import sabotage.core.cards.concrete.DeadEndCard;
+import sabotage.core.cards.concrete.HealCard;
 import sabotage.core.cards.concrete.HostageCard;
 import sabotage.core.cards.concrete.ObstructionCard;
 import sabotage.core.cards.concrete.RescueCard;
@@ -28,7 +29,8 @@ enum cardType {
 	obstruction,
 	clear,
 	chance,
-	backstab
+	backstab,
+	heal
 }
 
 public class GeneralCardFactory {
@@ -72,6 +74,9 @@ public class GeneralCardFactory {
 				break;
 			case backstab:
 				tempCard = new BackstabCard();
+				break;
+			case heal:
+				tempCard = new HealCard();
 				break;
 			default:
 				break;

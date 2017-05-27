@@ -4,7 +4,7 @@ import sabotage.core.Player;
 import sabotage.core.Tile;
 import sabotage.core.cards.Card;
 
-public class BackstabCardLogic extends CardLogic {
+public class HealCardLogic extends CardLogic {
 
 	@Override
 	public void placeCardOnTile(Card card, Tile tile) {
@@ -13,7 +13,7 @@ public class BackstabCardLogic extends CardLogic {
 
 	@Override
 	public void useCardOnPlayer(Card card, Player player) {
-		player.setActive(false);
+		player.setActive(true);
 	}
 
 }

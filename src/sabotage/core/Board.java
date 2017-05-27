@@ -272,9 +272,9 @@ public class Board {
 
 		PathCard card = tiles[y][x].getPathCard();
 
+		/* If we've reached a goal card: */
 		if (card instanceof GoalCard) {
 			((GoalCard) card).reveal();
-			tiles[y][x].setActive(false);
 
 			if (((GoalCard) card).isGoal()) {
 				goalReached = true;

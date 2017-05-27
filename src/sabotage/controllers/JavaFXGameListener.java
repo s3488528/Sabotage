@@ -26,6 +26,7 @@ public class JavaFXGameListener implements GameListener {
 	/* Image Constants */
 	Image EMPTYIMAGE = new Image("/sabotage/assets/images/empty.png");
 	
+	// Path:
 	Image DEADENDIMAGE = new Image("/sabotage/assets/images/deadend.png");
 	Image DEADENDINACTIVEIMAGE = new Image("/sabotage/assets/images/deadend_inactive.png");
 	Image CORNERIMAGE = new Image("/sabotage/assets/images/corner.png");
@@ -36,7 +37,8 @@ public class JavaFXGameListener implements GameListener {
 	Image TINTINACTIVEIMAGE = new Image("/sabotage/assets/images/tintersection_inactive.png");
 	Image XINTIMAGE = new Image("/sabotage/assets/images/xintersection.png");
 	Image XINTINACTIVEIMAGE = new Image("/sabotage/assets/images/xintersection_inactive.png");
-	
+
+	// Action:
 	Image DEMOLISHIMAGE = new Image("/sabotage/assets/images/demolish.png");
 	Image HOSTAGEIMAGE = new Image("/sabotage/assets/images/hostage.png");
 	Image HOSTAGEICONIMAGE = new Image("/sabotage/assets/images/hostage_icon.png");
@@ -45,7 +47,10 @@ public class JavaFXGameListener implements GameListener {
 	Image OBSTRUCTIONICONIMAGE = new Image("/sabotage/assets/images/obstruction_icon.png");
 	Image CLEARIMAGE = new Image("/sabotage/assets/images/clear.png");
 	Image CHANCEIMAGE = new Image("/sabotage/assets/images/random.png");
+
+	// Personal:
 	Image BACKSTABIMAGE = new Image("/sabotage/assets/images/backstab.png");
+	Image HEALIMAGE = new Image("/sabotage/assets/images/heal.png");
 	
 	Image GOALIMAGE = new Image("/sabotage/assets/images/goal.png");
 	Image BACKIMAGE = new Image("/sabotage/assets/images/back.png");
@@ -416,7 +421,9 @@ public class JavaFXGameListener implements GameListener {
 			temp = new ImageView(CLEARIMAGE);
 		} else if (card instanceof BackstabCard) {
 			temp = new ImageView(BACKSTABIMAGE);
-		} else {
+		} else if (card instanceof HealCard) {
+			temp = new ImageView(HEALIMAGE);
+		}else {
 			/* Should never reach here */
 			temp = new ImageView(BACKIMAGE);
 		}
