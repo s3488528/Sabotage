@@ -9,11 +9,6 @@ public class ChanceCard extends ActionCard {
 	public ChanceCard() {
 		super(new ChanceCardLogic());
 	}
-
-	@Override
-	public void placeCardOnTile(Tile tile) {
-		logic.placeCardOnTile(this, tile);	
-	}	
 	
 	@Override
 	public String getDescription() {

@@ -2,9 +2,9 @@ package sabotage.controllers;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.util.Duration;
 import sabotage.core.GameContext;
 import sabotage.core.Player;
 import sabotage.core.cards.Card;

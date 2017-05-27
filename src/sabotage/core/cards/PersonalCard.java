@@ -1,15 +1,14 @@
 package sabotage.core.cards;
 
-import sabotage.core.Player;
 import sabotage.core.cards.logic.CardLogic;
 
-public abstract class ActionCard extends Card {
+public abstract class PersonalCard extends Card {
 
 	/* CONSTRUCTORS */
 	/**
 	 * Card class constructor 
 	 */
-	public ActionCard(CardLogic logic) {
-		super(logic);		
+	public PersonalCard(CardLogic logic) {
+		super(logic);
 	}
 }
