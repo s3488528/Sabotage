@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import sabotage.core.cards.concrete.BackstabCard;
 import sabotage.core.cards.concrete.ChanceCard;
 import sabotage.core.cards.concrete.ClearCard;
 import sabotage.core.cards.concrete.CornerCard;
@@ -26,7 +27,8 @@ enum cardType {
 	rescue,
 	obstruction,
 	clear,
-	chance
+	chance,
+	backstab
 }
 
 public class GeneralCardFactory {
@@ -68,8 +70,11 @@ public class GeneralCardFactory {
 			case chance:
 				tempCard = new ChanceCard();
 				break;
-		default:
-			break;
+			case backstab:
+				tempCard = new BackstabCard();
+				break;
+			default:
+				break;
 		}
 				
 		return tempCard;

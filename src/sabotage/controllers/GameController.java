@@ -8,6 +8,7 @@ import javafx.util.Duration;
 import sabotage.core.GameContext;
 import sabotage.core.Player;
 import sabotage.core.cards.Card;
+import sabotage.core.cards.PersonalCard;
 
 public class GameController {
 
@@ -181,6 +182,18 @@ public class GameController {
 	 */
 	public void donateCurrentCard(Player player) {
 		gc.donateCurrentCard(player);
+		turnCompleted(false);
+	}
+
+	/**
+	 * Uses the currently selected card on a player
+	 */
+	public void useCardOnPlayer(Player player) {
+		if (!(gc.getCurrentCard() instanceof PersonalCard) || !player.isActive()) {
+			return;
+		}
+		
+		gc.useCurrentCardOnPlayer(player);
 		turnCompleted(false);
 	}
 

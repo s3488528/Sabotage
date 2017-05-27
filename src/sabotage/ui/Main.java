@@ -152,21 +152,11 @@ public class Main extends Application {
 		topText.setFont(new Font(24));
 		
 		quit = new Button("Quit");
-		quit.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				showMenuScene();
-			}
-        });
+		quit.setOnAction(e -> showMenuScene());
 		
 		nextRound = new Button("Next Round");
 		nextRound.setDisable(true);
-		nextRound.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				nextRound();
-			}
-        });
+		nextRound.setOnAction(e -> nextRound());
 		
 		HBox menuPane = new HBox(5);
 		menuPane.setStyle("-fx-padding: 5;\n");
@@ -219,21 +209,11 @@ public class Main extends Application {
 		cardDescription.setWrapText(true);
 		
 		rotateRight = new Button("Rotate Right");
-		rotateRight.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				rotateCurrentCard(true);
-			}
-        });
+		rotateRight.setOnAction(e -> rotateCurrentCard(true));
 		rotateRight.setDisable(true);
 		
 		rotateLeft = new Button("Rotate Left"); 
-		rotateLeft.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				rotateCurrentCard(false);
-			}
-        });
+		rotateLeft.setOnAction(e -> rotateCurrentCard(false));
 		rotateLeft.setDisable(true);
 		
 		HBox rotateButtons = new HBox(5);
@@ -241,24 +221,14 @@ public class Main extends Application {
 		rotateButtons.setAlignment(Pos.CENTER);
 		
 		discard = new Button("Discard Card");
-		discard.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				discardCurrentCard();
-			}
-        });
+		discard.setOnAction(e -> discardCurrentCard());
 		discard.setDisable(true);
 		
 		undoSpinner = new Spinner<Integer>(1, 3, 1);
 		undoSpinner.setPrefWidth(50);
 
 		Button undoButton = new Button("Undo");
-		undoButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				undoTurns(undoSpinner.getValue());
-			}
-        });
+		undoButton.setOnAction(e -> undoTurns(undoSpinner.getValue()));
 		
 		undo = new HBox(5);
 		undo.getChildren().addAll(undoButton, undoSpinner);

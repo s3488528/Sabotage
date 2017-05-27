@@ -4,16 +4,16 @@ import sabotage.core.Player;
 import sabotage.core.Tile;
 import sabotage.core.cards.Card;
 
-public class RemoveActionCardLogic extends CardLogic {
+public class BackstabCardLogic extends CardLogic {
 
 	@Override
 	public void placeCardOnTile(Card card, Tile tile) {
-		tile.setActionCard(null); // used by Rescue / Clear to remove action card from tile
+		// Do nothing (Persnoal cards should not be placed on tiles)
 	}
 
 	@Override
 	public void useCardOnPlayer(Card card, Player player) {
-		// Do nothing (Action cards should not be used on players)
+		player.setActive(false);
 	}
 
 }

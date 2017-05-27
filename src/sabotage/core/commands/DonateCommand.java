@@ -17,8 +17,9 @@ public class DonateCommand implements Command {
 	
 	/***
 	 * A command for when a player donates a card. 
-	 * Also allows undo, which will add the card back to the player's hand.
-	 * @param player	The player who is discarding the card
+	 * Also allows undo, which will reset both player's hands.
+	 * @param donator	The player who is donating the card
+	 * @param donatee	The player who is receiving the card
 	 * @param card		The card to be discarded
 	 */
 	public DonateCommand(Player donator, Player donatee, Card card) {

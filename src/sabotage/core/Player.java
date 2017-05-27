@@ -2,6 +2,7 @@ package sabotage.core;
 
 import java.util.ArrayList;
 
+import sabotage.core.Tile.TileMemento;
 import sabotage.core.cards.Card;
 
 public class Player {
@@ -11,6 +12,7 @@ public class Player {
 	private PlayerColour color;	
 	private boolean canUndo;
 	private boolean isVillain;	
+	private boolean isActive;
 	private ArrayList<Card> hand;
 	private int score; 
 	
@@ -26,6 +28,7 @@ public class Player {
 		this.color = color;
 		this.canUndo = true;
 		this.score = 0;
+		this.isActive = true;
 	}
 
 	/* GETTERS & SETTERS */
@@ -102,6 +105,21 @@ public class Player {
 	public void setUndo(boolean canUndo) {
 		this.canUndo = canUndo;
 	}
+	/**
+	 * Gets if this player can make a turn
+	 *
+	 * @return      True if player can make a turn; false otherwise
+	 */
+	public boolean isActive() {
+		return isActive;
+	}
+	
+	/**
+	 * Sets this player's active state
+	 */
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
+	}
 
 	/**
 	 * Replaces this player's hand with another hand 
@@ -122,4 +140,20 @@ public class Player {
 	public int getScore() {
 		return score;
 	}
+ 
+    public void restoreFromMemento(PlayerStateMemento memento) {
+    	this.isActive = memento.getSavedState();
+    }
+    
+    public static class PlayerStateMemento {
+    	private boolean isActive;
+
+        public PlayerStateMemento(Player player) {
+        	this.isActive = player.isActive;
+        }
+ 
+        private boolean getSavedState() {
+            return isActive;
+        }
+    }
 }

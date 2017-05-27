@@ -17,9 +17,10 @@ public class PlaceCommand implements Command {
 	private TileMemento prevTile;
 	
 	/***
-	 * A command for when a player discards a card. 
-	 * Also allows undo, which will add the card back to the player's hand.
+	 * A command for when a player places a card on a tile. 
+	 * Also allows undo, which will add the card back to the player's hand and remove it from the board.
 	 * @param player	The player who is discarding the card
+	 * @param tile		The tile being placed upon
 	 * @param card		The card to be discarded
 	 */
 	public PlaceCommand(Player player, Tile tile, Card card) {

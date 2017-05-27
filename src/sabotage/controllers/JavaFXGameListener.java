@@ -16,23 +16,9 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import sabotage.core.Player;
-import sabotage.core.PlayerColour;
-import sabotage.core.Tile;
-import sabotage.core.cards.Card;
-import sabotage.core.cards.PathCard;
-import sabotage.core.cards.concrete.ChanceCard;
-import sabotage.core.cards.concrete.ClearCard;
-import sabotage.core.cards.concrete.CornerCard;
-import sabotage.core.cards.concrete.DeadEndCard;
-import sabotage.core.cards.concrete.DemolishCard;
-import sabotage.core.cards.concrete.GoalCard;
-import sabotage.core.cards.concrete.HostageCard;
-import sabotage.core.cards.concrete.ObstructionCard;
-import sabotage.core.cards.concrete.RescueCard;
-import sabotage.core.cards.concrete.StraightCard;
-import sabotage.core.cards.concrete.TIntersectionCard;
-import sabotage.core.cards.concrete.XIntersectionCard;
+import sabotage.core.*;
+import sabotage.core.cards.*;
+import sabotage.core.cards.concrete.*;
 import sabotage.ui.TileStackPane;
 
 public class JavaFXGameListener implements GameListener {
@@ -59,6 +45,7 @@ public class JavaFXGameListener implements GameListener {
 	Image OBSTRUCTIONICONIMAGE = new Image("/sabotage/assets/images/obstruction_icon.png");
 	Image CLEARIMAGE = new Image("/sabotage/assets/images/clear.png");
 	Image CHANCEIMAGE = new Image("/sabotage/assets/images/random.png");
+	Image BACKSTABIMAGE = new Image("/sabotage/assets/images/backstab.png");
 	
 	Image GOALIMAGE = new Image("/sabotage/assets/images/goal.png");
 	Image BACKIMAGE = new Image("/sabotage/assets/images/back.png");
@@ -319,6 +306,9 @@ public class JavaFXGameListener implements GameListener {
 			Button donate = new Button("Donate Card");
 			donate.setOnMouseClicked(e -> gameCon.donateCurrentCard(player));
 			
+			Button use = new Button("Use");
+			use.setOnMouseClicked(e -> gameCon.useCardOnPlayer(player));
+			
 			if (enableDonate) {
 				donate.setDisable(false);
 			} else {
@@ -360,11 +350,15 @@ public class JavaFXGameListener implements GameListener {
 								 "-fx-padding: 8;");
 						break;
 				}
+			} else if (!player.isActive()) {
+				donate.setDisable(true); // Cannot donate to inactive players
+				temp.setStyle("-fx-background-color: grey;\n" +
+						 "-fx-padding: 8;");
 			} else {
 				temp.setStyle("-fx-padding: 8;");
 			}
 			
-			temp.getChildren().addAll(name, donate);			
+			temp.getChildren().addAll(name, donate, use);			
 			
 			playerList.getChildren().add(temp);
 		}
@@ -420,6 +414,8 @@ public class JavaFXGameListener implements GameListener {
 			temp = new ImageView(OBSTRUCTIONIMAGE);
 		} else if (card instanceof ClearCard) {
 			temp = new ImageView(CLEARIMAGE);
+		} else if (card instanceof BackstabCard) {
+			temp = new ImageView(BACKSTABIMAGE);
 		} else {
 			/* Should never reach here */
 			temp = new ImageView(BACKIMAGE);

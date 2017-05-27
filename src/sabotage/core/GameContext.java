@@ -8,10 +8,12 @@ import java.util.Stack;
 import sabotage.core.cards.Card;
 import sabotage.core.cards.GeneralCardFactory;
 import sabotage.core.cards.PathCard;
+import sabotage.core.cards.PersonalCard;
 import sabotage.core.commands.CommandHistory;
 import sabotage.core.commands.DiscardCommand;
 import sabotage.core.commands.DonateCommand;
 import sabotage.core.commands.PlaceCommand;
+import sabotage.core.commands.UseCommand;
 
 public final class GameContext {
 	
@@ -293,6 +295,10 @@ public final class GameContext {
 		commHistory.executeCommand(new DonateCommand(currentPlayer, player, currentCard));
 	}
 
+	public void useCurrentCardOnPlayer(Player player) {
+		commHistory.executeCommand(new UseCommand(currentPlayer, player, (PersonalCard) currentCard));
+	}
+
 	public void undoTurn() {
 		cyclePreviousPlayer();
 		if (!deckStates.isEmpty()) {
@@ -342,6 +348,7 @@ public final class GameContext {
 		for (Player player : players) {
 			player.setAsVillain(false);
 			player.setUndo(true);
+			player.setActive(true);
 		}
 		
 	}
