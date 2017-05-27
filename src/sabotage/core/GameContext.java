@@ -58,14 +58,17 @@ public final class GameContext {
 	 * @param deckCount		The number of starting cards in the deck
 	 */
 	public void initializeDeck(int deckCount) {
+		
 		this.deckCount = deckCount; // cache the starting deck count for later rounds
 		
 		/* Populate the deck with random cards */
 		deck = new Deck();		
 		for (int i = 0; i < deckCount; i++) {			
-			Card tempCard = CardBuilder.createRandomCard();
+			Card tempCard = new GeneralCardFactory().createRandomCard();
 			deck.add(tempCard);
 		}
+		
+		Collections.shuffle(deck);
 		
 		// initialise deck memento stack
 		deckStates = new Stack<Deck.DeckMemento>();
@@ -82,7 +85,7 @@ public final class GameContext {
 			Player tempPlayer = new Player(PlayerColour.values()[i].name(), PlayerColour.values()[i]);
 			
 			for (int j = 0; j < 5; j++) {
-				tempPlayer.addCardToHand(CardBuilder.createRandomCard());
+				tempPlayer.addCardToHand(new GeneralCardFactory().createRandomCard());
 			}
 			
 			players.add(tempPlayer);
@@ -307,7 +310,7 @@ public final class GameContext {
 			player.getHand().clear();
 			
 			for (int j = 0; j < 5; j++) {
-				player.addCardToHand(CardBuilder.createRandomCard());
+				player.addCardToHand(new GeneralCardFactory().createRandomCard());
 			}
 		}
 		
