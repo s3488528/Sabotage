@@ -1,4 +1,4 @@
-package sabotage.core;
+package sabotage.core.cards;
 
 public abstract class AbstractCardFactory {
 	/**

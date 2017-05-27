@@ -5,10 +5,9 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import sabotage.core.Card;
 import sabotage.core.GameContext;
 import sabotage.core.Player;
-import sabotage.core.Tile;
+import sabotage.core.cards.Card;
 
 public class GameController {
 

@@ -1,4 +1,10 @@
-package sabotage.core;
+package sabotage.core.cards;
+
+import sabotage.core.Angle;
+import sabotage.core.Connectable;
+import sabotage.core.Direction;
+import sabotage.core.Rotatable;
+import sabotage.core.cards.logic.CardLogic;
 
 public abstract class PathCard extends Card implements Rotatable, Connectable {
 
@@ -11,8 +17,8 @@ public abstract class PathCard extends Card implements Rotatable, Connectable {
 	/**
 	 * Card class constructor
 	 */
-	public PathCard(boolean[] connections) {
-		super();
+	public PathCard(CardLogic logic, boolean[] connections) {
+		super(logic);
 		
 		this.connections = connections;
 	}

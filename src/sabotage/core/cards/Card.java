@@ -1,6 +1,20 @@
-package sabotage.core;
+package sabotage.core.cards;
+
+import sabotage.core.Tile;
+import sabotage.core.cards.logic.CardLogic;
 
 public abstract class Card {
+	
+	protected CardLogic logic;
+	
+	/* CONSTRUCTORS */
+	/**
+	 * Card class constructor 
+	 */
+	public Card(CardLogic logic) {
+		this.logic = logic;
+	}
+	
 	/**
 	 * Places this card on the specified tile
 	 * @param card	The tile to place the card on

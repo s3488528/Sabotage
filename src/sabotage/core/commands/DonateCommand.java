@@ -2,8 +2,8 @@ package sabotage.core.commands;
 
 import java.util.ArrayList;
 
-import sabotage.core.Card;
 import sabotage.core.Player;
+import sabotage.core.cards.Card;
 
 public class DonateCommand implements Command {
 	

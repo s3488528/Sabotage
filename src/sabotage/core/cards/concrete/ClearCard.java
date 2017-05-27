@@ -1,17 +1,18 @@
-package sabotage.core.cards;
+package sabotage.core.cards.concrete;
 
-import sabotage.core.ActionCard;
 import sabotage.core.Tile;
+import sabotage.core.cards.ActionCard;
+import sabotage.core.cards.logic.ActionCardLogic;
 
 public class ClearCard extends ActionCard {
 
 	public ClearCard() {
-		super();
+		super(new ActionCardLogic());
 	}
 
 	@Override
 	public void placeCardOnTile(Tile tile) {
-		tile.setActionCard(null); /* Clear obstruction card */
+		logic.placeCardOnTile(null, tile);/* Null to clear obstruction card */
 	}	
 
 	@Override

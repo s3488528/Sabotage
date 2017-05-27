@@ -5,16 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-/**
- * An enumeration representing four predefined angles
- */
-enum Angle {
-	_0,
-	_90,
-	_180,
-	_270
-}
-
 public interface Rotatable {
 
 	static List<Angle> VALUES = Collections.unmodifiableList(Arrays.asList(Angle.values()));

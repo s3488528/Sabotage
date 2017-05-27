@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.Random;
 import java.util.Stack;
 
+import sabotage.core.cards.Card;
+import sabotage.core.cards.GeneralCardFactory;
+import sabotage.core.cards.PathCard;
 import sabotage.core.commands.CommandHistory;
 import sabotage.core.commands.DiscardCommand;
 import sabotage.core.commands.DonateCommand;

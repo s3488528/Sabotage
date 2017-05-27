@@ -1,19 +1,20 @@
-package sabotage.core.cards;
+package sabotage.core.cards.concrete;
 
-import sabotage.core.PathCard;
 import sabotage.core.Tile;
+import sabotage.core.cards.PathCard;
+import sabotage.core.cards.logic.PathCardLogic;
 
 
 
 public class TIntersectionCard extends PathCard {	
 	public TIntersectionCard() {
-		super(new boolean[] {true, true, false, true});
+		super(new PathCardLogic(), new boolean[] {true, true, false, true});
 	}	
 
 	@Override
 	public void placeCardOnTile(Tile tile) {
-		tile.setPathCard(this);
-	}
+		logic.placeCardOnTile(this, tile);
+	}	
 
 	@Override
 	public String getDescription() {

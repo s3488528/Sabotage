@@ -1,22 +1,18 @@
-package sabotage.core.cards;
+package sabotage.core.cards.concrete;
 
-import sabotage.core.ActionCard;
-import sabotage.core.PathCard;
-import sabotage.core.PathCardFactory;
-import sabotage.core.Rotatable;
 import sabotage.core.Tile;
+import sabotage.core.cards.ActionCard;
+import sabotage.core.cards.logic.ChanceCardLogic;
 
 public class ChanceCard extends ActionCard {
 
 	public ChanceCard() {
-		super();
+		super(new ChanceCardLogic());
 	}
 
 	@Override
 	public void placeCardOnTile(Tile tile) {
-		PathCard card = (PathCard) new PathCardFactory().createRandomCard();		
-		card.setRotation(Rotatable.getRandomAngle());
-		tile.setPathCard(card);	
+		logic.placeCardOnTile(this, tile);	
 	}	
 	
 	@Override

@@ -2,9 +2,9 @@ package sabotage.controllers;
 
 import java.util.ArrayList;
 
-import sabotage.core.Card;
 import sabotage.core.Player;
 import sabotage.core.Tile;
+import sabotage.core.cards.Card;
 
 public interface GameListener {
 	void onHandUpdate(ArrayList<Card> handCards);

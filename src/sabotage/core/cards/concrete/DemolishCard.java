@@ -1,17 +1,17 @@
-package sabotage.core.cards;
+package sabotage.core.cards.concrete;
 
-import sabotage.core.ActionCard;
 import sabotage.core.Tile;
+import sabotage.core.cards.ActionCard;
+import sabotage.core.cards.logic.DemolishCardLogic;
 
 public class DemolishCard extends ActionCard {
 	public DemolishCard() {
-		super();
+		super(new DemolishCardLogic());
 	}	
 
 	@Override
 	public void placeCardOnTile(Tile tile) {
-		tile.setPathCard(null);
-		tile.setActionCard(null);
+		logic.placeCardOnTile(this, tile);
 	}	
 
 	@Override

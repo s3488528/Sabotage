@@ -1,20 +1,20 @@
-package sabotage.core;
+package sabotage.core.cards;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import sabotage.core.cards.ChanceCard;
-import sabotage.core.cards.ClearCard;
-import sabotage.core.cards.CornerCard;
-import sabotage.core.cards.DeadEndCard;
-import sabotage.core.cards.HostageCard;
-import sabotage.core.cards.ObstructionCard;
-import sabotage.core.cards.RescueCard;
-import sabotage.core.cards.StraightCard;
-import sabotage.core.cards.TIntersectionCard;
-import sabotage.core.cards.XIntersectionCard;
+import sabotage.core.cards.concrete.ChanceCard;
+import sabotage.core.cards.concrete.ClearCard;
+import sabotage.core.cards.concrete.CornerCard;
+import sabotage.core.cards.concrete.DeadEndCard;
+import sabotage.core.cards.concrete.HostageCard;
+import sabotage.core.cards.concrete.ObstructionCard;
+import sabotage.core.cards.concrete.RescueCard;
+import sabotage.core.cards.concrete.StraightCard;
+import sabotage.core.cards.concrete.TIntersectionCard;
+import sabotage.core.cards.concrete.XIntersectionCard;
 
 enum cardType {
 	deadend,

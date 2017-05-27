@@ -1,19 +1,20 @@
-package sabotage.core.cards;
+package sabotage.core.cards.concrete;
 
-import sabotage.core.ActionCard;
 import sabotage.core.Tile;
+import sabotage.core.cards.ActionCard;
+import sabotage.core.cards.logic.ActionCardLogic;
 
 
 
 public class RescueCard extends ActionCard {
 
 	public RescueCard() {
-		super();
+		super(new ActionCardLogic());
 	}
 
 	@Override
 	public void placeCardOnTile(Tile tile) {
-		tile.setActionCard(null); /* Remove hostage action card */
+		logic.placeCardOnTile(null, tile); /* Null to remove hostage action card */
 	}	
 
 	@Override

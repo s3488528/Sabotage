@@ -2,10 +2,10 @@ package sabotage.core.commands;
 
 import java.util.ArrayList;
 
-import sabotage.core.Card;
 import sabotage.core.Player;
 import sabotage.core.Tile;
 import sabotage.core.Tile.TileMemento;
+import sabotage.core.cards.Card;
 
 public class PlaceCommand implements Command {
 	

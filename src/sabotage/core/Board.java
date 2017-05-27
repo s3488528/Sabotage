@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-import sabotage.core.cards.ChanceCard;
-import sabotage.core.cards.ClearCard;
-import sabotage.core.cards.DemolishCard;
-import sabotage.core.cards.GoalCard;
-import sabotage.core.cards.HostageCard;
-import sabotage.core.cards.ObstructionCard;
-import sabotage.core.cards.RescueCard;
+import sabotage.core.cards.ActionCard;
+import sabotage.core.cards.Card;
+import sabotage.core.cards.PathCard;
+import sabotage.core.cards.PathCardFactory;
+import sabotage.core.cards.concrete.ChanceCard;
+import sabotage.core.cards.concrete.ClearCard;
+import sabotage.core.cards.concrete.DemolishCard;
+import sabotage.core.cards.concrete.GoalCard;
+import sabotage.core.cards.concrete.HostageCard;
+import sabotage.core.cards.concrete.ObstructionCard;
+import sabotage.core.cards.concrete.RescueCard;
 
 public class Board {
 

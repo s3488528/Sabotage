@@ -1,7 +1,10 @@
 package sabotage.core;
 
-import sabotage.core.cards.HostageCard;
-import sabotage.core.cards.ObstructionCard;
+import sabotage.core.cards.ActionCard;
+import sabotage.core.cards.Card;
+import sabotage.core.cards.PathCard;
+import sabotage.core.cards.concrete.HostageCard;
+import sabotage.core.cards.concrete.ObstructionCard;
 
 public class Tile {
 

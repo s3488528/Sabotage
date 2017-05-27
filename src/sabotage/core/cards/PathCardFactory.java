@@ -1,22 +1,17 @@
-package sabotage.core;
+package sabotage.core.cards;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-import sabotage.core.cards.ChanceCard;
-import sabotage.core.cards.ClearCard;
-import sabotage.core.cards.CornerCard;
-import sabotage.core.cards.DeadEndCard;
-import sabotage.core.cards.DemolishCard;
-import sabotage.core.cards.GoalCard;
-import sabotage.core.cards.HostageCard;
-import sabotage.core.cards.ObstructionCard;
-import sabotage.core.cards.RescueCard;
-import sabotage.core.cards.StraightCard;
-import sabotage.core.cards.TIntersectionCard;
-import sabotage.core.cards.XIntersectionCard;
+import sabotage.core.Tile;
+import sabotage.core.cards.concrete.CornerCard;
+import sabotage.core.cards.concrete.DeadEndCard;
+import sabotage.core.cards.concrete.GoalCard;
+import sabotage.core.cards.concrete.StraightCard;
+import sabotage.core.cards.concrete.TIntersectionCard;
+import sabotage.core.cards.concrete.XIntersectionCard;
 
 enum pathCardType {
 	deadend,
@@ -32,6 +27,7 @@ public class PathCardFactory extends AbstractCardFactory {
 	private static int SIZE = VALUES.size();
 	private static Random RANDOM = new Random();
 	  	
+	@Override
 	public Card createRandomCard() {
 		Card tempCard = null;
 

@@ -1,17 +1,18 @@
-package sabotage.core.cards;
+package sabotage.core.cards.concrete;
 
-import sabotage.core.ActionCard;
 import sabotage.core.Tile;
+import sabotage.core.cards.ActionCard;
+import sabotage.core.cards.logic.ActionCardLogic;
 
 public class ObstructionCard extends ActionCard {
 
 	public ObstructionCard() {
-		super();
+		super(new ActionCardLogic());
 	}
 
 	@Override
 	public void placeCardOnTile(Tile tile) {
-		tile.setActionCard(this);
+		logic.placeCardOnTile(this, tile);
 	}	
 
 	@Override

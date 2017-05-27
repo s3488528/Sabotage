@@ -2,6 +2,8 @@ package sabotage.core;
 
 import java.util.Stack;
 
+import sabotage.core.cards.Card;
+
 public class Deck extends Stack<Card> {
 
     public void set(Stack<Card> deck) {   

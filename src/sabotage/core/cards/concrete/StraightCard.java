@@ -1,18 +1,19 @@
-package sabotage.core.cards;
+package sabotage.core.cards.concrete;
 
-import sabotage.core.PathCard;
 import sabotage.core.Tile;
+import sabotage.core.cards.PathCard;
+import sabotage.core.cards.logic.PathCardLogic;
 
 
 
 public class StraightCard extends PathCard {	
 	public StraightCard() {
-		super(new boolean[] {true, false, true, false});
+		super(new PathCardLogic(), new boolean[] {true, false, true, false});
 	}	
 
 	@Override
 	public void placeCardOnTile(Tile tile) {
-		tile.setPathCard(this);
+		logic.placeCardOnTile(this, tile);
 	}	
 
 	@Override
