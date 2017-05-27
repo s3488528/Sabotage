@@ -234,8 +234,8 @@ public class JavaFXGameListener implements GameListener {
 	}
 
 	@Override
-	public void onCardSelected(ArrayList<Player> list, Player currentPlayer) {
-		rebuildPlayerList(list, currentPlayer, true);
+	public void onCardSelected(ArrayList<Player> list, Player currentPlayer, Card card) {
+		rebuildPlayerList(list, currentPlayer, true, card instanceof PersonalCard);
 		rotateRight.setDisable(false);
 		rotateLeft.setDisable(false);
 		discard.setDisable(false);
@@ -276,7 +276,7 @@ public class JavaFXGameListener implements GameListener {
 				break;
 		}
 		
-		rebuildPlayerList(list, currentPlayer, false);
+		rebuildPlayerList(list, currentPlayer, false, false);
 		
 		cardDescription.setText("");
 
@@ -300,7 +300,7 @@ public class JavaFXGameListener implements GameListener {
 		board.setDisable(true);		
 	}
 	
-	private void rebuildPlayerList(ArrayList<Player> list, Player currentPlayer, boolean enableDonate) {
+	private void rebuildPlayerList(ArrayList<Player> list, Player currentPlayer, boolean enableDonate, boolean enableUse) {
 		playerList.getChildren().clear();
 		
 		for (Player player : list) {
@@ -318,6 +318,12 @@ public class JavaFXGameListener implements GameListener {
 				donate.setDisable(false);
 			} else {
 				donate.setDisable(true);
+			}
+			
+			if (enableUse) {
+				use.setDisable(false);
+			} else {
+				use.setDisable(true);
 			}
 			
 			if (player.equals(currentPlayer)) {

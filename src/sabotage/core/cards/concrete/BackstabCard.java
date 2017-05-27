@@ -11,7 +11,7 @@ public class BackstabCard extends PersonalCard {
 
 	@Override
 	public String getDescription() {
-		return "Backstab Card - Use this card on a player to take them out of the game for one turn.";
+		return "Backstab Card - Use this card on a player to take them out of the game.";
 	}
 	
 }

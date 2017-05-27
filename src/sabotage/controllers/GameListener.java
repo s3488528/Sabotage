@@ -11,7 +11,7 @@ public interface GameListener {
 	void onRoundUpdate(int round);
 	void onBoardUpdate(Tile[][] tiles);
 	void onDeckUpdate(int deckCount);
-	void onCardSelected(ArrayList<Player> list, Player currentPlayer);
+	void onCardSelected(ArrayList<Player> list, Player currentPlayer, Card card);
 	void onInspectorRefresh(Card card);
 	void onTurnStart(ArrayList<Player> playerList, Player currentPlayer, int turnNumber, int undoStackCount);
 	void onGameCompleted(Boolean villainWins);

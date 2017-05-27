@@ -10,6 +10,7 @@ import sabotage.core.cards.concrete.ChanceCard;
 import sabotage.core.cards.concrete.ClearCard;
 import sabotage.core.cards.concrete.CornerCard;
 import sabotage.core.cards.concrete.DeadEndCard;
+import sabotage.core.cards.concrete.DemolishCard;
 import sabotage.core.cards.concrete.HealCard;
 import sabotage.core.cards.concrete.HostageCard;
 import sabotage.core.cards.concrete.ObstructionCard;
@@ -28,6 +29,7 @@ enum cardType {
 	rescue,
 	obstruction,
 	clear,
+	demolish,
 	chance,
 	backstab,
 	heal
@@ -68,6 +70,9 @@ public class GeneralCardFactory {
 				break;
 			case clear:
 				tempCard = new ClearCard();
+				break;
+			case demolish:
+				tempCard = new DemolishCard();
 				break;
 			case chance:
 				tempCard = new ChanceCard();

@@ -138,7 +138,7 @@ public class GameController {
 	public void handCardClicked(Card card) {
 		gc.setCurrentCard(card);
 		
-		listener.onCardSelected(gc.getPlayers(), gc.getCurrentPlayer());
+		listener.onCardSelected(gc.getPlayers(), gc.getCurrentPlayer(), card);
 		displayCurrentCard();
 	}
 
@@ -223,13 +223,9 @@ public class GameController {
 		}
 		
 		do {
-			if (!gc.getCurrentPlayer().isActive()) {
-				gc.getCurrentPlayer().setActive(true);
-			}
-			
 			gc.cyclePlayer();
 		} while ((gc.getCurrentPlayer().getHand().isEmpty()) || !gc.getCurrentPlayer().isActive());
-		// Skip players whose hands are empty, or are inactive
+		// Skip players whose hands are empty, or are inactive (backstabbed)
 
 		displayTurn();
 	}
